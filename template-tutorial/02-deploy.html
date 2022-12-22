@@ -6,6 +6,7 @@
     <title>Deploy Service :: Multicluster Application Deployment with Advanced Cluster Management and GitOps</title>
     <link rel="canonical" href="https://xbryan1.github.io/rhte-2023-acm-docs/template-tutorial/02-deploy.html">
     <link rel="prev" href="01-setup.html">
+    <link rel="next" href="#03-installcluster.adoc">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../_/css/site.css">
   </head>
@@ -52,25 +53,55 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="01-setup.html">1. Setup</a>
+    <a class="nav-link" href="01-setup.html">1. Environment Setup</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="01-setup.html#prerequisite">Prerequisites</a>
+    <a class="nav-link" href="01-setup.html#rhpds">RHPDS Environment</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="01-setup.html#minikube">Setup Minikube</a>
+    <a class="nav-link" href="01-setup.html#architecture">LAB Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-setup.html#tools">Tools</a>
   </li>
 </ul>
   </li>
   <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="02-deploy.html">2. Deploy Service</a>
+    <a class="nav-link" href="02-deploy.html">2. Install Red Hat Cluster Advanced Management</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#package">Build Service</a>
+    <a class="nav-link" href="#install">ACM Operator Installation</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#deploy">Deploy Dervice</a>
+    <a class="nav-link" href="#setup">Setup a MultiClusterHub</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#console">Access to the MultiCluster WebConsole</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#gitops">Integrate GitOps Operator</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#03-installcluster.adoc">3. Install a new Openshift Cluster</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#03-installcluster.adoc#credentials">Setup credentials</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#03-installcluster.adoc#install">Deploy new Openshift Cluster</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#04-deployapplication.adoc">4. Deploy a Multicluster Application</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#04-deployapplication.adoc#application">Deploy GitOps Application</a>
   </li>
 </ul>
   </li>
@@ -89,7 +120,7 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">Template Tutorial</a></li>
-    <li><a href="02-deploy.html">2. Deploy Service</a></li>
+    <li><a href="02-deploy.html">2. Install Red Hat Cluster Advanced Management</a></li>
   </ul>
 </nav>
   <div class="edit-this-page"><a href="https://github.com/xbryan1/rhte-2023-acm-docs/edit/master/documentation/modules/ROOT/pages/02-deploy.adoc">Edit this Page</a></div>
@@ -175,7 +206,8 @@ Change the pod name with your pod name.
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="01-setup.html">1. Setup</a></span>
+  <span class="prev"><a href="01-setup.html">1. Environment Setup</a></span>
+  <span class="next"><a href="#03-installcluster.adoc">3. Install a new Openshift Cluster</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
