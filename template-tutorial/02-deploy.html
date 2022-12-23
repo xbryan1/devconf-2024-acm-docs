@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Install Red Hat Cluster Advanced Management :: Multicluster Application Deployment with Advanced Cluster Management and GitOps</title>
+    <title>Install Red Hat Cluster Advanced Management Operator :: Multicluster Application Deployment with Advanced Cluster Management and GitOps</title>
     <link rel="canonical" href="https://xbryan1.github.io/rhte-2023-acm-docs/template-tutorial/02-deploy.html">
     <link rel="prev" href="01-setup.html">
     <link rel="next" href="#03-installcluster.adoc">
@@ -145,7 +145,7 @@
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Install Red Hat Cluster Advanced Management</h1>
+<h1 class="page">Install Red Hat Cluster Advanced Management Operator</h1>
 <div class="sect1">
 <h2 id="_installing_from_the_operatorhub_web_console_interface"><a class="anchor" href="#_installing_from_the_operatorhub_web_console_interface"></a>Installing from the OperatorHub web console interface</h2>
 <div class="sectionbody">
@@ -199,33 +199,32 @@ spec:
 <div class="ulist">
 <ul>
 <li>
-<p>Install Red Hat Advanced Cluster Management Operator and check if the installation was completed:</p>
+<p>Install Red Hat Advanced Cluster Management Operator and check if the installation is completed:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># oc apply -f 01_acm-operator.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc apply -f 01_acm-operator.yaml
 
-# oc get csv advanced-cluster-management.v2.6.3
+$ oc get csv advanced-cluster-management.v2.6.3
 NAME                                 DISPLAY                                      VERSION   REPLACES                             PHASE
 advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes   2.6.3     advanced-cluster-management.v2.6.2   Succeeded</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
+</div>
+</div>
+<h1 id="setup" class="sect0"><a class="anchor" href="#setup"></a>Setup a MulticlusterHub</h1>
+<div class="paragraph">
 <p>Create Red Hat Advanced Cluster Management cluster hub, wait until the hub cluster status is in <code>Running</code> and all pods in <code>` namespace are in `Running</code> as well:</p>
-</li>
-</ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># oc apply -f 02_acm-multicluster.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc apply -f 02_acm-multicluster.yaml
 
-# oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
+$ oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
 
-# oc get pod -n open-cluster-management</code></pre>
+$ oc get pod -n open-cluster-management</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -233,19 +232,140 @@ advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># oc logs multiclusterhub-operator-xxx-xxx -n open-cluster-management</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc logs multiclusterhub-operator-xxx-xxx -n open-cluster-management</code></pre>
 </div>
 </div>
+<h1 id="console" class="sect0"><a class="anchor" href="#console"></a>Access to the MultiCluster WebConsole</h1>
 <div class="paragraph">
 <p>After the status is <code>Running`</code>, get the list of routes to find your ACM Console&#8217;s route:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># oc get routes
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc get routes
 NAME                 HOST/PORT                                          PATH   SERVICES             PORT    TERMINATION          WILDCARD
 multicloud-console   multicloud-console.apps.jclaretm.nasatam.support          management-ingress   https   reencrypt/Redirect   None</code></pre>
 </div>
 </div>
+<h1 id="gitops" class="sect0"><a class="anchor" href="#gitops"></a>Integrate GitOps Operator</h1>
+<div class="paragraph">
+<p>Advanced Cluster Management introduces a new <code>gitopscluster<code> resource kind, which connects to a `placement</code> resource to determine which clusters to import into Argo CD. This integration allows you to expand your fleet, while having Argo CD automatically engage in working with your new clusters. This means if you leverage Argo CD `ApplicationSets`</code>, your application payloads are automatically applied to your new clusters as they are registered by Advanced Cluster Management in your Argo CD instances.</p>
+</div>
+<div class="paragraph">
+<p>In order to integrate the Red Hat GitOps operator and the Advance Cluster Management cluster hub already deployed, run the following commands:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Review the <code>03_acm-gitops.yaml</code> YAML file which defines the following resources:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>openshift-gitops</code> namespace</p>
+</li>
+<li>
+<p><code>openshift-gitops-opertator</code> subscription</p>
+</li>
+<li>
+<p><code>gitops-clusters</code> ManagedClusterSet</p>
+</li>
+<li>
+<p><code>gitops-clusters</code> ManagedClusterSetBinding</p>
+</li>
+<li>
+<p><code>gitops-clusters</code> Placement</p>
+</li>
+<li>
+<p><code>argo-acm-importer</code> GitOpsCluster and</p>
+</li>
+<li>
+<p><code>cluster</code> GitopsService</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># oc apply -f 03_acm-gitops.yaml
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: openshift-gitops
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: openshift-gitops-operator
+  namespace: openshift-operators
+spec:
+  channel: gitops-1.6
+  installPlanApproval: Automatic
+  name: openshift-gitops-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: openshift-gitops-operator.v1.6.1
+---
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: ManagedClusterSet
+metadata:
+  name: gitops-clusters
+spec: {}
+---
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: ManagedClusterSetBinding
+metadata:
+  name: gitops-clusters
+  namespace: openshift-gitops
+spec:
+  clusterSet: gitops-clusters
+---
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: Placement
+metadata:
+  name: gitops-clusters
+  namespace: openshift-gitops
+spec:
+  predicates:
+  - requiredClusterSelector:
+      labelSelector:
+        matchExpressions:
+        - key: vendor
+          operator: "In"
+          values:
+          - OpenShift
+---
+apiVersion: apps.open-cluster-management.io/v1beta1
+kind: GitOpsCluster
+metadata:
+  name: argo-acm-importer
+  namespace: openshift-gitops
+spec:
+  argoServer:
+    cluster: local-cluster
+    argoNamespace: openshift-gitops
+  placementRef:
+    kind: Placement
+    apiVersion: cluster.open-cluster-management.io/v1alpha1
+    name: gitops-clusters
+    namespace: openshift-gitops
+---
+apiVersion: pipelines.openshift.io/v1alpha1
+kind: GitopsService
+metadata:
+  name: cluster
+spec: {}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In order to integrate the GitOps operator with Advanced Cluster Management, run the following commands:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc apply -f 03_acm-gitops.yaml
+
+$ oc apply -f 04_acm-gitopservice.yaml</code></pre>
 </div>
 </div>
 <nav class="pagination">
