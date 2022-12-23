@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Deploy Service :: Multicluster Application Deployment with Advanced Cluster Management and GitOps</title>
+    <title>Install Red Hat Cluster Advanced Management :: Multicluster Application Deployment with Advanced Cluster Management and GitOps</title>
     <link rel="canonical" href="https://xbryan1.github.io/rhte-2023-acm-docs/template-tutorial/02-deploy.html">
     <link rel="prev" href="01-setup.html">
     <link rel="next" href="#03-installcluster.adoc">
@@ -145,81 +145,106 @@
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Deploy Service</h1>
+<h1 class="page">Install Red Hat Cluster Advanced Management</h1>
 <div class="sect1">
-<h2 id="service"><a class="anchor" href="#service"></a>The Service</h2>
+<h2 id="_installing_from_the_operatorhub_web_console_interface"><a class="anchor" href="#_installing_from_the_operatorhub_web_console_interface"></a>Installing from the OperatorHub web console interface</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>The code:</p>
-</div>
-<div class="listingblock lines_7 console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class Main {
 
-    public static void main(String[] args) {
-
-    }
-
-}
-
-./mvnw compile</code></pre>
-</div>
-</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="package"><a class="anchor" href="#package"></a>Packaging the Service</h2>
+<h2 id="install"><a class="anchor" href="#install"></a>Installing from the OpenShift Container Platform CLI</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You can package the next bash script:</p>
+<p>In order to create a Red Hat Advanced Cluster Management hub cluster, run the following commands</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Review the <code>01_acm-operator.yaml</code> YAML file which defines the <code>open-cluster-management</code> namespace, <code>open-cluster-management-rhte2023</code> OperatorGroup, and the <code>advanced-cluster-management</code> subscription resources.</p>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#!/bin/sh
-echo "Hello World"</code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: open-cluster-management
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: open-cluster-management-rhte2023
+  namespace: open-cluster-management
+spec:
+  targetNamespaces:
+  - open-cluster-management
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: advanced-cluster-management
+  namespace: open-cluster-management
+spec:
+  channel: release-2.6
+  installPlanApproval: Automatic
+  name: advanced-cluster-management
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: advanced-cluster-management.v2.6.3</code></pre>
 </div>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p>Install Red Hat Advanced Cluster Management Operator and check if the installation was completed:</p>
+</li>
+</ul>
 </div>
-</div>
-<div class="sect1">
-<h2 id="deploy"><a class="anchor" href="#deploy"></a>Deploy the Service</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>And then you can deploy the service and execute commands inside:</p>
-</div>
-<div class="paragraph">
-<p>Check that the pod is up and running:</p>
-</div>
-<div class="listingblock lines_space console-input">
+<div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl get pods</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># oc apply -f 01_acm-operator.yaml
+
+# oc get csv advanced-cluster-management.v2.6.3
+NAME                                 DISPLAY                                      VERSION   REPLACES                             PHASE
+advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes   2.6.3     advanced-cluster-management.v2.6.2   Succeeded</code></pre>
 </div>
 </div>
-<div class="listingblock console-output">
+<div class="ulist">
+<ul>
+<li>
+<p>Create Red Hat Advanced Cluster Management cluster hub, wait until the hub cluster status is in <code>Running</code> and all pods in <code>` namespace are in `Running</code> as well:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                        READY   STATUS    RESTARTS   AGE
-apps   1/1     Running   0          5s</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># oc apply -f 02_acm-multicluster.yaml
+
+# oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
+
+# oc get pod -n open-cluster-management</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Then let&#8217;s go into the running pod to execute some commands:</p>
+<p>If the cluster hub is in <code>installing</code> status indefitively, check the operator logs as follows:</p>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl exec -ti apps /bin/bash</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># oc logs multiclusterhub-operator-xxx-xxx -n open-cluster-management</code></pre>
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Change the pod name with your pod name.
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>After the status is <code>Running`</code>, get the list of routes to find your ACM Console&#8217;s route:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># oc get routes
+NAME                 HOST/PORT                                          PATH   SERVICES             PORT    TERMINATION          WILDCARD
+multicloud-console   multicloud-console.apps.jclaretm.nasatam.support          management-ingress   https   reencrypt/Redirect   None</code></pre>
+</div>
 </div>
 </div>
 </div>
