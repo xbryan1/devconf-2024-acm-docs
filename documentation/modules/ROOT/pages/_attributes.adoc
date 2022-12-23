@@ -1,2 +1,4 @@
 :experimental:
 :source-highlighter: highlightjs
+// load yaml and scilab languages
+:highlightjs-languages: yaml, scilab
