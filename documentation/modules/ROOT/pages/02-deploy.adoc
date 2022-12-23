@@ -1,7 +1,4 @@
-= Install Red Hat Cluster Advanced Management
-
-// load yaml and scilab languages
-:highlightjs-languages: yaml, scilab
+= Install Red Hat Cluster Advanced Management Operator
 
 == Installing from the OperatorHub web console interface
 
@@ -45,40 +42,143 @@ spec:
 ----
 
 
-* Install Red Hat Advanced Cluster Management Operator and check if the installation was completed:
+* Install Red Hat Advanced Cluster Management Operator and check if the installation is completed:
 
-[source,bash]
+[source, bash]
 ----
-# oc apply -f 01_acm-operator.yaml
+$ oc apply -f 01_acm-operator.yaml
 
-# oc get csv advanced-cluster-management.v2.6.3
+$ oc get csv advanced-cluster-management.v2.6.3
 NAME                                 DISPLAY                                      VERSION   REPLACES                             PHASE
 advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes   2.6.3     advanced-cluster-management.v2.6.2   Succeeded
 ----
+[#setup]
+= Setup a MulticlusterHub
 
-* Create Red Hat Advanced Cluster Management cluster hub, wait until the hub cluster status is in `Running` and all pods in `` namespace are in `Running` as well:
+Create Red Hat Advanced Cluster Management cluster hub, wait until the hub cluster status is in `Running` and all pods in `` namespace are in `Running` as well:
 
-[source,bash]
+[source, bash]
 ----
-# oc apply -f 02_acm-multicluster.yaml
+$ oc apply -f 02_acm-multicluster.yaml
 
-# oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
+$ oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
 
-# oc get pod -n open-cluster-management
+$ oc get pod -n open-cluster-management
 ----
 
 If the cluster hub is in `installing` status indefitively, check the operator logs as follows:
 
-[source,bash]
+[source, bash]
 ----
-# oc logs multiclusterhub-operator-xxx-xxx -n open-cluster-management
+$ oc logs multiclusterhub-operator-xxx-xxx -n open-cluster-management
 ----
+
+[#console]
+= Access to the MultiCluster WebConsole
 
 After the status is `Running``, get the list of routes to find your ACM Console's route:
 
-[source,bash]
+[source, bash]
 ----
-# oc get routes
+$ oc get routes
 NAME                 HOST/PORT                                          PATH   SERVICES             PORT    TERMINATION          WILDCARD
 multicloud-console   multicloud-console.apps.jclaretm.nasatam.support          management-ingress   https   reencrypt/Redirect   None
+----
+
+[#gitops]
+= Integrate GitOps Operator
+
+Advanced Cluster Management introduces a new `gitopscluster`` resource kind, which connects to a `placement`` resource to determine which clusters to import into Argo CD. This integration allows you to expand your fleet, while having Argo CD automatically engage in working with your new clusters. This means if you leverage Argo CD `ApplicationSets``, your application payloads are automatically applied to your new clusters as they are registered by Advanced Cluster Management in your Argo CD instances.
+
+In order to integrate the Red Hat GitOps operator and the Advance Cluster Management cluster hub already deployed, run the following commands:
+
+* Review the `03_acm-gitops.yaml` YAML file which defines the following resources:
+** `openshift-gitops` namespace
+** `openshift-gitops-opertator` subscription
+** `gitops-clusters` ManagedClusterSet
+** `gitops-clusters` ManagedClusterSetBinding
+** `gitops-clusters` Placement
+** `argo-acm-importer` GitOpsCluster and
+** `cluster` GitopsService
+
+[source, yaml]
+----
+# oc apply -f 03_acm-gitops.yaml
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: openshift-gitops
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: openshift-gitops-operator
+  namespace: openshift-operators
+spec:
+  channel: gitops-1.6
+  installPlanApproval: Automatic
+  name: openshift-gitops-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: openshift-gitops-operator.v1.6.1
+---
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: ManagedClusterSet
+metadata:
+  name: gitops-clusters
+spec: {}
+---
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: ManagedClusterSetBinding
+metadata:
+  name: gitops-clusters
+  namespace: openshift-gitops
+spec:
+  clusterSet: gitops-clusters
+---
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: Placement
+metadata:
+  name: gitops-clusters
+  namespace: openshift-gitops
+spec:
+  predicates:
+  - requiredClusterSelector:
+      labelSelector:
+        matchExpressions:
+        - key: vendor
+          operator: "In"
+          values:
+          - OpenShift
+---
+apiVersion: apps.open-cluster-management.io/v1beta1
+kind: GitOpsCluster
+metadata:
+  name: argo-acm-importer
+  namespace: openshift-gitops
+spec:
+  argoServer:
+    cluster: local-cluster
+    argoNamespace: openshift-gitops
+  placementRef:
+    kind: Placement
+    apiVersion: cluster.open-cluster-management.io/v1alpha1
+    name: gitops-clusters
+    namespace: openshift-gitops
+---
+apiVersion: pipelines.openshift.io/v1alpha1
+kind: GitopsService
+metadata:
+  name: cluster
+spec: {}
+----
+
+In order to integrate the GitOps operator with Advanced Cluster Management, run the following commands:
+
+[source, bash]
+----
+$ oc apply -f 03_acm-gitops.yaml
+
+$ oc apply -f 04_acm-gitopservice.yaml
 ----
