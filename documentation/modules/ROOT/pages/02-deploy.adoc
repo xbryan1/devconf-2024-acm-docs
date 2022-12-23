@@ -1,43 +1,84 @@
-= Deploy Service
-include::_attributes.adoc[]
+= Install Red Hat Cluster Advanced Management
 
-[#service]
-== The Service
+// load yaml and scilab languages
+:highlightjs-languages: yaml, scilab
 
-The code:
+== Installing from the OperatorHub web console interface
 
-[.lines_7]
-[.console-input]
-[source, java,subs="+macros,+attributes"]
+[#install]
+== Installing from the OpenShift Container Platform CLI
+
+In order to create a Red Hat Advanced Cluster Management hub cluster, run the following commands
+
+* Review the `01_acm-operator.yaml` YAML file which defines the `open-cluster-management` namespace, `open-cluster-management-rhte2023` OperatorGroup, and the `advanced-cluster-management` subscription resources.
+
+[source,yaml]
 ----
-public class Main {
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: open-cluster-management
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: open-cluster-management-rhte2023
+  namespace: open-cluster-management
+spec:
+  targetNamespaces:
+  - open-cluster-management
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: advanced-cluster-management
+  namespace: open-cluster-management
+spec:
+  channel: release-2.6
+  installPlanApproval: Automatic
+  name: advanced-cluster-management
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: advanced-cluster-management.v2.6.3
 
-    public static void main(String[] args) {
-
-    } 
-
-}
-
-./mvnw compile
 ----
 
-[#package]
-== Packaging the Service
 
-You can package the next bash script:
+* Install Red Hat Advanced Cluster Management Operator and check if the installation was completed:
 
-[source,bash,subs="+macros,+attributes"]
+[source,bash]
 ----
-include::example$run.sh[]
+# oc apply -f 01_acm-operator.yaml
+
+# oc get csv advanced-cluster-management.v2.6.3
+NAME                                 DISPLAY                                      VERSION   REPLACES                             PHASE
+advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes   2.6.3     advanced-cluster-management.v2.6.2   Succeeded
 ----
 
-[#deploy]
-== Deploy the Service
+* Create Red Hat Advanced Cluster Management cluster hub, wait until the hub cluster status is in `Running` and all pods in `` namespace are in `Running` as well:
 
-And then you can deploy the service and execute commands inside:
+[source,bash]
+----
+# oc apply -f 02_acm-multicluster.yaml
 
-:podname: apps
+# oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
 
-include::partial$exec_pod.adoc[]
+# oc get pod -n open-cluster-management
+----
 
-:!podname:
+If the cluster hub is in `installing` status indefitively, check the operator logs as follows:
+
+[source,bash]
+----
+# oc logs multiclusterhub-operator-xxx-xxx -n open-cluster-management
+----
+
+After the status is `Running``, get the list of routes to find your ACM Console's route:
+
+[source,bash]
+----
+# oc get routes
+NAME                 HOST/PORT                                          PATH   SERVICES             PORT    TERMINATION          WILDCARD
+multicloud-console   multicloud-console.apps.jclaretm.nasatam.support          management-ingress   https   reencrypt/Redirect   None
+----
