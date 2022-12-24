@@ -146,6 +146,28 @@
   <div class="content">
 <article class="doc">
 <h1 class="page">Install Red Hat Cluster Advanced Management Operator</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Red Hat Advanced Cluster Management (RHACM) is installed through Operator Lifecycle Manager (OLM), which manages the installation, upgrade, and removal of the components.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+OpenShift Container Platform required access: Cluster administrator (cluster-admin) permissions.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The OpenShift Container Platform provided in this lab meet the minimal <a href="https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#requirements-and-recommendations">requirements</a> from the official documentation. The cluster hub components will be installed on worker nodes, no <a href="https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#installing-on-infra-node">infrastructure</a> nodes will be provided.</p>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="_installing_from_the_operatorhub_web_console_interface"><a class="anchor" href="#_installing_from_the_operatorhub_web_console_interface"></a>Installing from the OperatorHub web console interface</h2>
 <div class="sectionbody">
@@ -156,12 +178,25 @@
 <h2 id="install"><a class="anchor" href="#install"></a>Installing from the OpenShift Container Platform CLI</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In order to create a Red Hat Advanced Cluster Management hub cluster, run the following commands</p>
+<p>You can proceed to install Red Hat Advanced Cluster Management from the CLI, run the following commands</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Review the <code>01_acm-operator.yaml</code> YAML file which defines the <code>open-cluster-management</code> namespace, <code>open-cluster-management-rhte2023</code> OperatorGroup, and the <code>advanced-cluster-management</code> subscription resources.</p>
+<p>Before install run the installation, take a few seconds to review this YAML file <code>01_acm-operator.yaml</code> which defines the following resources:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>open-cluster-management</code> namespace</p>
+</li>
+<li>
+<p><code>open-cluster-management-rhte2023</code> OperatorGroup</p>
+</li>
+<li>
+<p><code>advanced-cluster-management</code> subscription</p>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
@@ -199,7 +234,7 @@ spec:
 <div class="ulist">
 <ul>
 <li>
-<p>Install Red Hat Advanced Cluster Management Operator and check if the installation is completed:</p>
+<p>Install Red Hat Advanced Cluster Management Operator and verify that the installation is completed successfully as follows:</p>
 </li>
 </ul>
 </div>
@@ -216,7 +251,7 @@ advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes 
 </div>
 <h1 id="setup" class="sect0"><a class="anchor" href="#setup"></a>Setup a MulticlusterHub</h1>
 <div class="paragraph">
-<p>Create Red Hat Advanced Cluster Management cluster hub, wait until the hub cluster status is in <code>Running</code> and all pods in <code>` namespace are in `Running</code> as well:</p>
+<p>Once the RHACM Operator is already completed, proceed with the next step to create RHACM cluster hub, and verify the installation checking that the hub cluster status is in <code>Running</code> and all pods in namespace <code>open-cluster-management</code> are also in <code>Running</code> status:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -228,7 +263,7 @@ $ oc get pod -n open-cluster-management</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If the cluster hub is in <code>installing</code> status indefitively, check the operator logs as follows:</p>
+<p>If the cluster hub is in <code>installing</code> status indefinitely, check the operator logs as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -237,7 +272,7 @@ $ oc get pod -n open-cluster-management</code></pre>
 </div>
 <h1 id="console" class="sect0"><a class="anchor" href="#console"></a>Access to the MultiCluster WebConsole</h1>
 <div class="paragraph">
-<p>After the status is <code>Running`</code>, get the list of routes to find your ACM Console&#8217;s route:</p>
+<p>Once the RHACM cluster hub installation is completed, proceed getting the route where you will find your ACM Console&#8217;s:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -248,7 +283,7 @@ multicloud-console   multicloud-console.apps.jclaretm.nasatam.support          m
 </div>
 <h1 id="gitops" class="sect0"><a class="anchor" href="#gitops"></a>Integrate GitOps Operator</h1>
 <div class="paragraph">
-<p>Advanced Cluster Management introduces a new <code>gitopscluster<code> resource kind, which connects to a `placement</code> resource to determine which clusters to import into Argo CD. This integration allows you to expand your fleet, while having Argo CD automatically engage in working with your new clusters. This means if you leverage Argo CD `ApplicationSets`</code>, your application payloads are automatically applied to your new clusters as they are registered by Advanced Cluster Management in your Argo CD instances.</p>
+<p>RHACM introduces a new <code>gitopscluster<code> resource kind, which connects to a `placement</code> resource to determine which clusters to import into Argo CD. This integration allows you to expand your fleet, while having Argo CD automatically engage in working with your new clusters. This means if you leverage Argo CD `ApplicationSets`</code>, your application payloads are automatically applied to your new clusters as they are registered by RHACM in your Argo CD instances.</p>
 </div>
 <div class="paragraph">
 <p>In order to integrate the Red Hat GitOps operator and the Advance Cluster Management cluster hub already deployed, run the following commands:</p>
@@ -256,7 +291,7 @@ multicloud-console   multicloud-console.apps.jclaretm.nasatam.support          m
 <div class="ulist">
 <ul>
 <li>
-<p>Review the <code>03_acm-gitops.yaml</code> YAML file which defines the following resources:</p>
+<p>Before proceed with the steps to integrate the GitOps Operator with RHACM, take a few seconds to review this YAML file <code>03_acm-gitops.yaml</code> which defines the following resources:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -359,7 +394,7 @@ spec: {}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>In order to integrate the GitOps operator with Advanced Cluster Management, run the following commands:</p>
+<p>Run the following commands to perform the GitOps Operator integration with RHACM</p>
 </div>
 <div class="listingblock">
 <div class="content">
