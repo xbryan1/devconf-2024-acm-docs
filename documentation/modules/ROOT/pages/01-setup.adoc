@@ -1,29 +1,25 @@
-= Setup
+= Environment Setup
 include::_attributes.adoc[]
 
+[NOTE]
+====
+This tutorial was developed and tested with:
+
+- Red Hat OpenShift 4.10
+- Red Hat Advanced Cluster Management 2.6
+====
+
 [#prerequisite]
-== Prerequisite CLI tools
+== Workshop Tools CLI tools
 
-include::https://raw.githubusercontent.com/redhat-developer-demos/rhd-tutorial-common/master/prerequisites-kubernetes.adoc[]
-|===
+include::../partials/tools.adoc[]
 
-include::https://raw.githubusercontent.com/redhat-developer-demos/rhd-tutorial-common/master/optional-requisites.adoc[]
-|===
-
-[#minikube]
-== Setup Kubernetes
-
-:profile: my_profile
-
-include::https://raw.githubusercontent.com/redhat-developer-demos/rhd-tutorial-common/master/kubernetes-setup.adoc[]
-
-And then you are ready for start using Kubernetes:
-
-image::kubelogo.png[]
-
-[#downloadtutorial]
+[#sources]
 == Get tutorial sources
 
-:tutorial-url: https://github.com/redhat-developer-demos/rhd-tutorial-common.git
-:folder: my_folder
-include::https://raw.githubusercontent.com/redhat-developer-demos/rhd-tutorial-common/master/download-sources.adoc[]
+Before we start setting up the environment, let’s clone the tutorial sources and set the TUTORIAL_HOME environment variable to point to the root directory of the tutorial:
+
+[source,bash]
+----
+git clone https://github.com/xbryan1/rhte-2023-acm-apps
+----
