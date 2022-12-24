@@ -3,11 +3,17 @@ include::_attributes.adoc[]
 
 [NOTE]
 ====
-This tutorial was developed and tested with:
+This Workshop has been tested with:
 
 - Red Hat OpenShift 4.10
 - Red Hat Advanced Cluster Management 2.6
 ====
+
+[#rhpds]
+== RHPDS Environment
+
+[#architecture]
+== LAB Architecture
 
 [#prerequisite]
 == Workshop Tools CLI tools

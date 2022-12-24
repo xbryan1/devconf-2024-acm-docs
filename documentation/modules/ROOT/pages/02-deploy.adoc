@@ -98,7 +98,7 @@ multicloud-console   multicloud-console.apps.jclaretm.nasatam.support          m
 [#gitops]
 = Integrate GitOps Operator
 
-RHACM introduces a new `gitopscluster`` resource kind, which connects to a `placement`` resource to determine which clusters to import into Argo CD. This integration allows you to expand your fleet, while having Argo CD automatically engage in working with your new clusters. This means if you leverage Argo CD `ApplicationSets``, your application payloads are automatically applied to your new clusters as they are registered by RHACM in your Argo CD instances.
+RHACM introduces a new `gitopscluster` resource kind, which connects to a `placement` resource to determine which clusters to import into Argo CD. This integration allows you to expand your fleet, while having Argo CD automatically engage in working with your new clusters. This means if you leverage Argo CD `ApplicationSets``, your application payloads are automatically applied to your new clusters as they are registered by RHACM in your Argo CD instances.
 
 In order to integrate the Red Hat GitOps operator and the Advance Cluster Management cluster hub already deployed, run the following commands:
 
