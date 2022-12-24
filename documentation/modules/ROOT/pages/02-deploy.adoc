@@ -1,13 +1,22 @@
 = Install Red Hat Cluster Advanced Management Operator
 
+Red Hat Advanced Cluster Management (RHACM) is installed through Operator Lifecycle Manager (OLM), which manages the installation, upgrade, and removal of the components.
+
+NOTE: OpenShift Container Platform required access: Cluster administrator (cluster-admin) permissions.
+
+The OpenShift Container Platform provided in this lab meet the minimal https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#requirements-and-recommendations[requirements] from the official documentation. The cluster hub components will be installed on worker nodes, no https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#installing-on-infra-node[infrastructure] nodes will be provided.
+
 == Installing from the OperatorHub web console interface
 
 [#install]
 == Installing from the OpenShift Container Platform CLI
 
-In order to create a Red Hat Advanced Cluster Management hub cluster, run the following commands
+You can proceed to install Red Hat Advanced Cluster Management from the CLI, run the following commands
 
-* Review the `01_acm-operator.yaml` YAML file which defines the `open-cluster-management` namespace, `open-cluster-management-rhte2023` OperatorGroup, and the `advanced-cluster-management` subscription resources.
+* Before install run the installation, take a few seconds to review this YAML file `01_acm-operator.yaml` which defines the following resources:
+** `open-cluster-management` namespace
+** `open-cluster-management-rhte2023` OperatorGroup
+** `advanced-cluster-management` subscription
 
 [source,yaml]
 ----
@@ -42,7 +51,7 @@ spec:
 ----
 
 
-* Install Red Hat Advanced Cluster Management Operator and check if the installation is completed:
+* Install Red Hat Advanced Cluster Management Operator and verify that the installation is completed successfully as follows:
 
 [source, bash]
 ----
@@ -52,10 +61,11 @@ $ oc get csv advanced-cluster-management.v2.6.3
 NAME                                 DISPLAY                                      VERSION   REPLACES                             PHASE
 advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes   2.6.3     advanced-cluster-management.v2.6.2   Succeeded
 ----
+
 [#setup]
 = Setup a MulticlusterHub
 
-Create Red Hat Advanced Cluster Management cluster hub, wait until the hub cluster status is in `Running` and all pods in `` namespace are in `Running` as well:
+Once the RHACM Operator is already completed, proceed with the next step to create RHACM cluster hub, and verify the installation checking that the hub cluster status is in `Running` and all pods in namespace `open-cluster-management` are also in `Running` status:
 
 [source, bash]
 ----
@@ -66,7 +76,7 @@ $ oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
 $ oc get pod -n open-cluster-management
 ----
 
-If the cluster hub is in `installing` status indefitively, check the operator logs as follows:
+If the cluster hub is in `installing` status indefinitely, check the operator logs as follows:
 
 [source, bash]
 ----
@@ -76,7 +86,7 @@ $ oc logs multiclusterhub-operator-xxx-xxx -n open-cluster-management
 [#console]
 = Access to the MultiCluster WebConsole
 
-After the status is `Running``, get the list of routes to find your ACM Console's route:
+Once the RHACM cluster hub installation is completed, proceed getting the route where you will find your ACM Console's:
 
 [source, bash]
 ----
@@ -88,11 +98,11 @@ multicloud-console   multicloud-console.apps.jclaretm.nasatam.support          m
 [#gitops]
 = Integrate GitOps Operator
 
-Advanced Cluster Management introduces a new `gitopscluster`` resource kind, which connects to a `placement`` resource to determine which clusters to import into Argo CD. This integration allows you to expand your fleet, while having Argo CD automatically engage in working with your new clusters. This means if you leverage Argo CD `ApplicationSets``, your application payloads are automatically applied to your new clusters as they are registered by Advanced Cluster Management in your Argo CD instances.
+RHACM introduces a new `gitopscluster`` resource kind, which connects to a `placement`` resource to determine which clusters to import into Argo CD. This integration allows you to expand your fleet, while having Argo CD automatically engage in working with your new clusters. This means if you leverage Argo CD `ApplicationSets``, your application payloads are automatically applied to your new clusters as they are registered by RHACM in your Argo CD instances.
 
 In order to integrate the Red Hat GitOps operator and the Advance Cluster Management cluster hub already deployed, run the following commands:
 
-* Review the `03_acm-gitops.yaml` YAML file which defines the following resources:
+* Before proceed with the steps to integrate the GitOps Operator with RHACM, take a few seconds to review this YAML file `03_acm-gitops.yaml` which defines the following resources:
 ** `openshift-gitops` namespace
 ** `openshift-gitops-opertator` subscription
 ** `gitops-clusters` ManagedClusterSet
@@ -174,7 +184,7 @@ metadata:
 spec: {}
 ----
 
-In order to integrate the GitOps operator with Advanced Cluster Management, run the following commands:
+Run the following commands to perform the GitOps Operator integration with RHACM
 
 [source, bash]
 ----
