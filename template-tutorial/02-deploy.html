@@ -62,7 +62,10 @@
     <a class="nav-link" href="01-setup.html#architecture">LAB Architecture</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="01-setup.html#tools">Tools</a>
+    <a class="nav-link" href="01-setup.html#tools">Workshop Tools CLI tools</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-setup.html#sources">Get tutorial sources</a>
   </li>
 </ul>
   </li>
@@ -200,7 +203,7 @@ OpenShift Container Platform required access: Cluster administrator (cluster-adm
 </li>
 </ul>
 </div>
-<div class="listingblock">
+<div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">---
 apiVersion: v1
@@ -238,11 +241,11 @@ spec:
 </li>
 </ul>
 </div>
-<div class="listingblock">
+<div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc apply -f 01_acm-operator.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f 01_acm-operator.yaml
 
-$ oc get csv advanced-cluster-management.v2.6.3
+oc get csv advanced-cluster-management.v2.6.3
 NAME                                 DISPLAY                                      VERSION   REPLACES                             PHASE
 advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes   2.6.3     advanced-cluster-management.v2.6.2   Succeeded</code></pre>
 </div>
@@ -253,30 +256,30 @@ advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes 
 <div class="paragraph">
 <p>Once the RHACM Operator is already completed, proceed with the next step to create RHACM cluster hub, and verify the installation checking that the hub cluster status is in <code>Running</code> and all pods in namespace <code>open-cluster-management</code> are also in <code>Running</code> status:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc apply -f 02_acm-multicluster.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f 02_acm-multicluster.yaml
 
-$ oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
+oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
 
-$ oc get pod -n open-cluster-management</code></pre>
+oc get pod -n open-cluster-management</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>If the cluster hub is in <code>installing</code> status indefinitely, check the operator logs as follows:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc logs multiclusterhub-operator-xxx-xxx -n open-cluster-management</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc logs multiclusterhub-operator-xxx-xxx -n open-cluster-management</code></pre>
 </div>
 </div>
 <h1 id="console" class="sect0"><a class="anchor" href="#console"></a>Access to the MultiCluster WebConsole</h1>
 <div class="paragraph">
 <p>Once the RHACM cluster hub installation is completed, proceed getting the route where you will find your ACM Console&#8217;s:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc get routes
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get routes
 NAME                 HOST/PORT                                          PATH   SERVICES             PORT    TERMINATION          WILDCARD
 multicloud-console   multicloud-console.apps.jclaretm.nasatam.support          management-ingress   https   reencrypt/Redirect   None</code></pre>
 </div>
@@ -320,9 +323,9 @@ multicloud-console   multicloud-console.apps.jclaretm.nasatam.support          m
 </li>
 </ul>
 </div>
-<div class="listingblock">
+<div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># oc apply -f 03_acm-gitops.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f 03_acm-gitops.yaml
 ---
 apiVersion: v1
 kind: Namespace
@@ -396,11 +399,11 @@ spec: {}</code></pre>
 <div class="paragraph">
 <p>Run the following commands to perform the GitOps Operator integration with RHACM</p>
 </div>
-<div class="listingblock">
+<div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc apply -f 03_acm-gitops.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f 03_acm-gitops.yaml
 
-$ oc apply -f 04_acm-gitopservice.yaml</code></pre>
+oc apply -f 04_acm-gitopservice.yaml</code></pre>
 </div>
 </div>
 <nav class="pagination">
