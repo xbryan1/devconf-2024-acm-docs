@@ -15,5 +15,4 @@ Please have them installed and configured before you get started with any of the
 
 |===
 
-Note: some of these tools are available through the Web Terminal provided by the Web Terminal Operator.
-
+NOTE: some of these tools are available through the Web Terminal provided by the https://docs.openshift.com/container-platform/4.10/web_console/odc-about-web-terminal.html[Web Terminal Operator].

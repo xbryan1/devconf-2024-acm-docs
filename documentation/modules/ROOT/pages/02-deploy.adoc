@@ -18,7 +18,9 @@ You can proceed to install Red Hat Advanced Cluster Management from the CLI, run
 ** `open-cluster-management-rhte2023` OperatorGroup
 ** `advanced-cluster-management` subscription
 
-[source,yaml]
+[.lines_space]
+[.console-input]
+[source,yaml, subs="+macros,+attributes"]
 ----
 ---
 apiVersion: v1
@@ -53,11 +55,13 @@ spec:
 
 * Install Red Hat Advanced Cluster Management Operator and verify that the installation is completed successfully as follows:
 
-[source, bash]
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
 ----
-$ oc apply -f 01_acm-operator.yaml
+oc apply -f 01_acm-operator.yaml
 
-$ oc get csv advanced-cluster-management.v2.6.3
+oc get csv advanced-cluster-management.v2.6.3
 NAME                                 DISPLAY                                      VERSION   REPLACES                             PHASE
 advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes   2.6.3     advanced-cluster-management.v2.6.2   Succeeded
 ----
@@ -67,20 +71,24 @@ advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes 
 
 Once the RHACM Operator is already completed, proceed with the next step to create RHACM cluster hub, and verify the installation checking that the hub cluster status is in `Running` and all pods in namespace `open-cluster-management` are also in `Running` status:
 
-[source, bash]
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
 ----
-$ oc apply -f 02_acm-multicluster.yaml
+oc apply -f 02_acm-multicluster.yaml
 
-$ oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
+oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
 
-$ oc get pod -n open-cluster-management
+oc get pod -n open-cluster-management
 ----
 
 If the cluster hub is in `installing` status indefinitely, check the operator logs as follows:
 
-[source, bash]
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
 ----
-$ oc logs multiclusterhub-operator-xxx-xxx -n open-cluster-management
+oc logs multiclusterhub-operator-xxx-xxx -n open-cluster-management
 ----
 
 [#console]
@@ -88,9 +96,11 @@ $ oc logs multiclusterhub-operator-xxx-xxx -n open-cluster-management
 
 Once the RHACM cluster hub installation is completed, proceed getting the route where you will find your ACM Console's:
 
-[source, bash]
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
 ----
-$ oc get routes
+oc get routes
 NAME                 HOST/PORT                                          PATH   SERVICES             PORT    TERMINATION          WILDCARD
 multicloud-console   multicloud-console.apps.jclaretm.nasatam.support          management-ingress   https   reencrypt/Redirect   None
 ----
@@ -111,9 +121,11 @@ In order to integrate the Red Hat GitOps operator and the Advance Cluster Manage
 ** `argo-acm-importer` GitOpsCluster and
 ** `cluster` GitopsService
 
-[source, yaml]
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
 ----
-# oc apply -f 03_acm-gitops.yaml
+oc apply -f 03_acm-gitops.yaml
 ---
 apiVersion: v1
 kind: Namespace
@@ -186,9 +198,11 @@ spec: {}
 
 Run the following commands to perform the GitOps Operator integration with RHACM
 
-[source, bash]
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
 ----
-$ oc apply -f 03_acm-gitops.yaml
+oc apply -f 03_acm-gitops.yaml
 
-$ oc apply -f 04_acm-gitopservice.yaml
+oc apply -f 04_acm-gitopservice.yaml
 ----
