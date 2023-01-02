@@ -15,17 +15,19 @@ This Workshop has been tested with:
 [#architecture]
 == LAB Architecture
 
-[#prerequisite]
+[#tools]
 == Workshop Tools CLI tools
 
 include::../partials/tools.adoc[]
 
 [#sources]
-== Get tutorial sources
+== Get workshop sources
 
-Before we start setting up the environment, let’s clone the tutorial sources and set the TUTORIAL_HOME environment variable to point to the root directory of the tutorial:
+Before we start setting up the environment, let’s clone the workshop sources:
 
-[source,bash]
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
 ----
 git clone https://github.com/xbryan1/rhte-2023-acm-apps
 ----
