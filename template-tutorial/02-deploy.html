@@ -62,7 +62,7 @@
     <a class="nav-link" href="01-setup.html#architecture">LAB Architecture</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="01-setup.html#tools">Workshop Tools CLI tools</a>
+    <a class="nav-link" href="01-setup.html#tools">Workshop CLI Tools</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="01-setup.html#sources">Get tutorial sources</a>
@@ -186,7 +186,7 @@ OpenShift Container Platform required access: Cluster administrator (cluster-adm
 <div class="ulist">
 <ul>
 <li>
-<p>Before install run the installation, take a few seconds to review this YAML file <code>01_acm-operator.yaml</code> which defines the following resources:</p>
+<p>Before install run the installation, take a few seconds to review this YAML file <code>install/01_acm-operator.yaml</code> which defines the following resources:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -205,12 +205,13 @@ OpenShift Container Platform required access: Cluster administrator (cluster-adm
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">---
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">--- file install/01_acm-operator.yaml
+--- Create Namespace
 apiVersion: v1
 kind: Namespace
 metadata:
   name: open-cluster-management
----
+--- Create Operator Group
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
@@ -219,7 +220,7 @@ metadata:
 spec:
   targetNamespaces:
   - open-cluster-management
----
+--- Create Subscription / Install Operator
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
@@ -243,9 +244,13 @@ spec:
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f 01_acm-operator.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f install/01_acm-operator.yaml</code></pre>
+</div>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get csv advanced-cluster-management.v2.6.3
 
-oc get csv advanced-cluster-management.v2.6.3
 NAME                                 DISPLAY                                      VERSION   REPLACES                             PHASE
 advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes   2.6.3     advanced-cluster-management.v2.6.2   Succeeded</code></pre>
 </div>
@@ -256,9 +261,37 @@ advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes 
 <div class="paragraph">
 <p>Once the RHACM Operator is already completed, proceed with the next step to create RHACM cluster hub, and verify the installation checking that the hub cluster status is in <code>Running</code> and all pods in namespace <code>open-cluster-management</code> are also in <code>Running</code> status:</p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p>Before create RHACM cluster, take a few seconds to review this YAML file <code>install/02_acm-multicluster.yaml</code> which defines the following resources:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>MultiClusterHub</code> object</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f 02_acm-multicluster.yaml
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">--- Create MultiClusterHub Custom Resource
+apiVersion: operator.open-cluster-management.io/v1
+kind: MultiClusterHub
+metadata:
+  name: multiclusterhub
+  namespace: open-cluster-management
+spec: {}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and run the following commands to create MultiClusterHub as follows:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f install/02_acm-multicluster.yaml
 
 oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
 
@@ -279,7 +312,8 @@ oc get pod -n open-cluster-management</code></pre>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get routes
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get routes
+
 NAME                 HOST/PORT                                          PATH   SERVICES             PORT    TERMINATION          WILDCARD
 multicloud-console   multicloud-console.apps.jclaretm.nasatam.support          management-ingress   https   reencrypt/Redirect   None</code></pre>
 </div>
@@ -325,13 +359,14 @@ multicloud-console   multicloud-console.apps.jclaretm.nasatam.support          m
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f 03_acm-gitops.yaml
----
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">--- file install/03_acm-gitops.yaml
+--- Create Namespace for GitOps operator
 apiVersion: v1
 kind: Namespace
 metadata:
   name: openshift-gitops
 ---
+--- Create Subscription / Install Operator
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
@@ -345,12 +380,14 @@ spec:
   sourceNamespace: openshift-marketplace
   startingCSV: openshift-gitops-operator.v1.6.1
 ---
+--- Create Managed cluster set for Gitops Cluster
 apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: ManagedClusterSet
 metadata:
   name: gitops-clusters
 spec: {}
 ---
+--- Create ManagedClusterSet Binding
 apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: ManagedClusterSetBinding
 metadata:
@@ -359,6 +396,7 @@ metadata:
 spec:
   clusterSet: gitops-clusters
 ---
+--- Create Placement for clusters with key vendor in Openshift
 apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: Placement
 metadata:
@@ -374,6 +412,7 @@ spec:
           values:
           - OpenShift
 ---
+--- Create Gitops instance cluster
 apiVersion: apps.open-cluster-management.io/v1beta1
 kind: GitOpsCluster
 metadata:
@@ -389,6 +428,7 @@ spec:
     name: gitops-clusters
     namespace: openshift-gitops
 ---
+--- Create Gitops service
 apiVersion: pipelines.openshift.io/v1alpha1
 kind: GitopsService
 metadata:
@@ -401,9 +441,9 @@ spec: {}</code></pre>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f 03_acm-gitops.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f install/03_acm-gitops.yaml
 
-oc apply -f 04_acm-gitopservice.yaml</code></pre>
+oc apply -f install/04_acm-gitopservice.yaml</code></pre>
 </div>
 </div>
 <nav class="pagination">
