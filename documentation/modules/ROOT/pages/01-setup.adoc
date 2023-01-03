@@ -16,7 +16,7 @@ This Workshop has been tested with:
 == LAB Architecture
 
 [#tools]
-== Workshop Tools CLI tools
+== Workshop CLI tools
 
 include::../partials/tools.adoc[]
 
