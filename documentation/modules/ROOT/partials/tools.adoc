@@ -2,7 +2,7 @@ The following CLI tools are required for running the exercises in this tutorial.
 Please have them installed and configured before you get started with any of the tutorial chapters.
 
 |===
-|**Tool**|**macOS**|**Fedora**
+|**Tool**|**macOS**|**Linux/Fedora**
 
 | `Git`
 | https://git-scm.com/download/mac[Download]
@@ -15,4 +15,4 @@ Please have them installed and configured before you get started with any of the
 
 |===
 
-NOTE: some of these tools are available through the Web Terminal provided by the https://docs.openshift.com/container-platform/4.10/web_console/odc-about-web-terminal.html[Web Terminal Operator].
+NOTE: Some of these tools are available through the Web Terminal provided by the https://docs.openshift.com/container-platform/4.10/web_console/odc-about-web-terminal.html[Web Terminal Operator].

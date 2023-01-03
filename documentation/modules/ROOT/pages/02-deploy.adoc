@@ -13,7 +13,7 @@ The OpenShift Container Platform provided in this lab meet the minimal https://a
 
 You can proceed to install Red Hat Advanced Cluster Management from the CLI, run the following commands
 
-* Before install run the installation, take a few seconds to review this YAML file `01_acm-operator.yaml` which defines the following resources:
+* Before install run the installation, take a few seconds to review this YAML file `install/01_acm-operator.yaml` which defines the following resources:
 ** `open-cluster-management` namespace
 ** `open-cluster-management-rhte2023` OperatorGroup
 ** `advanced-cluster-management` subscription
@@ -22,12 +22,13 @@ You can proceed to install Red Hat Advanced Cluster Management from the CLI, run
 [.console-input]
 [source,yaml, subs="+macros,+attributes"]
 ----
----
+--- file install/01_acm-operator.yaml
+--- Create Namespace 
 apiVersion: v1
 kind: Namespace
 metadata:
   name: open-cluster-management
----
+--- Create Operator Group
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
@@ -36,7 +37,7 @@ metadata:
 spec:
   targetNamespaces:
   - open-cluster-management
----
+--- Create Subscription / Install Operator
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
@@ -49,7 +50,6 @@ spec:
   source: redhat-operators
   sourceNamespace: openshift-marketplace
   startingCSV: advanced-cluster-management.v2.6.3
-
 ----
 
 
@@ -59,9 +59,15 @@ spec:
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc apply -f 01_acm-operator.yaml
+oc apply -f install/01_acm-operator.yaml
+----
 
+[.lines_space]
+[.console-input]
+[source,shell, subs="+macros,+attributes"]
+----
 oc get csv advanced-cluster-management.v2.6.3
+
 NAME                                 DISPLAY                                      VERSION   REPLACES                             PHASE
 advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes   2.6.3     advanced-cluster-management.v2.6.2   Succeeded
 ----
@@ -71,11 +77,29 @@ advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes 
 
 Once the RHACM Operator is already completed, proceed with the next step to create RHACM cluster hub, and verify the installation checking that the hub cluster status is in `Running` and all pods in namespace `open-cluster-management` are also in `Running` status:
 
+* Before create RHACM cluster, take a few seconds to review this YAML file `install/02_acm-multicluster.yaml` which defines the following resources:
+** `MultiClusterHub` object
+
+[.lines_space]
+[.console-input]
+[source,yaml, subs="+macros,+attributes"]
+----
+--- Create MultiClusterHub Custom Resource
+apiVersion: operator.open-cluster-management.io/v1
+kind: MultiClusterHub
+metadata:
+  name: multiclusterhub
+  namespace: open-cluster-management
+spec: {}
+----
+
+and run the following commands to create MultiClusterHub as follows:
+
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc apply -f 02_acm-multicluster.yaml
+oc apply -f install/02_acm-multicluster.yaml
 
 oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
 
@@ -98,9 +122,10 @@ Once the RHACM cluster hub installation is completed, proceed getting the route 
 
 [.lines_space]
 [.console-input]
-[source,bash, subs="+macros,+attributes"]
+[source,shell, subs="+macros,+attributes"]
 ----
 oc get routes
+
 NAME                 HOST/PORT                                          PATH   SERVICES             PORT    TERMINATION          WILDCARD
 multicloud-console   multicloud-console.apps.jclaretm.nasatam.support          management-ingress   https   reencrypt/Redirect   None
 ----
@@ -125,13 +150,14 @@ In order to integrate the Red Hat GitOps operator and the Advance Cluster Manage
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc apply -f 03_acm-gitops.yaml
----
+--- file install/03_acm-gitops.yaml
+--- Create Namespace for GitOps operator
 apiVersion: v1
 kind: Namespace
 metadata:
   name: openshift-gitops
 ---
+--- Create Subscription / Install Operator
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
@@ -145,12 +171,14 @@ spec:
   sourceNamespace: openshift-marketplace
   startingCSV: openshift-gitops-operator.v1.6.1
 ---
+--- Create Managed cluster set for Gitops Cluster
 apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: ManagedClusterSet
 metadata:
   name: gitops-clusters
 spec: {}
 ---
+--- Create ManagedClusterSet Binding
 apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: ManagedClusterSetBinding
 metadata:
@@ -159,6 +187,7 @@ metadata:
 spec:
   clusterSet: gitops-clusters
 ---
+--- Create Placement for clusters with key vendor in Openshift
 apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: Placement
 metadata:
@@ -174,6 +203,7 @@ spec:
           values:
           - OpenShift
 ---
+--- Create Gitops instance cluster
 apiVersion: apps.open-cluster-management.io/v1beta1
 kind: GitOpsCluster
 metadata:
@@ -189,6 +219,7 @@ spec:
     name: gitops-clusters
     namespace: openshift-gitops
 ---
+--- Create Gitops service
 apiVersion: pipelines.openshift.io/v1alpha1
 kind: GitopsService
 metadata:
@@ -202,7 +233,7 @@ Run the following commands to perform the GitOps Operator integration with RHACM
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc apply -f 03_acm-gitops.yaml
+oc apply -f install/03_acm-gitops.yaml
 
-oc apply -f 04_acm-gitopservice.yaml
+oc apply -f install/04_acm-gitopservice.yaml
 ----
