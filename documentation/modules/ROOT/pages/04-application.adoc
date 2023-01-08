@@ -1,3 +1,4 @@
+[#application]
 = Deploy a GitOps application
 
 Once the GitOps operator has been integrated into RHACM, we can create GitOps applications based on Argo CD.
