@@ -2,18 +2,27 @@
 
 Red Hat Advanced Cluster Management (RHACM) is installed through Operator Lifecycle Manager (OLM), which manages the installation, upgrade, and removal of the components.
 
-NOTE: OpenShift Container Platform required access: Cluster administrator (cluster-admin) permissions.
+The OpenShift Container Platform provided in this lab meets the minimal https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#requirements-and-recommendations[requirements] from the official documentation. The cluster hub components will be installed on worker nodes, no https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#installing-on-infra-node[infrastructure] nodes will be provided.
 
-The OpenShift Container Platform provided in this lab meet the minimal https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#requirements-and-recommendations[requirements] from the official documentation. The cluster hub components will be installed on worker nodes, no https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#installing-on-infra-node[infrastructure] nodes will be provided.
+NOTE: OpenShift Container Platform required access: Cluster administrator (cluster-admin) permissions.
 
 == Installing from the OperatorHub web console interface
 
 [#install]
 == Installing from the OpenShift Container Platform CLI
 
-You can proceed to install Red Hat Advanced Cluster Management from the CLI, run the following commands
+The Openshift cluster provided in this lab has not RHACM operator installed, so the first step is proceed with the Red Hat Advanced Cluster Management installation from the CLI.
 
-* Before install run the installation, take a few seconds to review this YAML file `install/01_acm-operator.yaml` which defines the following resources:
+If you do not have the repository already cloned, run the following commands
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+git clone https://github.com/xbryan1/rhte-2023-acm-apps
+----
+
+* Before install run the installation, take a few seconds to review `install/01_acm-operator.yaml` YAML file which defines the following resources that will install the RHACM Operator:
 ** `open-cluster-management` namespace
 ** `open-cluster-management-rhte2023` OperatorGroup
 ** `advanced-cluster-management` subscription
@@ -23,11 +32,13 @@ You can proceed to install Red Hat Advanced Cluster Management from the CLI, run
 [source,yaml, subs="+macros,+attributes"]
 ----
 --- file install/01_acm-operator.yaml
+
 --- Create Namespace 
 apiVersion: v1
 kind: Namespace
 metadata:
   name: open-cluster-management
+
 --- Create Operator Group
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
@@ -37,6 +48,7 @@ metadata:
 spec:
   targetNamespaces:
   - open-cluster-management
+
 --- Create Subscription / Install Operator
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
@@ -62,11 +74,13 @@ spec:
 oc apply -f install/01_acm-operator.yaml
 ----
 
+Wait until the RHACM Operatator is installed.
+
 [.lines_space]
 [.console-input]
 [source,shell, subs="+macros,+attributes"]
 ----
-oc get csv advanced-cluster-management.v2.6.3
+oc get csv -n open-cluster-management
 
 NAME                                 DISPLAY                                      VERSION   REPLACES                             PHASE
 advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes   2.6.3     advanced-cluster-management.v2.6.2   Succeeded
@@ -75,10 +89,10 @@ advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes 
 [#setup]
 = Setup a MulticlusterHub
 
-Once the RHACM Operator is already completed, proceed with the next step to create RHACM cluster hub, and verify the installation checking that the hub cluster status is in `Running` and all pods in namespace `open-cluster-management` are also in `Running` status:
+Once the RHACM Operator is completed, proceed with the next step to create RHACM cluster hub, and verify the installation is succesfully, checking the hub cluster and all pods in namespace `open-cluster-management` are both in `Running` status:
 
 * Before create RHACM cluster, take a few seconds to review this YAML file `install/02_acm-multicluster.yaml` which defines the following resources:
-** `MultiClusterHub` object
+** `MultiClusterHub` RHACM Custom Resource
 
 [.lines_space]
 [.console-input]
@@ -101,18 +115,24 @@ and run the following commands to create MultiClusterHub as follows:
 ----
 oc apply -f install/02_acm-multicluster.yaml
 
-oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
+oc patch Scheduler/cluster --type=json -p '[{"op": "replace", "path": "/spec/mastersSchedulable", "value": true }]'
 
-oc get pod -n open-cluster-management
+watch oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
+
+watch oc get pod -n open-cluster-management
 ----
 
-If the cluster hub is in `installing` status indefinitely, check the operator logs as follows:
+NOTE: schedule pods on the master node is not recommended for Production.
+
+If the cluster hub is in `installing` status indefinitely, check the operator logs or pods status as follows:
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
 oc logs multiclusterhub-operator-xxx-xxx -n open-cluster-management
+
+oc get pod -n open-cluster-management
 ----
 
 [#console]
@@ -124,11 +144,13 @@ Once the RHACM cluster hub installation is completed, proceed getting the route 
 [.console-input]
 [source,shell, subs="+macros,+attributes"]
 ----
-oc get routes
+oc get routes -n open-cluster-management
 
 NAME                 HOST/PORT                                          PATH   SERVICES             PORT    TERMINATION          WILDCARD
 multicloud-console   multicloud-console.apps.jclaretm.nasatam.support          management-ingress   https   reencrypt/Redirect   None
 ----
+
+Multicluster Hub has to be installed and the RHACM Console accesible to proceed with the next steps.
 
 [#gitops]
 = Integrate GitOps Operator
@@ -151,12 +173,14 @@ In order to integrate the Red Hat GitOps operator and the Advance Cluster Manage
 [source,bash, subs="+macros,+attributes"]
 ----
 --- file install/03_acm-gitops.yaml
+
 --- Create Namespace for GitOps operator
 apiVersion: v1
 kind: Namespace
 metadata:
   name: openshift-gitops
 ---
+
 --- Create Subscription / Install Operator
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
@@ -171,6 +195,7 @@ spec:
   sourceNamespace: openshift-marketplace
   startingCSV: openshift-gitops-operator.v1.6.1
 ---
+
 --- Create Managed cluster set for Gitops Cluster
 apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: ManagedClusterSet
@@ -178,6 +203,7 @@ metadata:
   name: gitops-clusters
 spec: {}
 ---
+
 --- Create ManagedClusterSet Binding
 apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: ManagedClusterSetBinding
@@ -187,6 +213,7 @@ metadata:
 spec:
   clusterSet: gitops-clusters
 ---
+
 --- Create Placement for clusters with key vendor in Openshift
 apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: Placement
@@ -203,6 +230,7 @@ spec:
           values:
           - OpenShift
 ---
+
 --- Create Gitops instance cluster
 apiVersion: apps.open-cluster-management.io/v1beta1
 kind: GitOpsCluster
@@ -219,6 +247,7 @@ spec:
     name: gitops-clusters
     namespace: openshift-gitops
 ---
+
 --- Create Gitops service
 apiVersion: pipelines.openshift.io/v1alpha1
 kind: GitopsService
@@ -237,3 +266,24 @@ oc apply -f install/03_acm-gitops.yaml
 
 oc apply -f install/04_acm-gitopservice.yaml
 ----
+
+As we did before, check that the GitOps Operator has been installed successfully and RHACM integration is completed.
+
+- Check that ArgoCD console is accessible and pods are in `Running` status
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc get route -n openshift-gitops
+
+oc get pod -n openshift-gitops
+----
+
+image::argocd/argocd_login.png[]
+
+- Login into the ArgoCD Console with the Openshift credentials. 
+
+image::argocd/argocd_noapps.png[]
+
+NOTE: No applications has still not been deployed.
