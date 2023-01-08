@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Environment Setup :: Multicluster Application Deployment with Advanced Cluster Management and GitOps</title>
-    <link rel="canonical" href="https://xbryan1.github.io/rhte-2023-acm-docs/template-tutorial/01-setup.html">
-    <link rel="prev" href="index.html">
-    <link rel="next" href="02-deploy.html">
+    <title>Deploy a Openshift cluster :: Multicluster Application Deployment with Advanced Cluster Management and GitOps</title>
+    <link rel="canonical" href="https://xbryan1.github.io/rhte-2023-acm-docs/template-tutorial/03-installcluster.html">
+    <link rel="prev" href="02-deploy.html">
+    <link rel="next" href="#04-deployapplication.adoc">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../_/css/site.css">
   </head>
@@ -51,21 +51,21 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
-  <li class="nav-item is-current-page" data-depth="1">
+  <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="01-setup.html">1. Environment Setup</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#rhpds">RHPDS Environment</a>
+    <a class="nav-link" href="01-setup.html#rhpds">RHPDS Environment</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#architecture">LAB Architecture</a>
+    <a class="nav-link" href="01-setup.html#architecture">LAB Architecture</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#tools">Workshop CLI Tools</a>
+    <a class="nav-link" href="01-setup.html#tools">Workshop CLI Tools</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#sources">Get tutorial sources</a>
+    <a class="nav-link" href="01-setup.html#sources">Get tutorial sources</a>
   </li>
 </ul>
   </li>
@@ -87,15 +87,15 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="03-installcluster.html">3. Install a new Openshift Cluster</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="03-installcluster.html#credentials">Setup credentials</a>
+    <a class="nav-link" href="#credentials">Setup credentials</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="03-installcluster.html#install">Deploy new Openshift Cluster</a>
+    <a class="nav-link" href="#install">Deploy new Openshift Cluster</a>
   </li>
 </ul>
   </li>
@@ -141,117 +141,18 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">Template Tutorial</a></li>
-    <li><a href="01-setup.html">1. Environment Setup</a></li>
+    <li><a href="03-installcluster.html">3. Install a new Openshift Cluster</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/xbryan1/rhte-2023-acm-docs/edit/master/documentation/modules/ROOT/pages/01-setup.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/xbryan1/rhte-2023-acm-docs/edit/master/documentation/modules/ROOT/pages/03-installcluster.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Environment Setup</h1>
-<div id="preamble">
-<div class="sectionbody">
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>This Workshop has been tested with:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Red Hat OpenShift 4.10</p>
-</li>
-<li>
-<p>Red Hat Advanced Cluster Management 2.6</p>
-</li>
-</ul>
-</div>
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="rhpds"><a class="anchor" href="#rhpds"></a>RHPDS Environment</h2>
-<div class="sectionbody">
+<h1 class="page">Deploy a Openshift cluster</h1>
 
-</div>
-</div>
-<div class="sect1">
-<h2 id="architecture"><a class="anchor" href="#architecture"></a>LAB Architecture</h2>
-<div class="sectionbody">
-
-</div>
-</div>
-<div class="sect1">
-<h2 id="tools"><a class="anchor" href="#tools"></a>Workshop CLI tools</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The following CLI tools are required for running the exercises in this tutorial.
-Please have them installed and configured before you get started with any of the tutorial chapters.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top"><strong>Tool</strong></th>
-<th class="tableblock halign-left valign-top"><strong>macOS</strong></th>
-<th class="tableblock halign-left valign-top"><strong>Linux/Fedora</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Git</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://git-scm.com/download/mac">Download</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://git-scm.com/download/linux">Download</a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Openshift client 4.10</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.10.10/openshift-client-linux-4.10.10.tar.gz">Download</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.10.10/openshift-client-mac-4.10.10.tar.gz">Download</a></p></td>
-</tr>
-</tbody>
-</table>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Some of these tools are available through the Web Terminal provided by the <a href="https://docs.openshift.com/container-platform/4.10/web_console/odc-about-web-terminal.html">Web Terminal Operator</a>.
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="sources"><a class="anchor" href="#sources"></a>Get workshop sources</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Before we start setting up the environment, let’s clone the workshop sources:</p>
-</div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone <a href="https://github.com/xbryan1/rhte-2023-acm-apps" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps</a></code></pre>
-</div>
-</div>
-</div>
-</div>
 <nav class="pagination">
-  <span class="prev"><a href="index.html">Template Tutorial</a></span>
-  <span class="next"><a href="02-deploy.html">2. Install Red Hat Cluster Advanced Management</a></span>
+  <span class="prev"><a href="02-deploy.html">2. Install Red Hat Cluster Advanced Management</a></span>
+  <span class="next"><a href="#04-deployapplication.adoc">4. Deploy a Multicluster Application with GitOps</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
