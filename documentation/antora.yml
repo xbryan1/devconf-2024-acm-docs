@@ -1,5 +1,5 @@
-name: template-tutorial
-title: Template Tutorial
+name: ROOT
+title: Multicluster Application Deployment with Advanced Cluster Management and GitOps
 version: master
 nav:
   - modules/ROOT/nav.adoc

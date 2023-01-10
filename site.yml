@@ -4,7 +4,7 @@ runtime:
 site:
   title: Multicluster Application Deployment with Advanced Cluster Management and GitOps
   url: https://xbryan1.github.io/rhte-2023-acm-docs
-  start_page: template-tutorial::index.adoc
+  start_page: rhte2023::index.adoc
 
 content:
   sources:
