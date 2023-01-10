@@ -23,7 +23,7 @@ include::../partials/tools.adoc[]
 [#sources]
 == Get workshop sources
 
-Before we start setting up the environment, let’s clone the workshop sources:
+Before we start setting up the environment, let’s clone the workshop materials:
 
 [.lines_space]
 [.console-input]
@@ -31,3 +31,5 @@ Before we start setting up the environment, let’s clone the workshop sources:
 ----
 git clone https://github.com/xbryan1/rhte-2023-acm-apps
 ----
+
+The workshop sources are available https://github.com/xbryan1/rhte-2023-acm-docs 
