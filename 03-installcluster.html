@@ -154,25 +154,89 @@
 <p>To deploy multicluster applications, you will need another OpenShift cluster deployed.</p>
 </div>
 <div class="paragraph">
-<p>In this LAB, Amazon Web Services (AWS) Public Cloud Provider is being used. You will need to add the AWS credentials into ACM, and deploy a second OpenShift cluster after adding the credentials.</p>
+<p>In this LAB, Amazon Web Services (AWS) Public Cloud Provider is being used. You will need to add the AWS credentials into Red Hat Advanced Cluster Management, and deploy a second OpenShift cluster after adding the credentials.</p>
 </div>
 <div class="paragraph">
-<p>With ACM and two OpenShift clusters, you will have all the necessary requirements to acomplish the tasks in this LAB.</p>
+<p>Using Red Hat Advanced Cluster Management and having two OpenShift clusters installed, you will have all the necessary requirements to acomplish the tasks in this LAB.</p>
 </div>
+</div>
+</div>
+<h1 id="credentials" class="sect0"><a class="anchor" href="#credentials"></a>Setup credentials</h1>
+<div class="paragraph">
+<p>In order to create a new OpenShift cluster on AWS, you will need to set-up the AWS credentials into Red Hat Advanced Cluster Management first. This credentials will allow Red Hat Advanced Cluster Management to install the OpenShift cluster on AWS.</p>
+</div>
+<div class="paragraph">
+<p>You can setup the AWS credentials using the Red Hat Advanced Cluster Management web interface, or using the command line interface (CLI).</p>
+</div>
+<div class="paragraph">
+<p>To setup the credentials, you will need the following information:
+. Name of AWS credentials
+. Namespace where the credentials will be saved
+. AWS Access Key ID
+. AWS Secret Key
+. Base domain
+. A Global Pull Secret. If you don&#8217;t have one, you can get it from <a href="https://console.redhat.com/openshift/install/pull-secret" class="bare">https://console.redhat.com/openshift/install/pull-secret</a>
+. A SSH private key. If you don&#8217;t have one, you can generate it with the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ssh-keygen</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>A SSH public key</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You can use the following YAML example file to create one:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: &lt;1 - Name of AWS credentials&gt;
+  namespace: &lt;# 2 - Namespace where the credentials will be saved&gt;
+  labels:
+    cluster.open-cluster-management.io/type: aws
+    cluster.open-cluster-management.io/credentials: ""
+stringData:
+  aws_access_key_id: &lt;3 - AWS Access Key ID&gt;
+  aws_secret_access_key: &lt;4 - AWS Secret Key&gt;
+  baseDomain: &lt;5 - Base domain&gt;
+  pullSecret: &gt;
+    &lt;6 Global pull secret&gt;
+  ssh-privatekey: |
+    &lt;7 - A SSH private key&gt;
+  ssh-publickey: &gt;
+    ssh-rsa
+    &lt;8 - A SSH public key&gt;
+  httpProxy: ""
+  httpsProxy: ""
+  noProxy: ""
+  additionalTrustBundle: ""</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="credentials"><a class="anchor" href="#credentials"></a>Setup credentials</h2>
+<h2 id="credsgui"><a class="anchor" href="#credsgui"></a>Setup credentials via web interface</h2>
 <div class="sectionbody">
 
 </div>
 </div>
 <div class="sect1">
-<h2 id="install"><a class="anchor" href="#install"></a>Deploy new OpenShift cluster</h2>
+<h2 id="credscli"><a class="anchor" href="#credscli"></a>Setup credentials via CLI</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>To setup the AWS credentials,</p>
+</div>
+</div>
+</div>
+<h1 id="install" class="sect0"><a class="anchor" href="#install"></a>Deploy new OpenShift cluster</h1>
 
-</div>
-</div>
 <nav class="pagination">
   <span class="prev"><a href="02-deploy.html">2. Install Red Hat Cluster Advanced Management</a></span>
   <span class="next"><a href="#04-deployapplication.adoc">4. Deploy a Multicluster Application with GitOps</a></span>
