@@ -1,1 +1,13 @@
-= Deploy a Openshift cluster
+= Deploy another Openshift cluster
+
+To deploy multicluster applications, you will need another OpenShift cluster deployed.
+
+In this LAB, Amazon Web Services (AWS) Public Cloud Provider is being used. You will need to add the AWS credentials into ACM, and deploy a second OpenShift cluster after adding the credentials.
+
+With ACM and two OpenShift clusters, you will have all the necessary requirements to acomplish the tasks in this LAB.
+
+[#credentials]
+== Setup credentials
+
+[#install]
+== Deploy new OpenShift cluster
