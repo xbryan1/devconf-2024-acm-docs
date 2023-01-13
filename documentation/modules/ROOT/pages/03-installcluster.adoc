@@ -28,9 +28,14 @@ To setup the credentials, you will need the following information:
 ssh-keygen
 ----
 
-. A SSH public key
+[#credsgui]
+== Setup credentials via web interface
 
-You can use the following YAML example file to create one:
+
+[#credscli]
+== Setup credentials via CLI
+
+To setup the AWS credentials using the CLI, you can use the following YAML example file to create one crentials.yaml file:
 [.lines_space]
 [.console-input]
 [source,yaml, subs="+macros,+attributes"]
@@ -40,7 +45,7 @@ kind: Secret
 type: Opaque
 metadata:
   name: <1 - Name of AWS credentials>
-  namespace: <# 2 - Namespace where the credentials will be saved>
+  namespace: <2 - Namespace where the credentials will be saved>
   labels:
     cluster.open-cluster-management.io/type: aws
     cluster.open-cluster-management.io/credentials: ""
@@ -61,13 +66,11 @@ stringData:
   additionalTrustBundle: ""
 ----
 
-[#credsgui]
-== Setup credentials via web interface
-
-[#credscli]
-== Setup credentials via CLI
-
-To setup the AWS credentials, 
+After you have created the file, you can create it with the following command:
+[source,bash, subs="+macros,+attributes"]
+----
+oc create -f cretentials.yaml
+----
 
 [#install]
 = Deploy new OpenShift cluster
