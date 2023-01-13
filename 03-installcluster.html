@@ -201,15 +201,17 @@
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ssh-keygen</code></pre>
 </div>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>A SSH public key</p>
-</li>
-</ol>
+<div class="sect1">
+<h2 id="credsgui"><a class="anchor" href="#credsgui"></a>Setup credentials via web interface</h2>
+<div class="sectionbody">
+
 </div>
+</div>
+<div class="sect1">
+<h2 id="credscli"><a class="anchor" href="#credscli"></a>Setup credentials via CLI</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>You can use the following YAML example file to create one:</p>
+<p>To setup the AWS credentials using the CLI, you can use the following YAML example file to create one crentials.yaml file:</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -218,7 +220,7 @@ kind: Secret
 type: Opaque
 metadata:
   name: &lt;1 - Name of AWS credentials&gt;
-  namespace: &lt;# 2 - Namespace where the credentials will be saved&gt;
+  namespace: &lt;2 - Namespace where the credentials will be saved&gt;
   labels:
     cluster.open-cluster-management.io/type: aws
     cluster.open-cluster-management.io/credentials: ""
@@ -239,17 +241,13 @@ stringData:
   additionalTrustBundle: ""</code></pre>
 </div>
 </div>
-<div class="sect1">
-<h2 id="credsgui"><a class="anchor" href="#credsgui"></a>Setup credentials via web interface</h2>
-<div class="sectionbody">
-
-</div>
-</div>
-<div class="sect1">
-<h2 id="credscli"><a class="anchor" href="#credscli"></a>Setup credentials via CLI</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>To setup the AWS credentials,</p>
+<p>After you have created the file, you can create it with the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc create -f cretentials.yaml</code></pre>
+</div>
 </div>
 </div>
 </div>
