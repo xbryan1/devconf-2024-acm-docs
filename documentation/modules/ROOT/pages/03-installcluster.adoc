@@ -2,12 +2,69 @@
 
 To deploy multicluster applications, you will need another OpenShift cluster deployed.
 
-In this LAB, Amazon Web Services (AWS) Public Cloud Provider is being used. You will need to add the AWS credentials into ACM, and deploy a second OpenShift cluster after adding the credentials.
+In this LAB, Amazon Web Services (AWS) Public Cloud Provider is being used. You will need to add the AWS credentials into Red Hat Advanced Cluster Management, and deploy a second OpenShift cluster after adding the credentials.
 
-With ACM and two OpenShift clusters, you will have all the necessary requirements to acomplish the tasks in this LAB.
+Using Red Hat Advanced Cluster Management and having two OpenShift clusters installed, you will have all the necessary requirements to acomplish the tasks in this LAB.
 
 [#credentials]
-== Setup credentials
+= Setup credentials
+
+In order to create a new OpenShift cluster on AWS, you will need to set-up the AWS credentials into Red Hat Advanced Cluster Management first. This credentials will allow Red Hat Advanced Cluster Management to install the OpenShift cluster on AWS.
+
+You can setup the AWS credentials using the Red Hat Advanced Cluster Management web interface, or using the command line interface (CLI).
+
+To setup the credentials, you will need the following information:
+. Name of AWS credentials
+. Namespace where the credentials will be saved
+. AWS Access Key ID
+. AWS Secret Key
+. Base domain
+. A Global Pull Secret. If you don't have one, you can get it from https://console.redhat.com/openshift/install/pull-secret
+. A SSH private key. If you don't have one, you can generate it with the following command:
+[source,bash, subs="+macros,+attributes"]
+----
+ssh-keygen
+----
+. A SSH public key
+
+You can use the following YAML example file to create one:
+[.lines_space]
+[.console-input]
+[source,yaml, subs="+macros,+attributes"]
+----
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: <1 - Name of AWS credentials>
+  namespace: <# 2 - Namespace where the credentials will be saved>
+  labels:
+    cluster.open-cluster-management.io/type: aws
+    cluster.open-cluster-management.io/credentials: ""
+stringData:
+  aws_access_key_id: <3 - AWS Access Key ID>
+  aws_secret_access_key: <4 - AWS Secret Key>
+  baseDomain: <5 - Base domain>
+  pullSecret: >
+    <6 Global pull secret>
+  ssh-privatekey: |
+    <7 - A SSH private key>
+  ssh-publickey: >
+    ssh-rsa
+    <8 - A SSH public key>
+  httpProxy: ""
+  httpsProxy: ""
+  noProxy: ""
+  additionalTrustBundle: ""
+----
+
+[#credsgui]
+== Setup credentials via web interface
+
+[#credscli]
+== Setup credentials via CLI
+
+To setup the AWS credentials, 
 
 [#install]
-== Deploy new OpenShift cluster
+= Deploy new OpenShift cluster
