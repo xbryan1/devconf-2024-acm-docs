@@ -1,19 +1,29 @@
-= Install Red Hat Cluster Advanced Management Operator
+= Install Advanced Management and GitOps Operators
 
-Red Hat Advanced Cluster Management (RHACM) is installed through Operator Lifecycle Manager (OLM), which manages the installation, upgrade, and removal of the components.
+This section will guide you through the ACM and Argo CD installation and integration in order to deploy application both local and remote clusters from ACM. 
 
-The OpenShift Container Platform provided in this lab meets the minimal https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#requirements-and-recommendations[requirements] from the official documentation. The cluster hub components will be installed on worker nodes, no https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#installing-on-infra-node[infrastructure] nodes will be provided.
+Here’s a list of required operators to install through the Operator Lifecycle Manager (OLM), which manages the installation, upgrade, and removal:
+
+ - ACM Operator
+ 
+ image::operators/acm.png[]
+ 
+ - GitOps Operator
+ 
+ image::operators/gitops.png[]
+
+NOTE: The OpenShift Container Platform provided in this lab meets the minimal https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#requirements-and-recommendations[requirements] from the official documentation. The cluster hub components will be installed on worker nodes, no https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#installing-on-infra-node[infrastructure] nodes will be provided.
 
 NOTE: OpenShift Container Platform required access: Cluster administrator (cluster-admin) permissions.
 
-== Installing from the OperatorHub web console interface
-
 [#install]
-== Installing from the OpenShift Container Platform CLI
+== Install RHACM Operator
 
-The Openshift cluster provided in this lab has not RHACM operator installed, so the first step is proceed with the Red Hat Advanced Cluster Management installation from the CLI.
+The Openshift cluster already installed `local-cluster` has not RHACM operator installed, so the first step is proceed with the ACM Operator installation.
 
-If you do not have the repository already cloned, run the following commands
+Clone the sources repository and build yaml files with `oc kustomize` to prepare the installation:
+
+- Clone repository 
 
 [.lines_space]
 [.console-input]
@@ -22,109 +32,136 @@ If you do not have the repository already cloned, run the following commands
 git clone https://github.com/xbryan1/rhte-2023-acm-apps
 ----
 
-* Before install run the installation, take a few seconds to review `install/01_acm-operator.yaml` YAML file which defines the following resources that will install the RHACM Operator:
-** `open-cluster-management` namespace
-** `open-cluster-management-rhte2023` OperatorGroup
-** `advanced-cluster-management` subscription
-
 [.lines_space]
 [.console-input]
-[source,yaml, subs="+macros,+attributes"]
+[source,bash, subs="+macros,+attributes"]
 ----
---- file install/01_acm-operator.yaml
+cd rhte2023
 
---- Create Namespace 
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: open-cluster-management
+tree -L 3 00_boostrap/base/acm_operator/
 
---- Create Operator Group
-apiVersion: operators.coreos.com/v1
-kind: OperatorGroup
-metadata:
-  name: open-cluster-management-rhte2023
-  namespace: open-cluster-management
-spec:
-  targetNamespaces:
-  - open-cluster-management
-
---- Create Subscription / Install Operator
-apiVersion: operators.coreos.com/v1alpha1
-kind: Subscription
-metadata:
-  name: advanced-cluster-management
-  namespace: open-cluster-management
-spec:
-  channel: release-2.6
-  installPlanApproval: Automatic
-  name: advanced-cluster-management
-  source: redhat-operators
-  sourceNamespace: openshift-marketplace
-  startingCSV: advanced-cluster-management.v2.6.3
+00_boostrap/base/acm_operator/
+└── base
+    ├── acm_namespace.yaml
+    ├── acm_operatorgroup.yaml
+    ├── acm_subscription.yaml
+    └── kustomization.yaml
 ----
-
-
-* Install Red Hat Advanced Cluster Management Operator and verify that the installation is completed successfully as follows:
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc apply -f install/01_acm-operator.yaml
+oc kustomize 00_boostrap/base/acm_operator/base
 ----
 
-Wait until the RHACM Operatator is installed.
+- Enable master node scheduling
+
+NOTE: This configuration is not recommended for production
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc replace -k 00_boostrap/base/openshift/base
+----
+
+- install ACM Operator:
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc apply -k 00_boostrap/base/acm_operator/base
+----
+
+Example
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+$ oc apply -k 00_boostrap/base/acm_operator/base
+
+namespace/open-cluster-management created
+operatorgroup.operators.coreos.com/open-cluster-management-rhte2023 created
+subscription.operators.coreos.com/advanced-cluster-management created
+
+$ oc get pod -n open-cluster-management
+NAME                                                              READY   STATUS    RESTARTS   AGE
+multicluster-observability-operator-55bc5794d5-klkxv              1/1     Running   0          112s
+multicluster-operators-application-6bfc6668d8-58lj4               3/3     Running   0          111s
+multicluster-operators-channel-7787f9bd44-2hgnx                   1/1     Running   0          111s
+multicluster-operators-hub-subscription-867648d86d-czprh          1/1     Running   0          111s
+multicluster-operators-standalone-subscription-5c7457cdb9-6r7g5   1/1     Running   0          111s
+multicluster-operators-subscription-report-58cd59df84-bpllj       1/1     Running   0          111s
+multiclusterhub-operator-6d79bd8c7d-x75zb                         1/1     Running   0          112s
+submariner-addon-56785df46f-xg52l                                 1/1     Running   0          111s
+----
+
+After installing the ACM Operator we also need to create the CRD object `MultiClusterHub`. 
+
+- Create `MultiClusterHub`:
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc apply -k 00_boostrap/base/acm_multiclusterhub/base
+----
+
+Wait until the ACM Operatator is installed. It can take up to 10 minutes for the MultiClusterHub custom resource status to display as Running in the `status.phase` field after you run the command:
 
 [.lines_space]
 [.console-input]
 [source,shell, subs="+macros,+attributes"]
 ----
-oc get csv -n open-cluster-management
-
-NAME                                 DISPLAY                                      VERSION   REPLACES                             PHASE
-advanced-cluster-management.v2.6.3   Advanced Cluster Management for Kubernetes   2.6.3     advanced-cluster-management.v2.6.2   Succeeded
+oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
 ----
 
-[#setup]
-= Setup a MulticlusterHub
-
-Once the RHACM Operator is completed, proceed with the next step to create RHACM cluster hub, and verify the installation is succesfully, checking the hub cluster and all pods in namespace `open-cluster-management` are both in `Running` status:
-
-* Before create RHACM cluster, take a few seconds to review this YAML file `install/02_acm-multicluster.yaml` which defines the following resources:
-** `MultiClusterHub` RHACM Custom Resource
+Example
 
 [.lines_space]
 [.console-input]
-[source,yaml, subs="+macros,+attributes"]
+[source,shell, subs="+macros,+attributes"]
 ----
---- Create MultiClusterHub Custom Resource
-apiVersion: operator.open-cluster-management.io/v1
-kind: MultiClusterHub
-metadata:
-  name: multiclusterhub
-  namespace: open-cluster-management
-spec: {}
+$ oc get mch -n open-cluster-management
+NAME              STATUS       AGE
+multiclusterhub   Running      4m13s
+
+$ oc get pod -n open-cluster-management
+NAME                                                              READY   STATUS    RESTARTS        AGE
+console-chart-b5c6c-console-v2-5f4778f855-6jzsh                   1/1     Running   0               4m17s
+console-chart-b5c6c-console-v2-5f4778f855-sjqgm                   1/1     Running   0               4m17s
+grc-ceb7b-policy-addon-controller-6688c876d7-brhlg                1/1     Running   0               4m16s
+grc-ceb7b-policy-addon-controller-6688c876d7-kghnp                1/1     Running   0               4m16s
+grc-ceb7b-policy-propagator-67bc7c8664-65fmg                      2/2     Running   0               4m16s
+grc-ceb7b-policy-propagator-67bc7c8664-94lg8                      2/2     Running   0               4m16s
+insights-client-6bfc7b9b4c-7shvm                                  1/1     Running   0               4m23s
+insights-metrics-6b47574bdb-27fsh                                 2/2     Running   0               4m23s
+klusterlet-addon-controller-v2-bf8569f79-pjw2n                    1/1     Running   0               4m17s
+klusterlet-addon-controller-v2-bf8569f79-pxjgw                    1/1     Running   0               4m17s
+management-ingress-04176-dff6664c6-7gndj                          2/2     Running   0               4m17s
+management-ingress-04176-dff6664c6-sjjqr                          2/2     Running   0               4m17s
+multicluster-observability-operator-55bc5794d5-klkxv              1/1     Running   0               89m
+multicluster-operators-application-6bfc6668d8-58lj4               3/3     Running   2 (4m54s ago)   89m
+multicluster-operators-channel-7787f9bd44-2hgnx                   1/1     Running   1 (5m3s ago)    89m
+multicluster-operators-hub-subscription-867648d86d-czprh          1/1     Running   9 (5m8s ago)    89m
+multicluster-operators-standalone-subscription-5c7457cdb9-6r7g5   1/1     Running   0               89m
+multicluster-operators-subscription-report-58cd59df84-bpllj       1/1     Running   0               89m
+multiclusterhub-operator-6d79bd8c7d-x75zb                         1/1     Running   0               89m
+multiclusterhub-repo-76cd98b984-chrss                             1/1     Running   0               7m48s
+search-operator-8679f457fd-95t9m                                  1/1     Running   0               4m16s
+search-prod-bba19-search-aggregator-7c89cb446b-t4w8v              1/1     Running   0               4m16s
+search-prod-bba19-search-api-5d458bcd44-khtxz                     1/1     Running   0               4m16s
+search-prod-bba19-search-api-5d458bcd44-w7jcz                     1/1     Running   0               4m16s
+search-prod-bba19-search-collector-665b79db76-xcrfv               1/1     Running   0               4m16s
+search-redisgraph-0                                               1/1     Running   0               3m53s
+submariner-addon-56785df46f-xg52l                                 1/1     Running   6 (15m ago)     89m
+volsync-addon-controller-79091-deploy-65766b9b7c-xnw67            1/1     Running   0               4m17s
 ----
 
-and run the following commands to create MultiClusterHub as follows:
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-oc apply -f install/02_acm-multicluster.yaml
-
-oc patch Scheduler/cluster --type=json -p '[{"op": "replace", "path": "/spec/mastersSchedulable", "value": true }]'
-
-watch oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
-
-watch oc get pod -n open-cluster-management
-----
-
-NOTE: schedule pods on the master node is not recommended for Production.
-
-If the cluster hub is in `installing` status indefinitely, check the operator logs or pods status as follows:
+If the multiclusterhub is not in `Running` status after a while, check the operator logs or pods status as follows:
 
 [.lines_space]
 [.console-input]
@@ -136,9 +173,9 @@ oc get pod -n open-cluster-management
 ----
 
 [#console]
-= Access to the MultiCluster WebConsole
+== Access to the ACM Web Console
 
-Once the RHACM cluster hub installation is completed, proceed getting the route where you will find your ACM Console's:
+After the ACM Operator is installed, it provides dashboard UI. We can access it through the OpenShift `Route`. List routes in the `open-cluster-management` namespace and get address of console  https://multicloud-console.apps.<YOUR_DOMAIN>.
 
 [.lines_space]
 [.console-input]
@@ -153,121 +190,57 @@ multicloud-console   multicloud-console.apps.jclaretm.nasatam.support          m
 Multicluster Hub has to be installed and the RHACM Console accesible to proceed with the next steps.
 
 [#gitops]
-= Integrate GitOps Operator
+== Install GitOps Operator
 
-RHACM introduces a new `gitopscluster` resource kind, which connects to a `placement` resource to determine which clusters to import into Argo CD. This integration allows you to expand your fleet, while having Argo CD automatically engage in working with your new clusters. This means if you leverage Argo CD `ApplicationSets``, your application payloads are automatically applied to your new clusters as they are registered by RHACM in your Argo CD instances.
-
-In order to integrate the Red Hat GitOps operator and the Advance Cluster Management cluster hub already deployed, run the following commands:
-
-* Before proceed with the steps to integrate the GitOps Operator with RHACM, take a few seconds to review this YAML file `03_acm-gitops.yaml` which defines the following resources:
-** `openshift-gitops` namespace
-** `openshift-gitops-opertator` subscription
-** `gitops-clusters` ManagedClusterSet
-** `gitops-clusters` ManagedClusterSetBinding
-** `gitops-clusters` Placement
-** `argo-acm-importer` GitOpsCluster and
-** `cluster` GitopsService
+Run the following command to install the GitOps Operator based on ArgoCD. 
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
---- file install/03_acm-gitops.yaml
-
---- Create Namespace for GitOps operator
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: openshift-gitops
----
-
---- Create Subscription / Install Operator
-apiVersion: operators.coreos.com/v1alpha1
-kind: Subscription
-metadata:
-  name: openshift-gitops-operator
-  namespace: openshift-operators
-spec:
-  channel: gitops-1.6
-  installPlanApproval: Automatic
-  name: openshift-gitops-operator
-  source: redhat-operators
-  sourceNamespace: openshift-marketplace
-  startingCSV: openshift-gitops-operator.v1.6.1
----
-
---- Create Managed cluster set for Gitops Cluster
-apiVersion: cluster.open-cluster-management.io/v1beta1
-kind: ManagedClusterSet
-metadata:
-  name: gitops-clusters
-spec: {}
----
-
---- Create ManagedClusterSet Binding
-apiVersion: cluster.open-cluster-management.io/v1beta1
-kind: ManagedClusterSetBinding
-metadata:
-  name: gitops-clusters
-  namespace: openshift-gitops
-spec:
-  clusterSet: gitops-clusters
----
-
---- Create Placement for clusters with key vendor in Openshift
-apiVersion: cluster.open-cluster-management.io/v1beta1
-kind: Placement
-metadata:
-  name: gitops-clusters
-  namespace: openshift-gitops
-spec:
-  predicates:
-  - requiredClusterSelector:
-      labelSelector:
-        matchExpressions:
-        - key: vendor
-          operator: "In"
-          values:
-          - OpenShift
----
-
---- Create Gitops instance cluster
-apiVersion: apps.open-cluster-management.io/v1beta1
-kind: GitOpsCluster
-metadata:
-  name: argo-acm-importer
-  namespace: openshift-gitops
-spec:
-  argoServer:
-    cluster: local-cluster
-    argoNamespace: openshift-gitops
-  placementRef:
-    kind: Placement
-    apiVersion: cluster.open-cluster-management.io/v1alpha1
-    name: gitops-clusters
-    namespace: openshift-gitops
----
-
---- Create Gitops service
-apiVersion: pipelines.openshift.io/v1alpha1
-kind: GitopsService
-metadata:
-  name: cluster
-spec: {}
+oc apply -k 00_boostrap/base/gitops_operator/base/
 ----
 
-Run the following commands to perform the GitOps Operator integration with RHACM
+Example
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc apply -f install/03_acm-gitops.yaml
+oc apply -k 00_boostrap/base/gitops_operator/base/
 
-oc apply -f install/04_acm-gitopservice.yaml
+oc apply -k 00_boostrap/base/gitops_operator/base/
+namespace/openshift-gitops created
+subscription.operators.coreos.com/openshift-gitops-operator created
 ----
 
-As we did before, check that the GitOps Operator has been installed successfully and RHACM integration is completed.
+[#gitopsacm]
+== Integrate GitOps and ACM
+
+ACM introduces a new `gitopscluster` resource kind, which connects to a `placement` resource to determine which clusters to import into Argo CD. This integration allows you to expand your fleet, while having Argo CD automatically engage in working with your new clusters. This means if you leverage Argo CD `ApplicationSets`, your application payloads are automatically applied to your new clusters as they are registered by RHACM in your Argo CD instances.
+
+- Run the following commands to perform the GitOps Operator integration with RHACM
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc apply -k 00_boostrap/base/gitops_acm/base/
+----
+
+Example
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+$ oc apply -k 00_boostrap/base/gitops_acm/base/
+gitopscluster.apps.open-cluster-management.io/gitops-acm-importer created
+managedclusterset.cluster.open-cluster-management.io/rhte2023-gitops-clusters created
+managedclustersetbinding.cluster.open-cluster-management.io/rhte2023-gitops-clusters created
+placement.cluster.open-cluster-management.io/gitops-clusters created
+gitopsservice.pipelines.openshift.io/cluster created
+----
 
 - Check that ArgoCD console is accessible and pods are in `Running` status
 
@@ -275,9 +248,23 @@ As we did before, check that the GitOps Operator has been installed successfully
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc get route -n openshift-gitops
+$ oc get route -n openshift-gitops
+NAME                      HOST/PORT                                                                PATH   SERVICES                  PORT    TERMINATION            WILDCARD
+kam                       kam-openshift-gitops.apps.jclaretm.nasatam.support                              kam                       8443    passthrough/None       None
+openshift-gitops-server   openshift-gitops-server-openshift-gitops.apps.jclaretm.nasatam.support          openshift-gitops-server   https   passthrough/Redirect   None
 
-oc get pod -n openshift-gitops
+
+$ oc get pod -n openshift-gitops
+NAME                                                          READY   STATUS    RESTARTS   AGE
+cluster-5547bb889c-z4xt5                                      1/1     Running   0          3m27s
+kam-6f7bd59bff-kk7nk                                          1/1     Running   0          3m27s
+openshift-gitops-application-controller-0                     1/1     Running   0          3m25s
+openshift-gitops-applicationset-controller-6558f87b67-vh57v   1/1     Running   0          3m25s
+openshift-gitops-dex-server-95795fd59-pxsbh                   1/1     Running   0          3m26s
+openshift-gitops-redis-87698688c-ch9vn                        1/1     Running   0          3m26s
+openshift-gitops-repo-server-84864f6446-2c979                 1/1     Running   0          3m26s
+openshift-gitops-server-784dc4bc8-jgrnn                       1/1     Running   0          3m26s
+
 ----
 
 image::argocd/argocd_login.png[]
@@ -285,5 +272,3 @@ image::argocd/argocd_login.png[]
 - Login into the ArgoCD Console with the Openshift credentials. 
 
 image::argocd/argocd_noapps.png[]
-
-NOTE: No applications has still not been deployed.

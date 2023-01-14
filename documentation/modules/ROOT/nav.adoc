@@ -2,11 +2,11 @@
 ** xref:01-setup.adoc#architecture[Hands-on Lab Environment]
 ** xref:01-setup.adoc#sources[Git repositories]
 
-* xref:02-deploy.adoc[2. Install Red Hat Cluster Advanced Management]
-** xref:02-deploy.adoc#install[ACM Operator Installation]
-** xref:02-deploy.adoc#setup[Setup a MultiClusterHub]
-** xref:02-deploy.adoc#console[Access to the MultiCluster WebConsole]
-** xref:02-deploy.adoc#gitops[Integrate GitOps Operator]
+* xref:02-deploy.adoc[2. Install Advanced Management and GitOps Operators]
+** xref:02-deploy.adoc#install[Install RHACM Operator]
+** xref:02-deploy.adoc#console[Access to the ACM Web Console]
+** xref:02-deploy.adoc#gitops[Install GitOps Operator]
+** xref:02-deploy.adoc#gitopsacm[Integrate GitOps and ACM]
 
 * xref:03-installcluster.adoc[3. Install a new Openshift Cluster]
 ** xref:03-installcluster.adoc#credentials[Setup credentials]
