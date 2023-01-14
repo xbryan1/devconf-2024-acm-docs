@@ -1,5 +1,5 @@
-The following CLI tools are required for running the exercises in this tutorial. 
-Please have them installed and configured before you get started with any of the tutorial chapters.
+The following CLI tools are required for running the exercises in this hands-on. 
+Please have them installed and configured before you get started.
 
 |===
 |**Tool**|**macOS**|**Linux/Fedora**
