@@ -56,16 +56,10 @@
     <a class="nav-link" href="01-setup.html">1. Environment Setup</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#rhpds">RHPDS Environment</a>
+    <a class="nav-link" href="#architecture">Hands-on Lab Environment</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#architecture">LAB Architecture</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#tools">Workshop CLI Tools</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#sources">Get tutorial sources</a>
+    <a class="nav-link" href="#sources">Git repositories</a>
   </li>
 </ul>
   </li>
@@ -148,8 +142,17 @@
   <div class="content">
 <article class="doc">
 <h1 class="page">Environment Setup</h1>
-<div id="preamble">
+<div class="sect1">
+<h2 id="architecture"><a class="anchor" href="#architecture"></a>Hands-on Lab Environment</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>This hands-on lab will be based on at least two OpenShift clusters. The first one will be provided and the second one will be installed from ACM. Both clusters will run on AWS with OpenShift 4.10 Open Environment provided by RHPDS (<a href="https://demo.redhat.com" class="bare">https://demo.redhat.com</a>)</p>
+</div>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="arch/argocd_samrhte2023_arch.png" alt="argocd samrhte2023 arch">
+</div>
+</div>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -158,7 +161,7 @@
 </td>
 <td class="content">
 <div class="paragraph">
-<p>This Workshop has been tested with:</p>
+<p>Tested version with:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -167,6 +170,9 @@
 </li>
 <li>
 <p>Red Hat Advanced Cluster Management 2.6</p>
+</li>
+<li>
+<p>Gitops Operator 1.7</p>
 </li>
 </ul>
 </div>
@@ -177,15 +183,19 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="rhpds"><a class="anchor" href="#rhpds"></a>RHPDS Environment</h2>
+<h2 id="sources"><a class="anchor" href="#sources"></a>Get workshop sources</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>Before we start setting up the environment, let’s clone the workshop materials:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone <a href="https://github.com/xbryan1/rhte-2023-acm-apps" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps</a></code></pre>
 </div>
 </div>
-<div class="sect1">
-<h2 id="architecture"><a class="anchor" href="#architecture"></a>LAB Architecture</h2>
-<div class="sectionbody">
-
+<div class="paragraph">
+<p>The workshop sources are available <a href="https://github.com/xbryan1/rhte-2023-acm-docs" class="bare">https://github.com/xbryan1/rhte-2023-acm-docs</a></p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -232,22 +242,6 @@ Some of these tools are available through the Web Terminal provided by the <a hr
 </td>
 </tr>
 </table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="sources"><a class="anchor" href="#sources"></a>Get workshop sources</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Before we start setting up the environment, let’s clone the workshop materials:</p>
-</div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone <a href="https://github.com/xbryan1/rhte-2023-acm-apps" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps</a></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The workshop sources are available <a href="https://github.com/xbryan1/rhte-2023-acm-docs" class="bare">https://github.com/xbryan1/rhte-2023-acm-docs</a></p>
 </div>
 </div>
 </div>
