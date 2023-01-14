@@ -1,24 +1,22 @@
 = Environment Setup
 include::_attributes.adoc[]
 
+[#architecture]
+== Hands-on Lab Environment
+
+This hands-on lab will be based on at least two OpenShift clusters. The first one will be provided and the second one will be installed from ACM. Both clusters will run on AWS with OpenShift 4.10 Open Environment provided by RHPDS (https://demo.redhat.com)
+
+
+image::arch/argocd_samrhte2023_arch.png[]
+
 [NOTE]
 ====
-This Workshop has been tested with:
+Tested version with:
 
 - Red Hat OpenShift 4.10
 - Red Hat Advanced Cluster Management 2.6
+- Gitops Operator 1.7
 ====
-
-[#rhpds]
-== RHPDS Environment
-
-[#architecture]
-== LAB Architecture
-
-[#tools]
-== Workshop CLI tools
-
-include::../partials/tools.adoc[]
 
 [#sources]
 == Get workshop sources
@@ -33,3 +31,13 @@ git clone https://github.com/xbryan1/rhte-2023-acm-apps
 ----
 
 The workshop sources are available https://github.com/xbryan1/rhte-2023-acm-docs 
+
+[#tools]
+== Workshop CLI tools
+
+include::../partials/tools.adoc[]
+
+
+
+
+

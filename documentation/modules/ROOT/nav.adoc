@@ -1,8 +1,6 @@
 * xref:01-setup.adoc[1. Environment Setup]
-** xref:01-setup.adoc#rhpds[RHPDS Environment]
-** xref:01-setup.adoc#architecture[LAB Architecture]
-** xref:01-setup.adoc#tools[Workshop CLI Tools]
-** xref:01-setup.adoc#sources[Get tutorial sources]
+** xref:01-setup.adoc#architecture[Hands-on Lab Environment]
+** xref:01-setup.adoc#sources[Git repositories]
 
 * xref:02-deploy.adoc[2. Install Red Hat Cluster Advanced Management]
 ** xref:02-deploy.adoc#install[ACM Operator Installation]
