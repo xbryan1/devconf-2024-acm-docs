@@ -10,7 +10,7 @@ This hands-on lab will be based on two OpenShift clusters. The first one has bee
 
 - Cluster `rhte2023-cluster01`: Student will install and deploy applications.
 
-image::arch/rhte2023_arch.png[]
+image::setup/setup01.png[]
 
 [NOTE]
 ====
@@ -30,7 +30,7 @@ Application repository:
 
 https://github.com/xbryan1/rhte-2023-acm-apps
 
-image::arch/rhte2023_fork.png[]
+image::setup/setup02.png[]
 
 
 

@@ -1,4 +1,5 @@
 = Install Advanced Management and GitOps Operators
+include::_attributes.adoc[]
 
 This section will guide you through the ACM and Argo CD installation and integration in order to deploy application both local and remote clusters from ACM. 
 
@@ -6,22 +7,20 @@ Here’s a list of required operators to install through the Operator Lifecycle 
 
  - ACM Operator
  
- image::operators/acm.png[]
+image::deploy/deploy01.png[]
  
  - GitOps Operator
  
- image::operators/gitops.png[]
+image::deploy/deploy02.png[]
 
 NOTE: The OpenShift Container Platform provided in this lab meets the minimal https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#requirements-and-recommendations[requirements] from the official documentation. The cluster hub components will be installed on worker nodes, no https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#installing-on-infra-node[infrastructure] nodes will be provided.
 
 NOTE: OpenShift Container Platform required access: Cluster administrator (cluster-admin) permissions.
 
 [#install]
-== Install RHACM Operator
+== Install ACM Operator
 
-The Openshift cluster already installed `local-cluster` has not RHACM operator installed, so the first step is proceed with the ACM Operator installation.
-
-Clone the sources repository and build yaml files with `oc kustomize` to prepare the installation:
+We will go through `kustomize` files in order to perform ACM Operator installation:
 
 - Clone repository 
 
@@ -32,21 +31,9 @@ Clone the sources repository and build yaml files with `oc kustomize` to prepare
 git clone https://github.com/xbryan1/rhte-2023-acm-apps
 ----
 
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-cd rhte2023
+- Directories structure is:
 
-tree -L 3 00_boostrap/base/acm_operator/
-
-00_boostrap/base/acm_operator/
-└── base
-    ├── acm_namespace.yaml
-    ├── acm_operatorgroup.yaml
-    ├── acm_subscription.yaml
-    └── kustomization.yaml
-----
+image::deploy/deploy03.png[]
 
 [.lines_space]
 [.console-input]
@@ -54,6 +41,8 @@ tree -L 3 00_boostrap/base/acm_operator/
 ----
 oc kustomize 00_boostrap/base/acm_operator/base
 ----
+
+image::deploy/deploy04.png[]
 
 - Enable master node scheduling
 
@@ -65,6 +54,8 @@ NOTE: This configuration is not recommended for production
 ----
 oc replace -k 00_boostrap/base/openshift/base
 ----
+
+image::deploy/deploy05.png[]
 
 - install ACM Operator:
 
