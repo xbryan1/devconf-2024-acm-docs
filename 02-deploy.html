@@ -395,6 +395,13 @@ oc get pod -n open-cluster-management</code></pre>
 </li>
 </ul>
 </div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n openshift-gitops
+
+oc get pods -n openshift-gitops</code></pre>
+</div>
+</div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/deploy/deploy12.png" alt="deploy12">
@@ -423,6 +430,33 @@ oc get pod -n open-cluster-management</code></pre>
 <div class="imageblock">
 <div class="content">
 <img src="_images/deploy/deploy15.png" alt="deploy15">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="managedcluster"><a class="anchor" href="#managedcluster"></a>Add Openshift cluster to a ACM ClusterSet</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After the ACM/GitOps integration is done, you label <code>local-cluster</code> (ACM) with <code>ClusterSet rhte2023-gitops-clusters</code> and environment <code>development</code>. This configuration will let us deploy applications into this Openshift cluster.</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc label ManagedCluster local-cluster cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters --overwrite
+oc label ManagedCluster local-cluster gitops-cluster=true environment=development</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and check that cluster <code>local-cluster</code> is added as an ArgoCD Cluster from the ArgoCD Console &gt; Settings &gt; Cluster</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/deploy/deploy16.png" alt="deploy16">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/deploy/deploy17.png" alt="deploy17">
 </div>
 </div>
 </div>
