@@ -154,21 +154,25 @@
 <ul>
 <li>
 <p>ACM Operator</p>
-<div class="literalblock">
-<div class="content">
-<pre>image::operators/acm.png[]</pre>
-</div>
-</div>
-</li>
-<li>
-<p>GitOps Operator</p>
-<div class="literalblock">
-<div class="content">
-<pre>image::operators/gitops.png[]</pre>
-</div>
-</div>
 </li>
 </ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/deploy/deploy01.png" alt="deploy01">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>GitOps Operator</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/deploy/deploy02.png" alt="deploy02">
+</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -197,13 +201,10 @@ OpenShift Container Platform required access: Cluster administrator (cluster-adm
 </div>
 </div>
 <div class="sect1">
-<h2 id="install"><a class="anchor" href="#install"></a>Install RHACM Operator</h2>
+<h2 id="install"><a class="anchor" href="#install"></a>Install ACM Operator</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The Openshift cluster already installed <code>local-cluster</code> has not RHACM operator installed, so the first step is proceed with the ACM Operator installation.</p>
-</div>
-<div class="paragraph">
-<p>Clone the sources repository and build yaml files with <code>oc kustomize</code> to prepare the installation:</p>
+<p>We will go through <code>kustomize</code> files in order to perform ACM Operator installation:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -217,23 +218,26 @@ OpenShift Container Platform required access: Cluster administrator (cluster-adm
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone <a href="https://github.com/xbryan1/rhte-2023-acm-apps" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps</a></code></pre>
 </div>
 </div>
-<div class="listingblock lines_space console-input">
+<div class="ulist">
+<ul>
+<li>
+<p>Directories structure is:</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd rhte2023
-
-tree -L 3 00_boostrap/base/acm_operator/
-
-00_boostrap/base/acm_operator/
-└── base
-    ├── acm_namespace.yaml
-    ├── acm_operatorgroup.yaml
-    ├── acm_subscription.yaml
-    └── kustomization.yaml</code></pre>
+<img src="_images/deploy/deploy03.png" alt="deploy03">
 </div>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc kustomize 00_boostrap/base/acm_operator/base</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/deploy/deploy04.png" alt="deploy04">
 </div>
 </div>
 <div class="ulist">
@@ -258,6 +262,11 @@ This configuration is not recommended for production
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc replace -k 00_boostrap/base/openshift/base</code></pre>
+</div>
+</div>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="deploy/deploy05.png" alt="deploy05">
 </div>
 </div>
 <div class="ulist">
