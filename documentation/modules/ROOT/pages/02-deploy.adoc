@@ -1,15 +1,15 @@
 = Install Advanced Management and GitOps Operators
 include::_attributes.adoc[]
 
-This section will guide you through the ACM and Argo CD installation and integration in order to deploy application both local and remote clusters from ACM. 
+This section will guide you through the ACM and GitOps CD Operators installation and the ACM/GitOps integration in order to deploy application both local and remote clusters. 
 
 Here’s a list of required operators to install through the Operator Lifecycle Manager (OLM), which manages the installation, upgrade, and removal:
 
- - ACM Operator
+ - **ACM Operator**
  
 image::deploy/deploy01.png[]
  
- - GitOps Operator
+ - **GitOps Operator**
  
 image::deploy/deploy02.png[]
 
@@ -20,7 +20,7 @@ NOTE: OpenShift Container Platform required access: Cluster administrator (clust
 [#install]
 == Install ACM Operator
 
-We will go through `kustomize` files in order to perform ACM Operator installation:
+We will go through `oc kustomize` command in order to perform ACM Operator installation:
 
 - Clone repository 
 
@@ -31,7 +31,7 @@ We will go through `kustomize` files in order to perform ACM Operator installati
 git clone https://github.com/xbryan1/rhte-2023-acm-apps
 ----
 
-- Directories structure is:
+- Directories structure:
 
 image::deploy/deploy03.png[]
 
@@ -39,14 +39,14 @@ image::deploy/deploy03.png[]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc kustomize 00_boostrap/base/acm_operator/base
+cd rhte-2023-acm-apps/rhte2023/; oc kustomize 00_boostrap/base/acm_operator/base
 ----
 
 image::deploy/deploy04.png[]
 
 - Enable master node scheduling
 
-NOTE: This configuration is not recommended for production
+WARNING: This configuration is not recommended for production.
 
 [.lines_space]
 [.console-input]
@@ -57,7 +57,7 @@ oc replace -k 00_boostrap/base/openshift/base
 
 image::deploy/deploy05.png[]
 
-- install ACM Operator:
+- Install ACM Operator:
 
 [.lines_space]
 [.console-input]
@@ -66,29 +66,7 @@ image::deploy/deploy05.png[]
 oc apply -k 00_boostrap/base/acm_operator/base
 ----
 
-Example
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-$ oc apply -k 00_boostrap/base/acm_operator/base
-
-namespace/open-cluster-management created
-operatorgroup.operators.coreos.com/open-cluster-management-rhte2023 created
-subscription.operators.coreos.com/advanced-cluster-management created
-
-$ oc get pod -n open-cluster-management
-NAME                                                              READY   STATUS    RESTARTS   AGE
-multicluster-observability-operator-55bc5794d5-klkxv              1/1     Running   0          112s
-multicluster-operators-application-6bfc6668d8-58lj4               3/3     Running   0          111s
-multicluster-operators-channel-7787f9bd44-2hgnx                   1/1     Running   0          111s
-multicluster-operators-hub-subscription-867648d86d-czprh          1/1     Running   0          111s
-multicluster-operators-standalone-subscription-5c7457cdb9-6r7g5   1/1     Running   0          111s
-multicluster-operators-subscription-report-58cd59df84-bpllj       1/1     Running   0          111s
-multiclusterhub-operator-6d79bd8c7d-x75zb                         1/1     Running   0          112s
-submariner-addon-56785df46f-xg52l                                 1/1     Running   0          111s
-----
+image::deploy/deploy06.png[]
 
 After installing the ACM Operator we also need to create the CRD object `MultiClusterHub`. 
 
@@ -101,6 +79,8 @@ After installing the ACM Operator we also need to create the CRD object `MultiCl
 oc apply -k 00_boostrap/base/acm_multiclusterhub/base
 ----
 
+image::deploy/deploy07.png[]
+
 Wait until the ACM Operatator is installed. It can take up to 10 minutes for the MultiClusterHub custom resource status to display as Running in the `status.phase` field after you run the command:
 
 [.lines_space]
@@ -110,47 +90,7 @@ Wait until the ACM Operatator is installed. It can take up to 10 minutes for the
 oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
 ----
 
-Example
-
-[.lines_space]
-[.console-input]
-[source,shell, subs="+macros,+attributes"]
-----
-$ oc get mch -n open-cluster-management
-NAME              STATUS       AGE
-multiclusterhub   Running      4m13s
-
-$ oc get pod -n open-cluster-management
-NAME                                                              READY   STATUS    RESTARTS        AGE
-console-chart-b5c6c-console-v2-5f4778f855-6jzsh                   1/1     Running   0               4m17s
-console-chart-b5c6c-console-v2-5f4778f855-sjqgm                   1/1     Running   0               4m17s
-grc-ceb7b-policy-addon-controller-6688c876d7-brhlg                1/1     Running   0               4m16s
-grc-ceb7b-policy-addon-controller-6688c876d7-kghnp                1/1     Running   0               4m16s
-grc-ceb7b-policy-propagator-67bc7c8664-65fmg                      2/2     Running   0               4m16s
-grc-ceb7b-policy-propagator-67bc7c8664-94lg8                      2/2     Running   0               4m16s
-insights-client-6bfc7b9b4c-7shvm                                  1/1     Running   0               4m23s
-insights-metrics-6b47574bdb-27fsh                                 2/2     Running   0               4m23s
-klusterlet-addon-controller-v2-bf8569f79-pjw2n                    1/1     Running   0               4m17s
-klusterlet-addon-controller-v2-bf8569f79-pxjgw                    1/1     Running   0               4m17s
-management-ingress-04176-dff6664c6-7gndj                          2/2     Running   0               4m17s
-management-ingress-04176-dff6664c6-sjjqr                          2/2     Running   0               4m17s
-multicluster-observability-operator-55bc5794d5-klkxv              1/1     Running   0               89m
-multicluster-operators-application-6bfc6668d8-58lj4               3/3     Running   2 (4m54s ago)   89m
-multicluster-operators-channel-7787f9bd44-2hgnx                   1/1     Running   1 (5m3s ago)    89m
-multicluster-operators-hub-subscription-867648d86d-czprh          1/1     Running   9 (5m8s ago)    89m
-multicluster-operators-standalone-subscription-5c7457cdb9-6r7g5   1/1     Running   0               89m
-multicluster-operators-subscription-report-58cd59df84-bpllj       1/1     Running   0               89m
-multiclusterhub-operator-6d79bd8c7d-x75zb                         1/1     Running   0               89m
-multiclusterhub-repo-76cd98b984-chrss                             1/1     Running   0               7m48s
-search-operator-8679f457fd-95t9m                                  1/1     Running   0               4m16s
-search-prod-bba19-search-aggregator-7c89cb446b-t4w8v              1/1     Running   0               4m16s
-search-prod-bba19-search-api-5d458bcd44-khtxz                     1/1     Running   0               4m16s
-search-prod-bba19-search-api-5d458bcd44-w7jcz                     1/1     Running   0               4m16s
-search-prod-bba19-search-collector-665b79db76-xcrfv               1/1     Running   0               4m16s
-search-redisgraph-0                                               1/1     Running   0               3m53s
-submariner-addon-56785df46f-xg52l                                 1/1     Running   6 (15m ago)     89m
-volsync-addon-controller-79091-deploy-65766b9b7c-xnw67            1/1     Running   0               4m17s
-----
+image::deploy/deploy08.png[]
 
 If the multiclusterhub is not in `Running` status after a while, check the operator logs or pods status as follows:
 
@@ -168,15 +108,7 @@ oc get pod -n open-cluster-management
 
 After the ACM Operator is installed, it provides dashboard UI. We can access it through the OpenShift `Route`. List routes in the `open-cluster-management` namespace and get address of console  https://multicloud-console.apps.<YOUR_DOMAIN>.
 
-[.lines_space]
-[.console-input]
-[source,shell, subs="+macros,+attributes"]
-----
-oc get routes -n open-cluster-management
-
-NAME                 HOST/PORT                                          PATH   SERVICES             PORT    TERMINATION          WILDCARD
-multicloud-console   multicloud-console.apps.jclaretm.nasatam.support          management-ingress   https   reencrypt/Redirect   None
-----
+image::deploy/deploy09.png[]
 
 Multicluster Hub has to be installed and the RHACM Console accesible to proceed with the next steps.
 
@@ -192,18 +124,7 @@ Run the following command to install the GitOps Operator based on ArgoCD.
 oc apply -k 00_boostrap/base/gitops_operator/base/
 ----
 
-Example
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-oc apply -k 00_boostrap/base/gitops_operator/base/
-
-oc apply -k 00_boostrap/base/gitops_operator/base/
-namespace/openshift-gitops created
-subscription.operators.coreos.com/openshift-gitops-operator created
-----
+image::deploy/deploy10.png[]
 
 [#gitopsacm]
 == Integrate GitOps and ACM
@@ -219,47 +140,18 @@ ACM introduces a new `gitopscluster` resource kind, which connects to a `placeme
 oc apply -k 00_boostrap/base/gitops_acm/base/
 ----
 
-Example
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-$ oc apply -k 00_boostrap/base/gitops_acm/base/
-gitopscluster.apps.open-cluster-management.io/gitops-acm-importer created
-managedclusterset.cluster.open-cluster-management.io/rhte2023-gitops-clusters created
-managedclustersetbinding.cluster.open-cluster-management.io/rhte2023-gitops-clusters created
-placement.cluster.open-cluster-management.io/gitops-clusters created
-gitopsservice.pipelines.openshift.io/cluster created
-----
+image::deploy/deploy11.png[]
 
 - Check that ArgoCD console is accessible and pods are in `Running` status
 
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-$ oc get route -n openshift-gitops
-NAME                      HOST/PORT                                                                PATH   SERVICES                  PORT    TERMINATION            WILDCARD
-kam                       kam-openshift-gitops.apps.jclaretm.nasatam.support                              kam                       8443    passthrough/None       None
-openshift-gitops-server   openshift-gitops-server-openshift-gitops.apps.jclaretm.nasatam.support          openshift-gitops-server   https   passthrough/Redirect   None
+image::deploy/deploy12.png[]
 
+or from the Openshift Console 
 
-$ oc get pod -n openshift-gitops
-NAME                                                          READY   STATUS    RESTARTS   AGE
-cluster-5547bb889c-z4xt5                                      1/1     Running   0          3m27s
-kam-6f7bd59bff-kk7nk                                          1/1     Running   0          3m27s
-openshift-gitops-application-controller-0                     1/1     Running   0          3m25s
-openshift-gitops-applicationset-controller-6558f87b67-vh57v   1/1     Running   0          3m25s
-openshift-gitops-dex-server-95795fd59-pxsbh                   1/1     Running   0          3m26s
-openshift-gitops-redis-87698688c-ch9vn                        1/1     Running   0          3m26s
-openshift-gitops-repo-server-84864f6446-2c979                 1/1     Running   0          3m26s
-openshift-gitops-server-784dc4bc8-jgrnn                       1/1     Running   0          3m26s
+image::deploy/deploy13.png[]
 
-----
-
-image::argocd/argocd_login.png[]
+image::deploy/deploy14.png[]
 
 - Login into the ArgoCD Console with the Openshift credentials. 
 
-image::argocd/argocd_noapps.png[]
+image::deploy/deploy15.png[]

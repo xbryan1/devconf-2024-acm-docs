@@ -1,4 +1,4 @@
-The following CLI tools are required for running the exercises in this hands-on. 
+Also, the following CLI tools are required for running the exercises in this hands-on. 
 Please have them installed and configured before you get started.
 
 |===
@@ -15,4 +15,4 @@ Please have them installed and configured before you get started.
 
 |===
 
-NOTE: Some of these tools are available through the Web Terminal provided by the https://docs.openshift.com/container-platform/4.10/web_console/odc-about-web-terminal.html[Web Terminal Operator].
+TIP: Some of these tools are available through the Web Terminal provided by the https://docs.openshift.com/container-platform/4.10/web_console/odc-about-web-terminal.html[Web Terminal Operator].

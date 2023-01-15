@@ -6,9 +6,9 @@ include::_attributes.adoc[]
 
 This hands-on lab will be based on two OpenShift clusters. The first one has been already installed with `OpenShift 4.10 Open Environment` provided by `RHPDS` (https://demo.redhat.com), and the second one will be installed from ACM following the steps in this lab. Both Openshift clusters will run on AWS Cloud:
 
-- Cluster `local-cluster`: It has been already installed. Student will install ACM/GitOps Operators and deploy applications.
+- Cluster `local-cluster`: It has been already installed. In this cluster you will install ACM/GitOps Operators and deploy applications.
 
-- Cluster `rhte2023-cluster01`: Student will install and deploy applications.
+- Cluster `rhte2023-cluster01`: You will install the second Openshift cluster and deploy applications.
 
 image::setup/setup01.png[]
 
@@ -22,16 +22,15 @@ Tested versions:
 ====
 
 [#sources]
-== Git repositories
+== Application Git repository
 
-include::../partials/tools.adoc[]
-
-Application repository:
+In this repository you will find application and deployment files:
 
 https://github.com/xbryan1/rhte-2023-acm-apps
 
 image::setup/setup02.png[]
 
+include::../partials/tools.adoc[]
 
 
 
