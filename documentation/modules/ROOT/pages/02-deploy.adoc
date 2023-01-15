@@ -144,6 +144,15 @@ image::deploy/deploy11.png[]
 
 - Check that ArgoCD console is accessible and pods are in `Running` status
 
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc get route -n openshift-gitops
+
+oc get pods -n openshift-gitops
+----
+
 image::deploy/deploy12.png[]
 
 or from the Openshift Console 
@@ -155,3 +164,22 @@ image::deploy/deploy14.png[]
 - Login into the ArgoCD Console with the Openshift credentials. 
 
 image::deploy/deploy15.png[]
+
+[#managedcluster]
+== Add Openshift cluster to a ACM ClusterSet
+
+After the ACM/GitOps integration is done, you label `local-cluster` (ACM) with `ClusterSet rhte2023-gitops-clusters` and environment `development`. This configuration will let us deploy applications into this Openshift cluster.
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc label ManagedCluster local-cluster cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters --overwrite
+oc label ManagedCluster local-cluster gitops-cluster=true environment=development
+----
+
+and check that cluster `local-cluster` is added as an ArgoCD Cluster from the ArgoCD Console > Settings > Cluster
+
+image::deploy/deploy16.png[]
+
+image::deploy/deploy17.png[]
