@@ -374,6 +374,11 @@ oc get pod -n open-cluster-management</code></pre>
 <div class="paragraph">
 <p>ACM introduces a new <code>gitopscluster</code> resource kind, which connects to a <code>placement</code> resource to determine which clusters to import into Argo CD. This integration allows you to expand your fleet, while having Argo CD automatically engage in working with your new clusters. This means if you leverage Argo CD <code>ApplicationSets</code>, your application payloads are automatically applied to your new clusters as they are registered by RHACM in your Argo CD instances.</p>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/deploy/deploy18.png" alt="deploy18">
+</div>
+</div>
 <div class="ulist">
 <ul>
 <li>
