@@ -13,8 +13,8 @@
 ** xref:03-installcluster.adoc#credentials[Setup credentials]
 ** xref:03-installcluster.adoc#install[Deploy new Openshift Cluster]
 
-* xref:04-deployapplication.adoc[4. Deploy a Multicluster Application with GitOps]
-** xref:04-deployapplication.adoc#application[Deploy GitOps Application]
+* xref:04-application.adoc[4. Deploy a Multicluster Application with GitOps]
+** xref:04-application.adoc#application[Deploy GitOps Application]
 
 * xref:05-policies.adoc[5. Setup Advanced Cluster Management Policies]
 ** xref:05-policies.adoc#setup[Configure Policies]
