@@ -3,9 +3,7 @@
 
 We will go through `oc kustomize` command to create an ACM application and it automatically will deploy the application defined based on the `Placement`:
 
-- Clone repository 
-
-  [.lines_space]
+[.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
