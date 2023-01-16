@@ -166,9 +166,9 @@ image::deploy/deploy14.png[]
 image::deploy/deploy15.png[]
 
 [#managedcluster]
-== Add Openshift cluster to a ACM ClusterSet
+== Label local-cluster as a GitOps Cluster
 
-After the ACM/GitOps integration is done, you label `local-cluster` (ACM) with `ClusterSet rhte2023-gitops-clusters` and environment `development`. This configuration will let us deploy applications into this Openshift cluster.
+After the ACM/GitOps integration is done, you will label `local-cluster` (ACM) with `ClusterSet rhte2023-gitops-clusters` and environment `development`. This configuration will let us deploy applications into this Openshift cluster.
 
 [.lines_space]
 [.console-input]
@@ -178,7 +178,7 @@ oc label ManagedCluster local-cluster cluster.open-cluster-management.io/cluster
 oc label ManagedCluster local-cluster gitops-cluster=true environment=development
 ----
 
-and check that cluster `local-cluster` is added as an ArgoCD Cluster from the ArgoCD Console > Settings > Cluster
+and check that cluster `local-cluster` is added as an ArgoCD Cluster from the **ArgoCD Console > Settings > Clusters** where we expect to see `local-cluster` as one of the clusters
 
 image::deploy/deploy16.png[]
 
