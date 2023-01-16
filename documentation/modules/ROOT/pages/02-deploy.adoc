@@ -131,6 +131,8 @@ image::deploy/deploy10.png[]
 
 ACM introduces a new `gitopscluster` resource kind, which connects to a `placement` resource to determine which clusters to import into Argo CD. This integration allows you to expand your fleet, while having Argo CD automatically engage in working with your new clusters. This means if you leverage Argo CD `ApplicationSets`, your application payloads are automatically applied to your new clusters as they are registered by RHACM in your Argo CD instances.
 
+image::deploy/deploy18.png[]
+
 - Run the following commands to perform the GitOps Operator integration with RHACM
 
 [.lines_space]
