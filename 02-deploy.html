@@ -79,6 +79,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#gitopsacm">Integrate GitOps and ACM</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#managedcluster">Label local-cluster as a GitOps Cluster</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -435,10 +438,10 @@ oc get pods -n openshift-gitops</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="managedcluster"><a class="anchor" href="#managedcluster"></a>Add Openshift cluster to a ACM ClusterSet</h2>
+<h2 id="managedcluster"><a class="anchor" href="#managedcluster"></a>Label local-cluster as a GitOps Cluster</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>After the ACM/GitOps integration is done, you label <code>local-cluster</code> (ACM) with <code>ClusterSet rhte2023-gitops-clusters</code> and environment <code>development</code>. This configuration will let us deploy applications into this Openshift cluster.</p>
+<p>After the ACM/GitOps integration is done, you will label <code>local-cluster</code> (ACM) with <code>ClusterSet rhte2023-gitops-clusters</code> and environment <code>development</code>. This configuration will let us deploy applications into this Openshift cluster.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -447,7 +450,7 @@ oc label ManagedCluster local-cluster gitops-cluster=true environment=developmen
 </div>
 </div>
 <div class="paragraph">
-<p>and check that cluster <code>local-cluster</code> is added as an ArgoCD Cluster from the ArgoCD Console &gt; Settings &gt; Cluster</p>
+<p>and check that cluster <code>local-cluster</code> is added as an ArgoCD Cluster from the <strong>ArgoCD Console &gt; Settings &gt; Clusters</strong> where we expect to see <code>local-cluster</code> as one of the clusters</p>
 </div>
 <div class="imageblock">
 <div class="content">
