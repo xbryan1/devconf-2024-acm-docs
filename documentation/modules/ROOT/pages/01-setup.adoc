@@ -4,7 +4,7 @@ include::_attributes.adoc[]
 [#architecture]
 == Hands-on Lab Environment
 
-This hands-on lab will be based on two OpenShift clusters. The first one has been already installed with `OpenShift 4.10 Open Environment` provided by `RHPDS` (https://demo.redhat.com), and the second one will be installed from ACM following the steps in this lab. Both Openshift clusters will run on AWS Cloud:
+This hands-on lab will be based on two OpenShift clusters. The first one has been already installed with `OpenShift 4.10 Workshop` provided by `RHPDS` (https://demo.redhat.com), and the second one will be installed from ACM following the steps in this lab. Both Openshift clusters will run on AWS Cloud:
 
 - Cluster `local-cluster`: It has been already installed. In this cluster you will install ACM/GitOps Operators and deploy applications.
 
