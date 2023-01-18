@@ -31,6 +31,13 @@ ssh-keygen
 [#credsgui]
 == Setup credentials via web interface
 
+To setup the AWS credentials using the web interface, you need to enter to the Red Hat Advanced Cluster Management route first. You can find it in the open-cluster-management namespace.
+
+After entering into Red Hat Advanced Cluster Management web interface, you need to access into the "Credentials" section.
+
+image::install/creds01.png[]
+
+To create the new credentials, you should click into "Add credential" button.
 
 [#credscli]
 == Setup credentials via CLI
