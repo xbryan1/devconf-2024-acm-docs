@@ -189,7 +189,7 @@
 <p>A Global Pull Secret. If you don&#8217;t have one, you can get it from <a href="https://console.redhat.com/openshift/install/pull-secret" class="bare">https://console.redhat.com/openshift/install/pull-secret</a></p>
 </li>
 <li>
-<p>A SSH private key. If you don&#8217;t have one, you can generate it with the following command:</p>
+<p>A SSH public and private key. If you don&#8217;t have one, you can generate it with the following command:</p>
 </li>
 </ol>
 </div>
@@ -214,6 +214,49 @@
 </div>
 <div class="paragraph">
 <p>To create the new credentials, you should click into "Add credential" button.</p>
+</div>
+<div class="paragraph">
+<p>As the second OpenShift cluster will be installed in AWS, you should click into "Amazon Web Services".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/install/creds02.png" alt="creds02">
+</div>
+</div>
+<div class="paragraph">
+<p>On the next form, you should choose a Credential name, the namespace where the credential is going to be stored and the Base DNS domain. You can type any Credential name, you can use the default namespace and you will need to add your Base DNS domain received in your email as the Base DNS domain.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/install/creds03.png" alt="creds03">
+</div>
+</div>
+<div class="paragraph">
+<p>The next form will ask about the Amazon Web Services Access key ID and Secret access key. Both data are in the email received previously.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/install/creds04.png" alt="creds04">
+</div>
+</div>
+<div class="paragraph">
+<p>The proxy form, can be left emtpy, we are not going to use it in this LAB.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/install/creds05.png" alt="creds05">
+</div>
+</div>
+<div class="paragraph">
+<p>The next step is to add the Global Pull secret and the SSH keys.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/install/creds06.png" alt="creds06">
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, you can review the data an add the credentials.</p>
 </div>
 </div>
 </div>
@@ -244,7 +287,7 @@ stringData:
     &lt;7 - A SSH private key&gt;
   ssh-publickey: &gt;
     ssh-rsa
-    &lt;8 - A SSH public key&gt;
+    &lt;7 - A SSH public key&gt;
   httpProxy: ""
   httpsProxy: ""
   noProxy: ""
