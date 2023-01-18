@@ -205,7 +205,7 @@
 <p>To setup the AWS credentials using the web interface, you need to enter to the Red Hat Advanced Cluster Management route first. You can find it in the open-cluster-management namespace.</p>
 </div>
 <div class="paragraph">
-<p>After entering into Red Hat Advanced Cluster Management web interface, you need to access into the "Credentials" section.</p>
+<p>After entering into Red Hat Advanced Cluster Management web interface, you need to enter into the "Credentials" section.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -304,8 +304,94 @@ stringData:
 </div>
 </div>
 </div>
-<h1 id="install" class="sect0"><a class="anchor" href="#install"></a>Deploy new OpenShift cluster</h1>
+<h1 id="install" class="sect0"><a class="anchor" href="#install"></a>Deploy a new OpenShift cluster</h1>
+<div class="paragraph">
+<p>To deploy applications using a multicluster architecture, you will need a second OpenShift cluster. In this LAB you will have one OpenShift cluster, and you will use Red Hat Advanced Cluster Management to deploy the second OpenShift cluster.</p>
+</div>
+<div class="paragraph">
+<p>You can create the second OpenShift cluster using the Red Hat Advanced Cluster Management web interface or using the command line interface (CLI).</p>
+</div>
+<div class="sect1">
+<h2 id="installgui"><a class="anchor" href="#installgui"></a>Deploy a new OpenShift cluster via web interface</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To create the second OpenShift cluster using the web interface, you need to enter into the Red Hat Advanced Cluster Management route first. You can find it in the open-cluster-management namespace.</p>
+</div>
+<div class="paragraph">
+<p>After entering into Red Hat Advanced Cluster Management web interface, you will need to enter into "Infrastructure" &#8594; "Clusters" section and click into "Create cluster" button.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/install/create01.png" alt="create01">
+</div>
+</div>
+<div class="paragraph">
+<p>As the cluster will be installed on Amazon Web Services, you will need to choose Amazon Web Services.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/install/create02.png" alt="create02">
+</div>
+</div>
+<div class="paragraph">
+<p>In the Cluster details form, you will need to choose a Cluster name, a Cluster set and the Base DNS domain.
+In the Cluster name, you can choose <code>rhte2023-cluster01</code> as the Cluster name.
+In the Cluster set, you can choose the default Cluster set.
+In the Base DNS domain, you need to use the Base DNS domain received by email.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/install/create03.png" alt="create03">
+</div>
+</div>
+<div class="paragraph">
+<p>The next step is to configure the Region, Architecture and node sizing. You can use eu-west-1 as the Region and amd64 as the Architecture. The node sizing can be modified, but it is not necessary in this LAB.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/install/create04.png" alt="create04">
+</div>
+</div>
+<div class="paragraph">
+<p>On the Networking form, you can use the default values.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/install/create05.png" alt="create05">
+</div>
+</div>
+<div class="paragraph">
+<p>The Proxy is not going to be used in this LAB, so you don&#8217;t need to define the Proxy values.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/install/create06.png" alt="create06">
+</div>
+</div>
+<div class="paragraph">
+<p>The Automation is not going to be used in this LAB also, so you don&#8217;t need to define any values.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/install/create07.png" alt="create07">
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, you can review the data and create the cluster</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/install/create08.png" alt="create08">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="installcli"><a class="anchor" href="#installcli"></a>Deploy a new OpenShift cluster via CLI</h2>
+<div class="sectionbody">
 
+</div>
+</div>
 <nav class="pagination">
   <span class="prev"><a href="02-deploy.html">2. Install Advanced Management and GitOps Operators</a></span>
   <span class="next"><a href="04-application.html">4. Deploy a Multicluster Application with GitOps</a></span>
