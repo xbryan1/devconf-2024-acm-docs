@@ -33,7 +33,7 @@ ssh-keygen
 
 To setup the AWS credentials using the web interface, you need to enter to the Red Hat Advanced Cluster Management route first. You can find it in the open-cluster-management namespace.
 
-After entering into Red Hat Advanced Cluster Management web interface, you need to access into the "Credentials" section.
+After entering into Red Hat Advanced Cluster Management web interface, you need to enter into the "Credentials" section.
 
 image::install/creds01.png[]
 
@@ -102,4 +102,51 @@ oc create -f cretentials.yaml
 ----
 
 [#install]
-= Deploy new OpenShift cluster
+= Deploy a new OpenShift cluster
+
+To deploy applications using a multicluster architecture, you will need a second OpenShift cluster. In this LAB you will have one OpenShift cluster, and you will use Red Hat Advanced Cluster Management to deploy the second OpenShift cluster.
+
+You can create the second OpenShift cluster using the Red Hat Advanced Cluster Management web interface or using the command line interface (CLI).
+
+[#installgui]
+== Deploy a new OpenShift cluster via web interface
+
+To create the second OpenShift cluster using the web interface, you need to enter into the Red Hat Advanced Cluster Management route first. You can find it in the open-cluster-management namespace.
+
+After entering into Red Hat Advanced Cluster Management web interface, you will need to enter into "Infrastructure" -> "Clusters" section and click into "Create cluster" button.
+
+image::install/create01.png[]
+
+As the cluster will be installed on Amazon Web Services, you will need to choose Amazon Web Services.
+
+image::install/create02.png[]
+
+In the Cluster details form, you will need to choose a Cluster name, a Cluster set and the Base DNS domain. 
+In the Cluster name, you can choose `rhte2023-cluster01` as the Cluster name.
+In the Cluster set, you can choose the default Cluster set.
+In the Base DNS domain, you need to use the Base DNS domain received by email.
+
+image::install/create03.png[]
+
+The next step is to configure the Region, Architecture and node sizing. You can use eu-west-1 as the Region and amd64 as the Architecture. The node sizing can be modified, but it is not necessary in this LAB.
+
+image::install/create04.png[]
+
+On the Networking form, you can use the default values.
+
+image::install/create05.png[]
+
+The Proxy is not going to be used in this LAB, so you don't need to define the Proxy values.
+
+image::install/create06.png[]
+
+The Automation is not going to be used in this LAB also, so you don't need to define any values.
+
+image::install/create07.png[]
+
+Finally, you can review the data and create the cluster
+
+image::install/create08.png[]
+
+[#installcli]
+== Deploy a new OpenShift cluster via CLI
