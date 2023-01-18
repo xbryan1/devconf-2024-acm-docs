@@ -21,7 +21,7 @@ To setup the credentials, you will need the following information:
 . AWS Secret Key
 . Base domain
 . A Global Pull Secret. If you don't have one, you can get it from https://console.redhat.com/openshift/install/pull-secret
-. A SSH private key. If you don't have one, you can generate it with the following command:
+. A SSH public and private key. If you don't have one, you can generate it with the following command:
 
 [source,bash, subs="+macros,+attributes"]
 ----
@@ -38,6 +38,28 @@ After entering into Red Hat Advanced Cluster Management web interface, you need 
 image::install/creds01.png[]
 
 To create the new credentials, you should click into "Add credential" button.
+
+As the second OpenShift cluster will be installed in AWS, you should click into "Amazon Web Services".
+
+image::install/creds02.png[]
+
+On the next form, you should choose a Credential name, the namespace where the credential is going to be stored and the Base DNS domain. You can type any Credential name, you can use the default namespace and you will need to add your Base DNS domain received in your email as the Base DNS domain.
+
+image::install/creds03.png[]
+
+The next form will ask about the Amazon Web Services Access key ID and Secret access key. Both data are in the email received previously.
+
+image::install/creds04.png[]
+
+The proxy form, can be left emtpy, we are not going to use it in this LAB.
+
+image::install/creds05.png[]
+
+The next step is to add the Global Pull secret and the SSH keys.
+
+image::install/creds06.png[]
+
+Finally, you can review the data an add the credentials.
 
 [#credscli]
 == Setup credentials via CLI
@@ -66,7 +88,7 @@ stringData:
     <7 - A SSH private key>
   ssh-publickey: >
     ssh-rsa
-    <8 - A SSH public key>
+    <7 - A SSH public key>
   httpProxy: ""
   httpsProxy: ""
   noProxy: ""
