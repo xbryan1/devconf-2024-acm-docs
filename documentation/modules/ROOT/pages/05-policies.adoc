@@ -1,0 +1,11 @@
+[#policies]
+== Deploy Red Hat Advanced Management Policies
+
+Now, you are going to create two policies. The policies can be used to check that the OpenShift clusters are compliant.
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc apply -k 03_deploy_application/base/application01/base
+----

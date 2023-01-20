@@ -1,0 +1,11 @@
+[#multiclusterapplication]
+== Advanced Cluster Management Multicluster Application
+
+Finally, you are going to check if your applications are fault tolerant.
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc apply -k 03_deploy_application/base/application01/base
+----
