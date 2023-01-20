@@ -389,7 +389,210 @@ In the Base DNS domain, you need to use the Base DNS domain received by email.</
 <div class="sect1">
 <h2 id="installcli"><a class="anchor" href="#installcli"></a>Deploy a new OpenShift cluster via CLI</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>To deploy a new OpenShift cluster via CLI, you will need to create a install-config.yaml file first. You can use this example as a template:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
+metadata:
+  name: 'rhte2023-cluster01'
+baseDomain: &lt;1 - Base DNS domain&gt;
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  replicas: 3
+  platform:
+    aws:
+      rootVolume:
+        iops: 4000
+        size: 100
+        type: io1
+      type: m5.xlarge
+compute:
+- hyperthreading: Enabled
+  architecture: amd64
+  name: 'worker'
+  replicas: 3
+  platform:
+    aws:
+      rootVolume:
+        iops: 2000
+        size: 100
+        type: io1
+      type: m5.xlarge
+networking:
+  networkType: OpenShiftSDN
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 10.0.0.0/16
+  serviceNetwork:
+  - 172.30.0.0/16
+platform:
+  aws:
+    region: eu-west-1
+pullSecret: "" # skip, hive will inject based on it's secrets
+sshKey: |-
+    &lt;2 - Your SSH public key&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After creating the file, you will need to encode it to base64. You can convert it with the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat install-config.yaml | base64</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Save the output, you will need it on the next step.</p>
+</div>
+<div class="paragraph">
+<p>Now, you can create the needed resources to create the second cluster. You will need to create a rhte2023-cluster01.yaml file. You can follow this example, and modify it with the variables of your environment:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: hive.openshift.io/v1
+kind: ClusterDeployment
+metadata:
+  name: 'rhte2023-cluster01'
+  namespace: 'rhte2023-cluster01'
+  labels:
+    cloud: 'AWS'
+    region: 'eu-west-1'
+    vendor: OpenShift
+    cluster.open-cluster-management.io/clusterset: 'default'
+spec:
+  baseDomain: &lt;1 - Base DNS Domain&gt;
+  clusterName: 'rhte2023-cluster01'
+  controlPlaneConfig:
+    servingCertificates: {}
+  installAttemptsLimit: 1
+  installed: false
+  platform:
+    aws:
+      credentialsSecretRef:
+        name: rhte2023-cluster01-aws-creds
+      region: eu-west-1
+  provisioning:
+    installConfigSecretRef:
+      name: rhte2023-cluster01-install-config
+    sshPrivateKeySecretRef:
+      name: rhte2023-cluster01-ssh-private-key
+    imageSetRef:
+       #quay.io/openshift-release-dev/ocp-release:4.10.47-x86_64
+      name: img4.10.47-x86-64-appsub
+  pullSecretRef:
+    name: rhte2023-cluster01-pull-secret
+---
+apiVersion: cluster.open-cluster-management.io/v1
+kind: ManagedCluster
+metadata:
+  labels:
+    cloud: Amazon
+    region: eu-west-1
+    name: 'rhte2023-cluster01'
+    vendor: OpenShift
+    cluster.open-cluster-management.io/clusterset: 'default'
+  name: 'rhte2023-cluster01'
+spec:
+  hubAcceptsClient: true
+---
+apiVersion: hive.openshift.io/v1
+kind: MachinePool
+metadata:
+  name: rhte2023-cluster01-worker
+  namespace: 'rhte2023-cluster01'
+spec:
+  clusterDeploymentRef:
+    name: 'rhte2023-cluster01'
+  name: worker
+  platform:
+    aws:
+      rootVolume:
+        iops: 2000
+        size: 100
+        type: io1
+      type: m5.xlarge
+  replicas: 3
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rhte2023-cluster01-pull-secret
+  namespace: 'rhte2023-cluster01'
+stringData:
+  .dockerconfigjson: |-
+    &lt;2 - Global pull secret&gt;
+type: kubernetes.io/dockerconfigjson
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rhte2023-cluster01-install-config
+  namespace: 'rhte2023-cluster01'
+type: Opaque
+data:
+  # Base64 encoding of install-config yaml
+  install-config.yaml: &lt;3 - Base64 encoded file&gt;
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rhte2023-cluster01-ssh-private-key
+  namespace: 'rhte2023-cluster01'
+stringData:
+  ssh-privatekey: |-
+    &lt;4 - SSH private key&gt;
+type: Opaque
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: rhte2023-cluster01-aws-creds
+  namespace: 'rhte2023-cluster01'
+stringData:
+  aws_access_key_id: &lt;5 - AWS Access key ID&gt;
+  aws_secret_access_key: &lt;6 - AWS Secret Key&gt;
+---
+apiVersion: agent.open-cluster-management.io/v1
+kind: KlusterletAddonConfig
+metadata:
+  name: 'rhte2023-cluster01'
+  namespace: 'rhte2023-cluster01'
+spec:
+  clusterName: 'rhte2023-cluster01'
+  clusterNamespace: 'rhte2023-cluster01'
+  clusterLabels:
+    cloud: Amazon
+    vendor: OpenShift
+  applicationManager:
+    enabled: true
+  policyController:
+    enabled: true
+  searchCollector:
+    enabled: true
+  certPolicyController:
+    enabled: true
+  iamPolicyController:
+    enabled: true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, apply the file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc create -f rhte2023-cluster01.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The second cluster installation, will be launched.</p>
+</div>
 </div>
 </div>
 <nav class="pagination">
