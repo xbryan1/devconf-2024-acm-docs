@@ -150,3 +150,202 @@ image::install/create08.png[]
 
 [#installcli]
 == Deploy a new OpenShift cluster via CLI
+
+To deploy a new OpenShift cluster via CLI, you will need to create a install-config.yaml file first. You can use this example as a template:
+
+[.lines_space] 
+[.console-input]
+[source,yaml, subs="+macros,+attributes"]
+----  
+apiVersion: v1
+metadata:
+  name: 'rhte2023-cluster01'
+baseDomain: <1 - Base DNS domain>
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  replicas: 3
+  platform:
+    aws:
+      rootVolume:
+        iops: 4000
+        size: 100
+        type: io1
+      type: m5.xlarge
+compute:
+- hyperthreading: Enabled
+  architecture: amd64
+  name: 'worker'
+  replicas: 3
+  platform:
+    aws:
+      rootVolume:
+        iops: 2000
+        size: 100
+        type: io1
+      type: m5.xlarge
+networking:
+  networkType: OpenShiftSDN
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 10.0.0.0/16
+  serviceNetwork:
+  - 172.30.0.0/16
+platform:
+  aws:
+    region: eu-west-1
+pullSecret: "" # skip, hive will inject based on it's secrets
+sshKey: |-
+    <2 - Your SSH public key>
+----
+
+After creating the file, you will need to encode it to base64. You can convert it with the following command:
+[source,bash, subs="+macros,+attributes"]
+----
+cat install-config.yaml | base64
+----
+
+Save the output, you will need it on the next step.
+
+Now, you can create the needed resources to create the second cluster. You will need to create a rhte2023-cluster01.yaml file. You can follow this example, and modify it with the variables of your environment:
+[.lines_space] 
+[.console-input]
+[source,yaml, subs="+macros,+attributes"]
+----
+apiVersion: hive.openshift.io/v1
+kind: ClusterDeployment
+metadata:
+  name: 'rhte2023-cluster01'
+  namespace: 'rhte2023-cluster01'
+  labels:
+    cloud: 'AWS'
+    region: 'eu-west-1'
+    vendor: OpenShift
+    cluster.open-cluster-management.io/clusterset: 'default'
+spec:
+  baseDomain: <1 - Base DNS Domain>
+  clusterName: 'rhte2023-cluster01'
+  controlPlaneConfig:
+    servingCertificates: {}
+  installAttemptsLimit: 1
+  installed: false
+  platform:
+    aws:
+      credentialsSecretRef:
+        name: rhte2023-cluster01-aws-creds
+      region: eu-west-1
+  provisioning:
+    installConfigSecretRef:
+      name: rhte2023-cluster01-install-config
+    sshPrivateKeySecretRef:
+      name: rhte2023-cluster01-ssh-private-key
+    imageSetRef:
+       #quay.io/openshift-release-dev/ocp-release:4.10.47-x86_64
+      name: img4.10.47-x86-64-appsub
+  pullSecretRef:
+    name: rhte2023-cluster01-pull-secret
+---
+apiVersion: cluster.open-cluster-management.io/v1
+kind: ManagedCluster
+metadata:
+  labels:
+    cloud: Amazon
+    region: eu-west-1
+    name: 'rhte2023-cluster01'
+    vendor: OpenShift
+    cluster.open-cluster-management.io/clusterset: 'default'
+  name: 'rhte2023-cluster01'
+spec:
+  hubAcceptsClient: true
+---
+apiVersion: hive.openshift.io/v1
+kind: MachinePool
+metadata:
+  name: rhte2023-cluster01-worker
+  namespace: 'rhte2023-cluster01'
+spec:
+  clusterDeploymentRef:
+    name: 'rhte2023-cluster01'
+  name: worker
+  platform:
+    aws:
+      rootVolume:
+        iops: 2000
+        size: 100
+        type: io1
+      type: m5.xlarge
+  replicas: 3
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rhte2023-cluster01-pull-secret
+  namespace: 'rhte2023-cluster01'
+stringData:
+  .dockerconfigjson: |-
+    <2 - Global pull secret>
+type: kubernetes.io/dockerconfigjson
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rhte2023-cluster01-install-config
+  namespace: 'rhte2023-cluster01'
+type: Opaque
+data:
+  # Base64 encoding of install-config yaml
+  install-config.yaml: <3 - Base64 encoded file>
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rhte2023-cluster01-ssh-private-key
+  namespace: 'rhte2023-cluster01'
+stringData:
+  ssh-privatekey: |-
+    <4 - SSH private key>
+type: Opaque
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: rhte2023-cluster01-aws-creds
+  namespace: 'rhte2023-cluster01'
+stringData:
+  aws_access_key_id: <5 - AWS Access key ID>
+  aws_secret_access_key: <6 - AWS Secret Key>
+---
+apiVersion: agent.open-cluster-management.io/v1
+kind: KlusterletAddonConfig
+metadata:
+  name: 'rhte2023-cluster01'
+  namespace: 'rhte2023-cluster01'
+spec:
+  clusterName: 'rhte2023-cluster01'
+  clusterNamespace: 'rhte2023-cluster01'
+  clusterLabels:
+    cloud: Amazon
+    vendor: OpenShift
+  applicationManager:
+    enabled: true
+  policyController:
+    enabled: true
+  searchCollector:
+    enabled: true
+  certPolicyController:
+    enabled: true
+  iamPolicyController:
+    enabled: true
+----
+
+Now, apply the file:
+[source,bash, subs="+macros,+attributes"]
+----
+oc create -f rhte2023-cluster01.yaml
+----
+
+The second cluster installation, will be launched.
