@@ -59,7 +59,7 @@
     <a class="nav-link" href="01-setup.html#architecture">Hands-on Lab Environment</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="01-setup.html#sources">Git repositories</a>
+    <a class="nav-link" href="01-setup.html#sources">Hands-on Lab Git repository</a>
   </li>
 </ul>
   </li>
@@ -80,7 +80,7 @@
     <a class="nav-link" href="#gitopsacm">Integrate GitOps and ACM</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#managedcluster">Label local-cluster as a GitOps Cluster</a>
+    <a class="nav-link" href="#managedcluster">Registering local-cluster to GitOps</a>
   </li>
 </ul>
   </li>
@@ -207,12 +207,12 @@ OpenShift Container Platform required access: Cluster administrator (cluster-adm
 <h2 id="install"><a class="anchor" href="#install"></a>Install ACM Operator</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We will go through <code>oc kustomize</code> command in order to perform ACM Operator installation:</p>
+<p>We will go through <code>Kustomize</code> templates to perform ACM Operator installation:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Clone repository</p>
+<p><strong>Clone repository</strong></p>
 </li>
 </ul>
 </div>
@@ -221,17 +221,23 @@ OpenShift Container Platform required access: Cluster administrator (cluster-adm
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone <a href="https://github.com/xbryan1/rhte-2023-acm-apps" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps</a></code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Directories structure:</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>Directories structure</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/deploy/deploy03.png" alt="deploy03">
 </div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Declarative approach with Kustomize</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Run the following command to see how kustomize parse <code>YAML</code> files. This example does not apply any configuration, in order to apply it use <code>oc appl -k</code> or <code>oc apply --kustomize=''</code> to pocess a kustomization directory</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -246,9 +252,22 @@ OpenShift Container Platform required access: Cluster administrator (cluster-adm
 <div class="ulist">
 <ul>
 <li>
-<p>Enable master node scheduling</p>
+<p><strong>Enable master node scheduling</strong></p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>Enabling master node scheduling will be able to deploy workloads on master nodes.</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc replace -k 00_boostrap/base/openshift/base</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/deploy/deploy05.png" alt="deploy05">
+</div>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -262,26 +281,21 @@ This configuration is not recommended for production.
 </tr>
 </table>
 </div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc replace -k 00_boostrap/base/openshift/base</code></pre>
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/deploy/deploy05.png" alt="deploy05">
-</div>
-</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Install ACM Operator:</p>
+<p><strong>Install ACM Operator</strong>:</p>
 </li>
 </ul>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 00_boostrap/base/acm_operator/base</code></pre>
+</div>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pod -n open-cluster-management</code></pre>
 </div>
 </div>
 <div class="imageblock">
@@ -314,7 +328,7 @@ This configuration is not recommended for production.
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">watch oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management</code></pre>
 </div>
 </div>
 <div class="imageblock">
@@ -327,9 +341,12 @@ This configuration is not recommended for production.
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc logs multiclusterhub-operator-xxx-xxx -n open-cluster-management
-
-oc get pod -n open-cluster-management</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc logs multiclusterhub-operator-xxx-xxx -n open-cluster-management</code></pre>
+</div>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pod -n open-cluster-management</code></pre>
 </div>
 </div>
 </div>
@@ -338,15 +355,24 @@ oc get pod -n open-cluster-management</code></pre>
 <h2 id="console"><a class="anchor" href="#console"></a>Access to the ACM Web Console</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>After the ACM Operator is installed, it provides dashboard UI. We can access it through the OpenShift <code>Route</code>. List routes in the <code>open-cluster-management</code> namespace and get address of console  <a href="https://multicloud-console.apps.&lt;YOUR_DOMAIN&gt" class="bare">https://multicloud-console.apps.&lt;YOUR_DOMAIN&gt</a>;.</p>
+<p>After the ACM Operator is installed, it provides a dashboard UI. We can access it through a OpenShift <code>Route</code>. List routes in the <code>open-cluster-management</code> namespace and get address of console  <a href="https://multicloud-console.apps.&lt;YOUR_DOMAIN&gt" class="bare">https://multicloud-console.apps.&lt;YOUR_DOMAIN&gt</a>;.</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/deploy/deploy09.png" alt="deploy09">
 </div>
 </div>
-<div class="paragraph">
-<p>Multicluster Hub has to be installed and the RHACM Console accesible to proceed with the next steps.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Multicluster Hub has to be installed and the RHACM Console accesible to proceed with the next steps.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -366,48 +392,17 @@ oc get pod -n open-cluster-management</code></pre>
 <img src="_images/deploy/deploy10.png" alt="deploy10">
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="gitopsacm"><a class="anchor" href="#gitopsacm"></a>Integrate GitOps and ACM</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>ACM introduces a new <code>gitopscluster</code> resource kind, which connects to a <code>placement</code> resource to determine which clusters to import into Argo CD. This integration allows you to expand your fleet, while having Argo CD automatically engage in working with your new clusters. This means if you leverage Argo CD <code>ApplicationSets</code>, your application payloads are automatically applied to your new clusters as they are registered by RHACM in your Argo CD instances.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/deploy/deploy18.png" alt="deploy18">
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Run the following commands to perform the GitOps Operator integration with RHACM</p>
-</li>
-</ul>
-</div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 00_boostrap/base/gitops_acm/base/</code></pre>
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/deploy/deploy11.png" alt="deploy11">
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
 <p>Check that ArgoCD console is accessible and pods are in <code>Running</code> status</p>
-</li>
-</ul>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n openshift-gitops
-
-oc get pods -n openshift-gitops</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n openshift-gitops</code></pre>
+</div>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -n openshift-gitops</code></pre>
 </div>
 </div>
 <div class="imageblock">
@@ -443,15 +438,49 @@ oc get pods -n openshift-gitops</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="managedcluster"><a class="anchor" href="#managedcluster"></a>Label local-cluster as a GitOps Cluster</h2>
+<h2 id="gitopsacm"><a class="anchor" href="#gitopsacm"></a>Integrate GitOps and ACM</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ACM introduces a new <code>gitopscluster</code> resource kind, which connects to a <code>placement</code> resource to determine which clusters to import into Argo CD. This integration allows you to expand your fleet, while having Argo CD automatically engage in working with your new clusters. This means if you leverage Argo CD <code>ApplicationSets</code>, your application payloads are automatically applied to your new clusters as they are registered by RHACM in your Argo CD instances.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/deploy/deploy18.png" alt="deploy18">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Run the following commands to perform the GitOps Operator integration with RHACM</p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 00_boostrap/base/gitops_acm/base/</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/deploy/deploy11.png" alt="deploy11">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="managedcluster"><a class="anchor" href="#managedcluster"></a>Registering local-cluster to GitOps</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>After the ACM/GitOps integration is done, you will label <code>local-cluster</code> (ACM) with <code>ClusterSet rhte2023-gitops-clusters</code> and environment <code>development</code>. This configuration will let us deploy applications into this Openshift cluster.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc label ManagedCluster local-cluster cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters --overwrite
-oc label ManagedCluster local-cluster gitops-cluster=true environment=development</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc label ManagedCluster local-cluster cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters --overwrite</code></pre>
+</div>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc label ManagedCluster local-cluster gitops-cluster=true environment=development</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -465,6 +494,19 @@ oc label ManagedCluster local-cluster gitops-cluster=true environment=developmen
 <div class="imageblock">
 <div class="content">
 <img src="_images/deploy/deploy17.png" alt="deploy17">
+</div>
+</div>
+<div class="paragraph">
+<p>and the <code>local-cluster</code> belongs to <code>ClusterSet rhte2023-gitops-clusters</code> through <code>Openshift Console &gt; Advanced Cluster Management &gt; Clusters &gt; Cluster sets</code></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/deploy/deploy19.png" alt="deploy19">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/deploy/deploy20.png" alt="deploy20">
 </div>
 </div>
 </div>

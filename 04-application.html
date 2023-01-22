@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Untitled :: Multicluster Application Deployment with Advanced Cluster Management and GitOps</title>
+    <title>Deploy a Multicluster Application with GitOps :: Multicluster Application Deployment with Advanced Cluster Management and GitOps</title>
     <link rel="canonical" href="https://xbryan1.github.io/rhte-2023-acm-docs/04-application.html">
     <link rel="prev" href="03-installcluster.html">
     <link rel="next" href="05-policies.html">
@@ -59,7 +59,7 @@
     <a class="nav-link" href="01-setup.html#architecture">Hands-on Lab Environment</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="01-setup.html#sources">Git repositories</a>
+    <a class="nav-link" href="01-setup.html#sources">Hands-on Lab Git repository</a>
   </li>
 </ul>
   </li>
@@ -80,7 +80,7 @@
     <a class="nav-link" href="02-deploy.html#gitopsacm">Integrate GitOps and ACM</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="02-deploy.html#managedcluster">Label local-cluster as a GitOps Cluster</a>
+    <a class="nav-link" href="02-deploy.html#managedcluster">Registering local-cluster to GitOps</a>
   </li>
 </ul>
   </li>
@@ -144,17 +144,44 @@
   </div>
   <div class="content">
 <article class="doc">
-<div class="sect1">
-<h2 id="application"><a class="anchor" href="#application"></a>Deploy GitOps Application</h2>
+<h1 class="page">Deploy a Multicluster Application with GitOps</h1>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>We will go through <code>oc kustomize</code> command to create an ACM application and it automatically will deploy the application defined based on the <code>Placement</code>:</p>
+<p><code>OpenShift GitOps</code> implements <code>Argo CD</code> as a controller so that it continuously monitors application definitions and configurations defined in a Git repository. Then, <code>Argo CD</code> compares the specified state of these configurations with their live state on the cluster.</p>
 </div>
+<div class="paragraph">
+<p>The <code>ApplicationSet</code> leverages the cluster decision generator to interface Kubernetes custom resources that use custom resource-specific logic to decide which managed clusters to deploy to. A cluster decision resource generates a list of managed clusters, which are then rendered into the template fields of the ApplicationSet resource. This is done using duck-typing, which does not require knowledge of the full shape of the referenced Kubernetes resource.</p>
+</div>
+<div class="paragraph">
+<p><code>ApplicationSet</code> is a sub-project of <code>Argo CD</code> that adds multicluster support. You will go through this section to create ApplicationSets from the Red Hat Advanced Cluster Management.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_install_pipelines_operator"><a class="anchor" href="#_install_pipelines_operator"></a>Install Pipelines Operator</h2>
+<div class="sectionbody">
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 00_boostrap/base/pipelines_operator/base/</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_bootstrap_gitops_repository"><a class="anchor" href="#_bootstrap_gitops_repository"></a>Bootstrap GitOps repository</h2>
+<div class="sectionbody">
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 03_deploy_application/base/application01/base</code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_drift_detection_and_auto_healing"><a class="anchor" href="#_drift_detection_and_auto_healing"></a>Drift detection and auto-healing</h2>
+<div class="sectionbody">
+
 </div>
 </div>
 <nav class="pagination">
