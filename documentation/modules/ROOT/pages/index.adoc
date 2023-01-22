@@ -7,4 +7,12 @@
 
 Welcome to this RHTE 2023 hands-on lab where you will learn how to deploy multicluster applications with Advanced Cluster Management and GitOps/Argo CD approach. 
 
+In this hands-on lab, we'll show you how to:
+
+- Install GitOps and ACM Operators
+- Integrate GitOps instance and ACM Applications
+- Deploy a new Openshift Cluster
+- Bootstrap a GitOps environment.
+- Deploy Multicluster applications
+
 Let's get started.

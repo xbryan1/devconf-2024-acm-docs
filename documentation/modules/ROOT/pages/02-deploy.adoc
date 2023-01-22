@@ -20,9 +20,9 @@ NOTE: OpenShift Container Platform required access: Cluster administrator (clust
 [#install]
 == Install ACM Operator
 
-We will go through `oc kustomize` command in order to perform ACM Operator installation:
+We will go through `Kustomize` templates to perform ACM Operator installation:
 
-- Clone repository 
+- **Clone repository** 
 
 [.lines_space]
 [.console-input]
@@ -31,9 +31,13 @@ We will go through `oc kustomize` command in order to perform ACM Operator insta
 git clone https://github.com/xbryan1/rhte-2023-acm-apps
 ----
 
-- Directories structure:
+Directories structure
 
 image::deploy/deploy03.png[]
+
+- **Declarative approach with Kustomize**
+
+Run the following command to see how kustomize parse `YAML` files. This example does not apply any configuration, in order to apply it use `oc appl -k` or `oc apply --kustomize=''` to pocess a kustomization directory
 
 [.lines_space]
 [.console-input]
@@ -44,9 +48,9 @@ cd rhte-2023-acm-apps/rhte2023/; oc kustomize 00_boostrap/base/acm_operator/base
 
 image::deploy/deploy04.png[]
 
-- Enable master node scheduling
+- **Enable master node scheduling**
 
-WARNING: This configuration is not recommended for production.
+Enabling master node scheduling will be able to deploy workloads on master nodes.
 
 [.lines_space]
 [.console-input]
@@ -57,13 +61,22 @@ oc replace -k 00_boostrap/base/openshift/base
 
 image::deploy/deploy05.png[]
 
-- Install ACM Operator:
+WARNING: This configuration is not recommended for production.
+
+- **Install ACM Operator**:
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
 oc apply -k 00_boostrap/base/acm_operator/base
+----
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc get pod -n open-cluster-management
 ----
 
 image::deploy/deploy06.png[]
@@ -87,7 +100,7 @@ Wait until the ACM Operatator is installed. It can take up to 10 minutes for the
 [.console-input]
 [source,shell, subs="+macros,+attributes"]
 ----
-oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
+watch oc get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
 ----
 
 image::deploy/deploy08.png[]
@@ -99,18 +112,23 @@ If the multiclusterhub is not in `Running` status after a while, check the opera
 [source,bash, subs="+macros,+attributes"]
 ----
 oc logs multiclusterhub-operator-xxx-xxx -n open-cluster-management
+----
 
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
 oc get pod -n open-cluster-management
 ----
 
 [#console]
 == Access to the ACM Web Console
 
-After the ACM Operator is installed, it provides dashboard UI. We can access it through the OpenShift `Route`. List routes in the `open-cluster-management` namespace and get address of console  https://multicloud-console.apps.<YOUR_DOMAIN>.
+After the ACM Operator is installed, it provides a dashboard UI. We can access it through a OpenShift `Route`. List routes in the `open-cluster-management` namespace and get address of console  https://multicloud-console.apps.<YOUR_DOMAIN>.
 
 image::deploy/deploy09.png[]
 
-Multicluster Hub has to be installed and the RHACM Console accesible to proceed with the next steps.
+NOTE: Multicluster Hub has to be installed and the RHACM Console accesible to proceed with the next steps.
 
 [#gitops]
 == Install GitOps Operator
@@ -125,6 +143,35 @@ oc apply -k 00_boostrap/base/gitops_operator/base/
 ----
 
 image::deploy/deploy10.png[]
+
+Check that ArgoCD console is accessible and pods are in `Running` status
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc get route -n openshift-gitops
+----
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc get pods -n openshift-gitops
+----
+
+image::deploy/deploy12.png[]
+
+or from the Openshift Console 
+
+image::deploy/deploy13.png[]
+
+image::deploy/deploy14.png[]
+
+- Login into the ArgoCD Console with the Openshift credentials. 
+
+image::deploy/deploy15.png[]
+
 
 [#gitopsacm]
 == Integrate GitOps and ACM
@@ -144,31 +191,9 @@ oc apply -k 00_boostrap/base/gitops_acm/base/
 
 image::deploy/deploy11.png[]
 
-- Check that ArgoCD console is accessible and pods are in `Running` status
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-oc get route -n openshift-gitops
-
-oc get pods -n openshift-gitops
-----
-
-image::deploy/deploy12.png[]
-
-or from the Openshift Console 
-
-image::deploy/deploy13.png[]
-
-image::deploy/deploy14.png[]
-
-- Login into the ArgoCD Console with the Openshift credentials. 
-
-image::deploy/deploy15.png[]
 
 [#managedcluster]
-== Label local-cluster as a GitOps Cluster
+== Registering local-cluster to GitOps
 
 After the ACM/GitOps integration is done, you will label `local-cluster` (ACM) with `ClusterSet rhte2023-gitops-clusters` and environment `development`. This configuration will let us deploy applications into this Openshift cluster.
 
@@ -177,6 +202,12 @@ After the ACM/GitOps integration is done, you will label `local-cluster` (ACM) w
 [source,bash, subs="+macros,+attributes"]
 ----
 oc label ManagedCluster local-cluster cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters --overwrite
+----
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
 oc label ManagedCluster local-cluster gitops-cluster=true environment=development
 ----
 
@@ -185,3 +216,8 @@ and check that cluster `local-cluster` is added as an ArgoCD Cluster from the **
 image::deploy/deploy16.png[]
 
 image::deploy/deploy17.png[]
+
+and the `local-cluster` belongs to `ClusterSet rhte2023-gitops-clusters` through `Openshift Console > Advanced Cluster Management > Clusters > Cluster sets`
+
+image::deploy/deploy19.png[]
+image::deploy/deploy20.png[]

@@ -1,7 +1,22 @@
 [#application]
-== Deploy GitOps Application 
+= Deploy a Multicluster Application with GitOps
 
-We will go through `oc kustomize` command to create an ACM application and it automatically will deploy the application defined based on the `Placement`:
+`OpenShift GitOps` implements `Argo CD` as a controller so that it continuously monitors application definitions and configurations defined in a Git repository. Then, `Argo CD` compares the specified state of these configurations with their live state on the cluster.
+
+The `ApplicationSet` leverages the cluster decision generator to interface Kubernetes custom resources that use custom resource-specific logic to decide which managed clusters to deploy to. A cluster decision resource generates a list of managed clusters, which are then rendered into the template fields of the ApplicationSet resource. This is done using duck-typing, which does not require knowledge of the full shape of the referenced Kubernetes resource.
+
+`ApplicationSet` is a sub-project of `Argo CD` that adds multicluster support. You will go through this section to create ApplicationSets from the Red Hat Advanced Cluster Management.
+
+== Install Pipelines Operator 
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc apply -k 00_boostrap/base/pipelines_operator/base/
+----
+
+== Bootstrap GitOps repository 
 
 [.lines_space]
 [.console-input]
@@ -9,3 +24,6 @@ We will go through `oc kustomize` command to create an ACM application and it au
 ----
 oc apply -k 03_deploy_application/base/application01/base
 ----
+
+== Drift detection and auto-healing
+

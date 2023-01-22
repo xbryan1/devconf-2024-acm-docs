@@ -1,13 +1,13 @@
 * xref:01-setup.adoc[1. Environment Setup]
 ** xref:01-setup.adoc#architecture[Hands-on Lab Environment]
-** xref:01-setup.adoc#sources[Git repositories]
+** xref:01-setup.adoc#sources[Hands-on Lab Git repository]
 
 * xref:02-deploy.adoc[2. Install Advanced Management and GitOps Operators]
 ** xref:02-deploy.adoc#install[Install RHACM Operator]
 ** xref:02-deploy.adoc#console[Access to the ACM Web Console]
 ** xref:02-deploy.adoc#gitops[Install GitOps Operator]
 ** xref:02-deploy.adoc#gitopsacm[Integrate GitOps and ACM]
-** xref:02-deploy.adoc#managedcluster[Label local-cluster as a GitOps Cluster]
+** xref:02-deploy.adoc#managedcluster[Registering local-cluster to GitOps]
 
 * xref:03-installcluster.adoc[3. Install a new Openshift Cluster]
 ** xref:03-installcluster.adoc#credentials[Setup credentials]
