@@ -246,6 +246,14 @@
 <p>Finally, you can review your policy and create it.</p>
 </div>
 <div class="paragraph">
+<p>After the policy is created, you can check if the policy is compliant or not. As the namespace does not exist, the policy should not be compliant. You can create the "rhte" project on one or two OpenShift clusters and check if the policy is now compliant.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="secondpolicygui"><a class="anchor" href="#secondpolicygui"></a>Setup the second policy via web interface</h2>
+<div class="sectionbody">
+<div class="paragraph">
 <p>Now, we are going to create the second policy. You need to choose the name and the namespace again. You can use any name and the "default" namespace.</p>
 </div>
 <div class="imageblock">
@@ -307,24 +315,232 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="secondpolicygui"><a class="anchor" href="#secondpolicygui"></a>Setup the second policy via web interface</h2>
-<div class="sectionbody">
-
-</div>
-</div>
-<div class="sect1">
 <h2 id="firstpolicycli"><a class="anchor" href="#firstpolicycli"></a>Setup the first policy via CLI</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>You can follow this example to create the first policy via CLI. You can create a namespace-policy.yaml file:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: namespace-policy
+  namespace: default
+  annotations:
+    policy.open-cluster-management.io/categories: CM Configuration Management
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+spec:
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-namespace
+        spec:
+          namespaceSelector:
+            exclude:
+              - kube-*
+            include:
+              - default
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Namespace
+                metadata:
+                  name: rhte
+          pruneObjectBehavior: None
+          remediationAction: inform
+          severity: low
+  remediationAction: inform
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: namespace-policy-placement
+  namespace: default
+spec:
+  clusterConditions: []
+  clusterSelector:
+    matchExpressions:
+      - key: vendor
+        operator: In
+        values:
+          - OpenShift
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: namespace-policy-placement
+  namespace: default
+placementRef:
+  name: namespace-policy-placement
+  apiGroup: apps.open-cluster-management.io
+  kind: PlacementRule
+subjects:
+  - name: namespace-policy
+    apiGroup: policy.open-cluster-management.io
+    kind: Policy</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This example, will create the Policy to check if the "rhte" namespace exists. Also, this example is going to create a PlacementRule to apply the policie on all clusters with "vendor: OpenShift" label. Finally, this example will create a binding between the policy and the PlacementRule.</p>
+</div>
+<div class="paragraph">
+<p>Finally, you can create the policy with the following command:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc create -f namespace-policy.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After the policy is created, you can check if the policy is compliant or not. As the namespace does not exist, the policy should not be compliant. You can create the "rhte" project on one or two OpenShift clusters and check if the policy is now compliant.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="secondpolicycli"><a class="anchor" href="#secondpolicycli"></a>Setup the second policy via CLI</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>To create the second policy via CLI, you can create a compliance-policy.yaml file with the following content:</p>
+</div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 03_deploy_application/base/application01/base</code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: compliance-policy
+  namespace: default
+  annotations:
+    policy.open-cluster-management.io/categories: CA Security Assessment and Authorization
+    policy.open-cluster-management.io/controls: CA-2 Security Assessments, CA-7 Continuous Monitoring
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+spec:
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: comp-operator-ns
+        spec:
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Namespace
+                metadata:
+                  name: openshift-compliance
+          pruneObjectBehavior: None
+          remediationAction: enforce
+          severity: high
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: comp-operator-operator-group
+        spec:
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: operators.coreos.com/v1
+                kind: OperatorGroup
+                metadata:
+                  name: compliance-operator
+                  namespace: openshift-compliance
+                spec:
+                  targetNamespaces:
+                    - openshift-compliance
+          pruneObjectBehavior: None
+          remediationAction: enforce
+          severity: high
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: comp-operator-subscription
+        spec:
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: operators.coreos.com/v1alpha1
+                kind: Subscription
+                metadata:
+                  name: compliance-operator
+                  namespace: openshift-compliance
+                spec:
+                  name: compliance-operator
+                  installPlanApproval: Automatic
+                  source: redhat-operators
+                  sourceNamespace: openshift-marketplace
+          pruneObjectBehavior: None
+          remediationAction: enforce
+          severity: high
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: comp-operator-status
+        spec:
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: operators.coreos.com/v1alpha1
+                kind: ClusterServiceVersion
+                metadata:
+                  namespace: openshift-compliance
+                spec:
+                  displayName: Compliance Operator
+                status:
+                  phase: Succeeded
+          pruneObjectBehavior: None
+          remediationAction: enforce
+          severity: high
+  remediationAction: enforce
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: compliance-policy-placement
+  namespace: default
+spec:
+  clusterConditions: []
+  clusterSelector:
+    matchExpressions:
+      - key: vendor
+        operator: In
+        values:
+          - OpenShift
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: compliance-policy-placement
+  namespace: default
+placementRef:
+  name: compliance-policy-placement
+  apiGroup: apps.open-cluster-management.io
+  kind: PlacementRule
+subjects:
+  - name: compliance-policy
+    apiGroup: policy.open-cluster-management.io
+    kind: Policy</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>To create the policy, apply the following command:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc create -f compliance-policy.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the policy is created, you can view that the policy is not compliant, and you can see that the Compliance Operator will be automatically installed. After the operator is installed, the policy will be compliant.</p>
 </div>
 </div>
 </div>
