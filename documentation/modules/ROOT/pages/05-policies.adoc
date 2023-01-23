@@ -3,6 +3,96 @@
 
 Now, you are going to create two policies. The policies can be used to check that the OpenShift clusters are compliant.
 
+First, you are going to create a policy to check that a specific namespace exists on both clusters. As the namespace does not exsit and the policy is on Inform mode only, the policy is not going to be compliant. Later, you can create the namespace in one or two OpenShift clusters and check again the policy. The policy will be compliant on the cluster or clusters where the namespace will be created.
+
+Finally, you are going to create another policy to check if the Compliance Operator is installed. This policy is going to be on Enforce mode, so it is going to remediate itself if the policy is not compliant. As the Compliance Operator is not installed by default, you are going to check that the policy is going to install the operator itself to be compliant.
+
+To create the policies, you can use the Red Hat Advanced Cluster Management web interface, or you can use the command line interface (CLI).
+
+[#firstpolicygui]
+== Setup the first policy via web interface
+
+To setup the first policy, you need to enter into the Red Hat Advanced Cluster Management route first. You can find it in the open-cluster-management namespace.
+
+After entering into Red Hat Advanced Cluster Management web interface, you need to enter into the "Governance" section.
+
+image::policies/policy01.png[]
+
+To create the policy, you should click into the "Create policy" button.
+
+You need to choose a name and a namespace. You can use any name and you can use the "default" namespace.
+
+image::policies/policy02.png[]
+
+The policy will be in "Inform" mode. You need to click into the "Add policy template" link.
+
+image::policies/policy03.png[]
+
+You need to choose the "policy-namespace" policy.
+
+image::policies/policy04.png[]
+
+Then, you need to describe the policy. So, we are going to check that the namespace named "rhte" should exist. So, write "rhte" into the name form in "Must have namespace" section. You can use "default" in "Include namespaces".
+
+image::policies/policy05.png[]
+
+After that, you can go to the next step, which is to create a New placement for the policy.
+
+image::policies/policy06.png[]
+
+To create the new placement, you need to choose the labels.
+
+image::policies/policy07.png[]
+
+In this case, we are going to use the vendor: OpenShift label.
+
+image::policies/policy08.png[]
+
+Now, you can review the Policy annotations. You don't need no modify any field of this form.
+
+image::policies/policy09.png[]
+
+Finally, you can review your policy and create it.
+
+Now, we are going to create the second policy. You need to choose the name and the namespace again. You can use any name and the "default" namespace.
+
+image::policies/policy10.png[]
+
+In this case, you are going to select "Enforce" as a remediation. As this policy is going to remediate itself.
+
+image::policies/policy11.png[]
+
+You need to click into "Add policy template" and use "Compliance Operator is installed". You need to choose "None" as a Prune Object Behaviour in all Configuration Policy objects.
+
+image::policies/policy12.png[]
+
+You need to chose "Enforce" as a Remediation also.
+
+image::policies/policy13.png[]
+
+As a placement, you are going to use the same placement as the previous rule: Choose vendor: OpenShift.
+
+image::policies/policy14.png[]
+
+On Policy annotations, you can review the default values. You don't need to change anything in this form.
+
+image::policies/policy15.png[]
+
+Finally, you can review the policy.
+
+image::policies/policy16.png[]
+
+Once the policy is created, you can view that the policy is not compliant, and you can see that the Compliance Operator will be automatically installed. After the operator is installed, the policy will be compliant.
+
+[#secondpolicygui]
+== Setup the second policy via web interface
+
+[#firstpolicycli]
+== Setup the first policy via CLI
+
+[#secondpolicycli]
+== Setup the second policy via CLI
+
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
