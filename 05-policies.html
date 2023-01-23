@@ -150,6 +150,177 @@
 <div class="paragraph">
 <p>Now, you are going to create two policies. The policies can be used to check that the OpenShift clusters are compliant.</p>
 </div>
+<div class="paragraph">
+<p>First, you are going to create a policy to check that a specific namespace exists on both clusters. As the namespace does not exsit and the policy is on Inform mode only, the policy is not going to be compliant. Later, you can create the namespace in one or two OpenShift clusters and check again the policy. The policy will be compliant on the cluster or clusters where the namespace will be created.</p>
+</div>
+<div class="paragraph">
+<p>Finally, you are going to create another policy to check if the Compliance Operator is installed. This policy is going to be on Enforce mode, so it is going to remediate itself if the policy is not compliant. As the Compliance Operator is not installed by default, you are going to check that the policy is going to install the operator itself to be compliant.</p>
+</div>
+<div class="paragraph">
+<p>To create the policies, you can use the Red Hat Advanced Cluster Management web interface, or you can use the command line interface (CLI).</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="firstpolicygui"><a class="anchor" href="#firstpolicygui"></a>Setup the first policy via web interface</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To setup the first policy, you need to enter into the Red Hat Advanced Cluster Management route first. You can find it in the open-cluster-management namespace.</p>
+</div>
+<div class="paragraph">
+<p>After entering into Red Hat Advanced Cluster Management web interface, you need to enter into the "Governance" section.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy01.png" alt="policy01">
+</div>
+</div>
+<div class="paragraph">
+<p>To create the policy, you should click into the "Create policy" button.</p>
+</div>
+<div class="paragraph">
+<p>You need to choose a name and a namespace. You can use any name and you can use the "default" namespace.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy02.png" alt="policy02">
+</div>
+</div>
+<div class="paragraph">
+<p>The policy will be in "Inform" mode. You need to click into the "Add policy template" link.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy03.png" alt="policy03">
+</div>
+</div>
+<div class="paragraph">
+<p>You need to choose the "policy-namespace" policy.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy04.png" alt="policy04">
+</div>
+</div>
+<div class="paragraph">
+<p>Then, you need to describe the policy. So, we are going to check that the namespace named "rhte" should exist. So, write "rhte" into the name form in "Must have namespace" section. You can use "default" in "Include namespaces".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy05.png" alt="policy05">
+</div>
+</div>
+<div class="paragraph">
+<p>After that, you can go to the next step, which is to create a New placement for the policy.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy06.png" alt="policy06">
+</div>
+</div>
+<div class="paragraph">
+<p>To create the new placement, you need to choose the labels.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy07.png" alt="policy07">
+</div>
+</div>
+<div class="paragraph">
+<p>In this case, we are going to use the vendor: OpenShift label.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy08.png" alt="policy08">
+</div>
+</div>
+<div class="paragraph">
+<p>Now, you can review the Policy annotations. You don&#8217;t need no modify any field of this form.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy09.png" alt="policy09">
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, you can review your policy and create it.</p>
+</div>
+<div class="paragraph">
+<p>Now, we are going to create the second policy. You need to choose the name and the namespace again. You can use any name and the "default" namespace.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy10.png" alt="policy10">
+</div>
+</div>
+<div class="paragraph">
+<p>In this case, you are going to select "Enforce" as a remediation. As this policy is going to remediate itself.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy11.png" alt="policy11">
+</div>
+</div>
+<div class="paragraph">
+<p>You need to click into "Add policy template" and use "Compliance Operator is installed". You need to choose "None" as a Prune Object Behaviour in all Configuration Policy objects.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy12.png" alt="policy12">
+</div>
+</div>
+<div class="paragraph">
+<p>You need to chose "Enforce" as a Remediation also.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy13.png" alt="policy13">
+</div>
+</div>
+<div class="paragraph">
+<p>As a placement, you are going to use the same placement as the previous rule: Choose vendor: OpenShift.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy14.png" alt="policy14">
+</div>
+</div>
+<div class="paragraph">
+<p>On Policy annotations, you can review the default values. You don&#8217;t need to change anything in this form.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy15.png" alt="policy15">
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, you can review the policy.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy16.png" alt="policy16">
+</div>
+</div>
+<div class="paragraph">
+<p>Once the policy is created, you can view that the policy is not compliant, and you can see that the Compliance Operator will be automatically installed. After the operator is installed, the policy will be compliant.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="secondpolicygui"><a class="anchor" href="#secondpolicygui"></a>Setup the second policy via web interface</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="firstpolicycli"><a class="anchor" href="#firstpolicycli"></a>Setup the first policy via CLI</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="secondpolicycli"><a class="anchor" href="#secondpolicycli"></a>Setup the second policy via CLI</h2>
+<div class="sectionbody">
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 03_deploy_application/base/application01/base</code></pre>
