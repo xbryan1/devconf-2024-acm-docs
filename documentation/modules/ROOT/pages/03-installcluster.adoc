@@ -128,7 +128,7 @@ In the Base DNS domain, you need to use the Base DNS domain received by email.
 
 image::install/create03.png[]
 
-The next step is to configure the Region, Architecture and node sizing. You can use eu-west-1 as the Region and amd64 as the Architecture. The node sizing can be modified, but it is not necessary in this LAB.
+The next step is to configure the Region, Architecture and node sizing. You can use eu-west-2 as the Region and amd64 as the Architecture. The node sizing can be modified, but it is not necessary in this LAB.
 
 image::install/create04.png[]
 
@@ -196,7 +196,7 @@ networking:
   - 172.30.0.0/16
 platform:
   aws:
-    region: eu-west-1
+    region: eu-west-2
 pullSecret: "" # skip, hive will inject based on it's secrets
 sshKey: |-
     <2 - Your SSH public key>
