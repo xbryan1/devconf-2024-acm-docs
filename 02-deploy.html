@@ -189,9 +189,13 @@
 <img src="_images/deploy/deploy02.png" alt="deploy02">
 </div>
 </div>
-</div>
-</div>
-<h1 id="_note" class="sect0"><a class="anchor" href="#_note"></a>NOTE:</h1>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
 <div class="ulist">
 <ul>
 <li>
@@ -202,11 +206,15 @@
 </li>
 </ul>
 </div>
-<div class="exampleblock">
-<div class="content">
-<div id="install" class="paragraph">
-<p>== Install ACM Operator</p>
+</td>
+</tr>
+</table>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="install"><a class="anchor" href="#install"></a>Install ACM Operator</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>We will go through <code>Kustomize</code> templates to perform ACM Operator installation:</p>
 </div>
@@ -350,9 +358,11 @@ This configuration is not recommended for production.
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">watch oc get pod -n open-cluster-management</code></pre>
 </div>
 </div>
-<div id="console" class="paragraph">
-<p>== Access to the ACM Web Console</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="console"><a class="anchor" href="#console"></a>Access to the ACM Web Console</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>After the ACM Operator is installed, it provides a dashboard UI. We can access it through a OpenShift <code>Route</code>. List routes in the <code>open-cluster-management</code> namespace and get address of console  <a href="https://multicloud-console.apps.&lt;YOUR_DOMAIN&gt" class="bare">https://multicloud-console.apps.&lt;YOUR_DOMAIN&gt</a>;.</p>
 </div>
@@ -378,9 +388,11 @@ Multicluster Hub has to be installed and the RHACM Console accesible to proceed 
 </tr>
 </table>
 </div>
-<div id="gitops" class="paragraph">
-<p>== Install GitOps Operator</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="gitops"><a class="anchor" href="#gitops"></a>Install GitOps Operator</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Run the following command to install the GitOps Operator based on ArgoCD.</p>
 </div>
@@ -437,9 +449,11 @@ Multicluster Hub has to be installed and the RHACM Console accesible to proceed 
 <img src="_images/deploy/deploy15.png" alt="deploy15">
 </div>
 </div>
-<div id="gitopsacm" class="paragraph">
-<p>== Integrate GitOps and ACM</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="gitopsacm"><a class="anchor" href="#gitopsacm"></a>Integrate GitOps and ACM</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>ACM introduces a new <code>gitopscluster</code> resource kind, which connects to a <code>placement</code> resource to determine which clusters to import into Argo CD. This integration allows you to expand your fleet, while having Argo CD automatically engage in working with your new clusters. This means if you leverage Argo CD <code>ApplicationSets</code>, your application payloads are automatically applied to your new clusters as they are registered by RHACM in your Argo CD instances.</p>
 </div>
@@ -465,9 +479,11 @@ Multicluster Hub has to be installed and the RHACM Console accesible to proceed 
 <img src="_images/deploy/deploy11.png" alt="deploy11">
 </div>
 </div>
-<div id="managedcluster" class="paragraph">
-<p>== Registering local-cluster to GitOps</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="managedcluster"><a class="anchor" href="#managedcluster"></a>Registering local-cluster to GitOps</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>After the ACM/GitOps integration is done, you will label <code>local-cluster</code> (ACM) with <code>ClusterSet rhte2023-gitops-clusters</code> and environment <code>development</code>. This configuration will let us deploy applications into this Openshift cluster.</p>
 </div>
@@ -507,11 +523,13 @@ Multicluster Hub has to be installed and the RHACM Console accesible to proceed 
 <img src="_images/deploy/deploy20.png" alt="deploy20">
 </div>
 </div>
-<div id="deployall" class="paragraph">
-<p>== Creating an ArgoCD Setup app-of-apps</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="deployall"><a class="anchor" href="#deployall"></a>Creating an ArgoCD Setup app-of-apps</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>One option to setup an app-of-apps in Argo CD for the bootstrap instead of going step by step as we have seen :-)</p>
+<p>One option to setup an app-of-apps in Argo CD for the bootstrap instead of going step by step as we have seen :-) We will use Argo CD to configure Argo CD</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
