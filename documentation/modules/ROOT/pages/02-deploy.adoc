@@ -13,7 +13,7 @@ image::deploy/deploy01.png[]
  
 image::deploy/deploy02.png[]
 
-NOTE: 
+[NOTE]
 ====
 - The OpenShift Container Platform provided in this lab meets the minimal https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#requirements-and-recommendations[requirements] from the official documentation. The cluster hub components will be installed on worker nodes, no https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#installing-on-infra-node[infrastructure] nodes will be provided.
 - OpenShift Container Platform required access: Cluster administrator (cluster-admin) permissions.
@@ -235,7 +235,7 @@ image::deploy/deploy20.png[]
 [#deployall]
 == Creating an ArgoCD Setup app-of-apps 
 
-One option to setup an app-of-apps in Argo CD for the bootstrap instead of going step by step as we have seen :-)
+One option to setup an app-of-apps in Argo CD for the bootstrap instead of going step by step as we have seen :-) We will use Argo CD to configure Argo CD
 
 [.lines_space]
 [.console-input]
