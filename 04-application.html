@@ -488,10 +488,20 @@ spec:
 <h2 id="applicationsync"><a class="anchor" href="#applicationsync"></a>Syncing an ArgoCD Application</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Syncing in ArgoCD means matching the state described in <code>Git</code> and what is in the Openshift cluster. There are 3 sync strategies:
-- <strong>Manual or automatic sync</strong>
-- <strong>Auto-pruning of resources</strong> - applicable for automatic sync
-- <strong>Self-Heal</strong> - only applicable for automatic sync.</p>
+<p>Syncing in ArgoCD means matching the state described in <code>Git</code> and what is in the Openshift cluster. There are 3 sync strategies:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Manual or automatic sync</strong></p>
+</li>
+<li>
+<p><strong>Auto-pruning of resources</strong> - applicable for automatic sync</p>
+</li>
+<li>
+<p><strong>Self-Heal</strong> - only applicable for automatic sync.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>By default, Argo CD will auto-sync applications with the following <code>SyncPolocies</code> for an <code>ApplicationSet</code> every 3 minutes:</p>
