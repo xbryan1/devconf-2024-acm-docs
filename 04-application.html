@@ -109,6 +109,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#applicationcli">Creating an Argo CD application from CLI</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#applicationsync">Syncing an ArgoCD Application</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -485,21 +488,27 @@ spec:
 <h2 id="applicationsync"><a class="anchor" href="#applicationsync"></a>Syncing an ArgoCD Application</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Syncing in ArgoCD means matching the state described in <code>Git</code> and what is in the Openshift cluster. By default, Argo CD will auto-sync applications with the following <code>SyncPolocies</code> for an <code>ApplicationSet</code> every 3 minutes:</p>
+<p>Syncing in ArgoCD means matching the state described in <code>Git</code> and what is in the Openshift cluster. There are 3 sync strategies:
+- <strong>Manual or automatic sync</strong>
+- <strong>Auto-pruning of resources</strong> - applicable for automatic sync
+- <strong>Self-Heal</strong> - only applicable for automatic sync.</p>
+</div>
+<div class="paragraph">
+<p>By default, Argo CD will auto-sync applications with the following <code>SyncPolocies</code> for an <code>ApplicationSet</code> every 3 minutes:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Automatically sync when cluster state changes (syncPolicy/automated/selfHeal=true)</p>
+<p>Automatically sync when cluster state changes (<strong>syncPolicy/automated/selfHeal=true</strong>)</p>
 </li>
 <li>
-<p>Delete resources that are no longer defined in the source repository (syncPolicy/automated/prune=true)</p>
+<p>Delete resources that are no longer defined in the source repository (<strong>syncPolicy/automated/prune=true</strong>)</p>
 </li>
 <li>
-<p>Delete resources that are no longer defined in the source repository at the end of a sync operation (syncOptions/CreateNamespace=true)</p>
+<p>Delete resources that are no longer defined in the source repository at the end of a sync operation (<strong>syncOptions/CreateNamespace=true</strong>)</p>
 </li>
 <li>
-<p>Automatically create namespace if it does not exist (syncOptions/CreateNamespace=true)</p>
+<p>Automatically create namespace if it does not exist (<strong>syncOptions/CreateNamespace=true</strong>)</p>
 </li>
 </ul>
 </div>
@@ -509,19 +518,19 @@ spec:
 <div class="ulist">
 <ul>
 <li>
-<p>Replace resources instead of applying changes from the source repository (syncOptions/Replace=false)</p>
+<p>Replace resources instead of applying changes from the source repository (<strong>syncOptions/Replace=false</strong>)</p>
 </li>
 <li>
-<p>Allow applications to have empty resources (syncPolicy/automated/allowEmpty=false)</p>
+<p>Allow applications to have empty resources (<strong>syncPolicy/automated/allowEmpty=false</strong>)</p>
 </li>
 <li>
-<p>Only synchronize out-of-sync resources (syncOptions/ApplyOutOfSyncOnly=false)</p>
+<p>Only synchronize out-of-sync resources (<strong>syncOptions/ApplyOutOfSyncOnly=false</strong>)</p>
 </li>
 <li>
-<p>Disable kubectl validation (syncOptions/Validate=false)</p>
+<p>Disable kubectl validation (<strong>syncOptions/Validate=false</strong>)</p>
 </li>
 <li>
-<p>Prune propagation policy (syncOptions/PrunePropagationPolicy=background)</p>
+<p>Prune propagation policy (<strong>syncOptions/PrunePropagationPolicy=background</strong>)</p>
 </li>
 </ul>
 </div>
@@ -604,20 +613,18 @@ git push origin main</code></pre>
 <img src="_images/application/application16.png" alt="application16">
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Also, you can sync applications going through the argocd cli <code>argocd app sync rhte2023-application-gitops</code>
+</td>
+</tr>
+</table>
 </div>
-</div>
-<h1 id="_note" class="sect0"><a class="anchor" href="#_note"></a>NOTE:</h1>
-<div class="paragraph">
-<p>Also, you can sync applications going through the argocd cli as follows:</p>
-</div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">argocd app sync rhte2023-application-gitops</code></pre>
-</div>
-</div>
-<div class="exampleblock">
-<div class="content">
-
 </div>
 </div>
 <nav class="pagination">
