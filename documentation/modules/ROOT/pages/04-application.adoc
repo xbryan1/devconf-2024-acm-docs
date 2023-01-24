@@ -64,10 +64,116 @@ image::application/application08.png[]
 
 image::application/application09.png[]
 
+** >> Check Application pods on one of the cluster**
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc get pod,route -n rhte2023-application
+----
+
 [#applicationcli]
 == Creating an Argo CD application from CLI
 
+Login into the ArgoCD instance:
 
 
-== Drift detection and auto-healing
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc get secret/openshift-gitops-cluster -n openshift-gitops -o jsonpath='{.data.admin\.password}' | base64 -d
+----
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc get route openshift-gitops-server -n openshift-gitops
+----
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+argocd --insecure --grpc-web login <your_argocd:route> --username admin --password <your_password>
+----
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+argocd app create rhte2023-application-gitops \
+--project default \
+--repo https://github.com/xbryan1/rhte-2023-acm-apps.git \
+--path rhte2023/04_deploy_applications/argocd \
+--dest-namespace openshift-gitops 
+----
+
+The ArgoCD application will create the 'ApplicationSet' on ACM/ArgoCD which will deploy the application.
+
+- ArgoCD Applications view
+
+image::application/application10.png[]
+
+- ACM discover ArgoCD Applications
+
+image::application/application11.png[]
+
+- ArgoCD GitOps Application will be created and the application will be deployed
+
+image::application/application12.png[]
+image::application/application13.png[]
+
+Take a look at the YAML file and the `clusterDecisionResource` generator with the placement definition
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+cd /rhte2023/04_deploy_applications/argocd; cat rhte2023-application.yaml
+----
+
+[.lines_space]
+[.console-input]
+[source,yaml, subs="+macros,+attributes"]
+----
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: rhte2023-application
+  namespace: openshift-gitops
+spec:
+  generators:
+  - clusterDecisionResource:
+      configMapRef: acm-placement
+      labelSelector:
+        matchLabels:
+          cluster.open-cluster-management.io/placement: rhte2023-gitops-clusters
+      requeueAfterSeconds: 180
+  template:
+    metadata:
+      labels:
+        velero.io/exclude-from-backup: "true"
+      name: rhte2023-application-{{name}}
+    spec:
+      destination:
+        namespace: rhte2023-application
+        server: '{{server}}'
+      project: default
+      source:
+        path: rhte2023/04_deploy_applications/rhte2023-application
+        repoURL: https://github.com/xbryan1/rhte-2023-acm-apps.git
+        targetRevision: main
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+        - PruneLast=true
+----
+
+Once the application is created, the 
+
 
