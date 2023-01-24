@@ -82,6 +82,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="02-deploy.html#managedcluster">Registering local-cluster to GitOps</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-deploy.html#deployall">Creating an ArgoCD Setup app-of-apps </a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -348,7 +351,8 @@
 --project default \
 --repo <a href="https://github.com/xbryan1/rhte-2023-acm-apps.git" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps.git</a> \
 --path rhte2023/04_deploy_applications/argocd \
---dest-namespace openshift-gitops</code></pre>
+--dest-namespace openshift-gitops
+--dest-server <a href="https://api.&lt;your_domain&gt;:6443" class="bare">https://api.&lt;your_domain&gt;:6443</a></code></pre>
 </div>
 </div>
 <div class="ulist">

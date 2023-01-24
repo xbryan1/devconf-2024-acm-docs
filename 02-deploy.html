@@ -82,6 +82,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#managedcluster">Registering local-cluster to GitOps</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#deployall">Creating an ArgoCD Setup app-of-apps </a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -239,7 +242,7 @@
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd rhte-2023-acm-apps/rhte2023/; oc kustomize 02_boostrap/base/acm_operator/base</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd rhte-2023-acm-apps/rhte2023/; oc kustomize 02_bootstrap/base/acm_operator/base</code></pre>
 </div>
 </div>
 <div class="imageblock">
@@ -259,7 +262,7 @@
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc replace -k 02_boostrap/base/openshift/base</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc replace -k 02_bootstrap/base/openshift/base</code></pre>
 </div>
 </div>
 <div class="imageblock">
@@ -288,7 +291,7 @@ This configuration is not recommended for production.
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 02_boostrap/base/acm_operator/base</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 02_bootstrap/base/acm_operator/base</code></pre>
 </div>
 </div>
 <div class="listingblock lines_space console-input">
@@ -313,7 +316,7 @@ This configuration is not recommended for production.
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 02_boostrap/base/acm_multiclusterhub/base</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 02_bootstrap/base/acm_multiclusterhub/base</code></pre>
 </div>
 </div>
 <div class="imageblock">
@@ -383,7 +386,7 @@ Multicluster Hub has to be installed and the RHACM Console accesible to proceed 
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 02_boostrap/base/gitops_operator/base/</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 02_bootstrap/base/gitops_operator/base/</code></pre>
 </div>
 </div>
 <div class="imageblock">
@@ -454,7 +457,7 @@ Multicluster Hub has to be installed and the RHACM Console accesible to proceed 
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 02_boostrap/base/gitops_acm/base/</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 02_bootstrap/base/gitops_acm/base/</code></pre>
 </div>
 </div>
 <div class="imageblock">
@@ -502,6 +505,25 @@ Multicluster Hub has to be installed and the RHACM Console accesible to proceed 
 <div class="imageblock">
 <div class="content">
 <img src="_images/deploy/deploy20.png" alt="deploy20">
+</div>
+</div>
+<div id="deployall" class="paragraph">
+<p>== Creating an ArgoCD Setup app-of-apps</p>
+</div>
+<div class="paragraph">
+<p>One option to setup an app-of-apps in Argo CD for the bootstrap instead of going step by step as we have seen :-)</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd rhte2023/02_bootstrap/argocd; oc create -f rhte2023-bootstrap-gitops.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or from argocd cli</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">argocd app create rhte2023-bootstrap-gitops --project default --repo <a href="https://github.com/xbryan1/rhte-2023-acm-apps.git" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps.git</a> --path rhte2023/02_bootstrap/base --dest-namespace openshift-gitops --dest-server <a href="https://api.jclaretm.nasatam.support:6443" class="bare">https://api.jclaretm.nasatam.support:6443</a></code></pre>
 </div>
 </div>
 </div>
