@@ -17,6 +17,7 @@
 ** xref:04-application.adoc#application[Deploy GitOps Application]
 ** xref:04-application.adoc#applicationacm[Creating an Argo CD application from ACM]
 ** xref:04-application.adoc#applicationcli[Creating an Argo CD application from CLI]
+** xref:04-application.adoc#applicationsync[Syncing an ArgoCD Application]
 
 * xref:05-policies.adoc[5. Setup Advanced Cluster Management Policies]
 ** xref:05-policies.adoc#setup[Configure Policies]

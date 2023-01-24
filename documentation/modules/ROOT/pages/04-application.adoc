@@ -226,20 +226,25 @@ spec:
 [#applicationsync]
 == Syncing an ArgoCD Application
 
-Syncing in ArgoCD means matching the state described in `Git` and what is in the Openshift cluster. By default, Argo CD will auto-sync applications with the following `SyncPolocies` for an `ApplicationSet` every 3 minutes:
+Syncing in ArgoCD means matching the state described in `Git` and what is in the Openshift cluster. There are 3 sync strategies:
+- **Manual or automatic sync**
+- **Auto-pruning of resources** - applicable for automatic sync
+- **Self-Heal** - only applicable for automatic sync.
 
-* Automatically sync when cluster state changes (syncPolicy/automated/selfHeal=true)
-* Delete resources that are no longer defined in the source repository (syncPolicy/automated/prune=true)
-* Delete resources that are no longer defined in the source repository at the end of a sync operation (syncOptions/CreateNamespace=true)
-* Automatically create namespace if it does not exist (syncOptions/CreateNamespace=true)
+By default, Argo CD will auto-sync applications with the following `SyncPolocies` for an `ApplicationSet` every 3 minutes:
+
+* Automatically sync when cluster state changes (**syncPolicy/automated/selfHeal=true**)
+* Delete resources that are no longer defined in the source repository (**syncPolicy/automated/prune=true**)
+* Delete resources that are no longer defined in the source repository at the end of a sync operation (**syncOptions/CreateNamespace=true**)
+* Automatically create namespace if it does not exist (**syncOptions/CreateNamespace=true**)
 
 There's additional options to configure the `ApplicationSet`:
 
-* Replace resources instead of applying changes from the source repository (syncOptions/Replace=false)
-* Allow applications to have empty resources (syncPolicy/automated/allowEmpty=false)
-* Only synchronize out-of-sync resources (syncOptions/ApplyOutOfSyncOnly=false)
-* Disable kubectl validation (syncOptions/Validate=false)
-* Prune propagation policy (syncOptions/PrunePropagationPolicy=background)
+* Replace resources instead of applying changes from the source repository (**syncOptions/Replace=false**)
+* Allow applications to have empty resources (**syncPolicy/automated/allowEmpty=false**)
+* Only synchronize out-of-sync resources (**syncOptions/ApplyOutOfSyncOnly=false**)
+* Disable kubectl validation (**syncOptions/Validate=false**)
+* Prune propagation policy (**syncOptions/PrunePropagationPolicy=background**)
 
 By default:
 
@@ -301,14 +306,4 @@ ACM Topology
 
 image::application/application16.png[]
 
-NOTE:
-====
-Also, you can sync applications going through the argocd cli as follows:
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-argocd app sync rhte2023-application-gitops
-----
-====
+NOTE: Also, you can sync applications going through the argocd cli `argocd app sync rhte2023-application-gitops`
