@@ -278,18 +278,143 @@
 <img src="_images/application/application09.png" alt="application09">
 </div>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p>&gt;&gt; Check Application pods on one of the cluster**</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>oc get pod,route -n rhte2023-application</pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="applicationcli"><a class="anchor" href="#applicationcli"></a>Creating an Argo CD application from CLI</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>Login into the ArgoCD instance:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get secret/openshift-gitops-cluster -n openshift-gitops -o jsonpath='{.data.admin\.password}' | base64 -d</code></pre>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_drift_detection_and_auto_healing"><a class="anchor" href="#_drift_detection_and_auto_healing"></a>Drift detection and auto-healing</h2>
-<div class="sectionbody">
-
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route openshift-gitops-server -n openshift-gitops</code></pre>
+</div>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">argocd --insecure --grpc-web login &lt;your_argocd:route&gt; --username admin --password &lt;your_password&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">argocd app create rhte2023-application-gitops \
+--project default \
+--repo <a href="https://github.com/xbryan1/rhte-2023-acm-apps.git" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps.git</a> \
+--path rhte2023/04_deploy_applications/argocd \
+--dest-namespace openshift-gitops</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The ArgoCD application will create the 'ApplicationSet' on ACM/ArgoCD which will deploy the application.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>ArgoCD Applications view</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application10.png" alt="application10">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>ACM discover ArgoCD Applications</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application11.png" alt="application11">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>ArgoCD GitOps Application will be created and the application will be deployed</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application12.png" alt="application12">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application13.png" alt="application13">
+</div>
+</div>
+<div class="paragraph">
+<p>Take a look at the YAML file and the <code>clusterDecisionResource</code> generator with the placement definition</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd /rhte2023/04_deploy_applications/argocd; cat rhte2023-application.yaml</code></pre>
+</div>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: rhte2023-application
+  namespace: openshift-gitops
+spec:
+  generators:
+  - clusterDecisionResource:
+      configMapRef: acm-placement
+      labelSelector:
+        matchLabels:
+          cluster.open-cluster-management.io/placement: rhte2023-gitops-clusters
+      requeueAfterSeconds: 180
+  template:
+    metadata:
+      labels:
+        velero.io/exclude-from-backup: "true"
+      name: rhte2023-application-{{name}}
+    spec:
+      destination:
+        namespace: rhte2023-application
+        server: '{{server}}'
+      project: default
+      source:
+        path: rhte2023/04_deploy_applications/rhte2023-application
+        repoURL: <a href="https://github.com/xbryan1/rhte-2023-acm-apps.git" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps.git</a>
+        targetRevision: main
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+        - PruneLast=true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the application is created, the</p>
+</div>
 </div>
 </div>
 <nav class="pagination">
