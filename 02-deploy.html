@@ -350,6 +350,11 @@ This configuration is not recommended for production.
 <div class="paragraph">
 <p>After the ACM Operator is installed, it provides a dashboard UI. We can access it through a OpenShift <code>Route</code>. List routes in the <code>open-cluster-management</code> namespace and get address of console  <a href="https://multicloud-console.apps.&lt;YOUR_DOMAIN&gt" class="bare">https://multicloud-console.apps.&lt;YOUR_DOMAIN&gt</a>;.</p>
 </div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n open-cluster-management</code></pre>
+</div>
+</div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/deploy/deploy09.png" alt="deploy09">

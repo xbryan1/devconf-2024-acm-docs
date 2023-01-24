@@ -162,6 +162,9 @@
 <div class="paragraph">
 <p><code>ApplicationSet</code> is a sub-project of <code>Argo CD</code> that adds multicluster support. You will go through this section to create ApplicationSets from the Red Hat Advanced Cluster Management.</p>
 </div>
+<div class="paragraph">
+<p>Next both sections, from ACM or CLI will deploy the same application.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -271,7 +274,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>&gt;&gt; Check from the Argo CD WebConsole the application status</strong></p>
+<p><strong>&gt;&gt; Check from the Argo CD Web UI the application status</strong></p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -285,9 +288,9 @@
 </li>
 </ul>
 </div>
-<div class="listingblock">
+<div class="listingblock lines_space console-input">
 <div class="content">
-<pre>oc get pod,route -n rhte2023-application</pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pod,route -n rhte2023-application</code></pre>
 </div>
 </div>
 </div>
@@ -295,23 +298,46 @@
 <div class="sect1">
 <h2 id="applicationcli"><a class="anchor" href="#applicationcli"></a>Creating an Argo CD application from CLI</h2>
 <div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Login into the ArgoCD instance</strong>:</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
-<p>Login into the ArgoCD instance:</p>
-</div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get secret/openshift-gitops-cluster -n openshift-gitops -o jsonpath='{.data.admin\.password}' | base64 -d</code></pre>
-</div>
+<p>Get ArgoCD route exposed in <code>openshift-gitops</code> namespace</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route openshift-gitops-server -n openshift-gitops</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Get the ArgoCD admin password from the secret <code>openshift-gitops-cluster</code> in <code>openshift-gitops</code> namespace</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get secret/openshift-gitops-cluster -n openshift-gitops -o jsonpath='{.data.admin\.password}' | base64 -d</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Login into the ArgoCD instance on the ACM Openshift Cluster:</p>
+</div>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">argocd --insecure --grpc-web login &lt;your_argocd:route&gt; --username admin --password &lt;your_password&gt;</code></pre>
 </div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Create an ArgoCD Application</strong>:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Run the following command to create a <code>rhte2023-application-gitops</code> which will create an <code>ApplicationSet</code> to deploy the application across 2 Openshift Clusters</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -321,6 +347,47 @@
 --path rhte2023/04_deploy_applications/argocd \
 --dest-namespace openshift-gitops</code></pre>
 </div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Get ArgoCD Application details</strong>:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In order to check the deployment status run:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">argocd app list</code></pre>
+</div>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">argocd app get rhte2023-application-gitops</code></pre>
+</div>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">argocd app get rhte2023-application-local-cluster
+argocd app history rhte2023-application-local-cluster</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>At the same time, check the CRDs created:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get Application,ApplicationSet -n openshift-gitops</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Check the Application and ApplicationSet created</strong></p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>The ArgoCD application will create the 'ApplicationSet' on ACM/ArgoCD which will deploy the application.</p>
@@ -367,7 +434,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>Take a look at the YAML file and the <code>clusterDecisionResource</code> generator with the placement definition</p>
+<p><code>ApplicationSet</code> CRD uses <a href="https://argocd-applicationset.readthedocs.io/en/stable/Generators-Cluster-Decision-Resource/">clusterDecisionResource</a> generator to generate a list of Openshift clusters where deploy the Application. Take a look at the YAML file</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -412,9 +479,145 @@ spec:
         - PruneLast=true</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Once the application is created, the</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="applicationsync"><a class="anchor" href="#applicationsync"></a>Syncing an ArgoCD Application</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Syncing in ArgoCD means matching the state described in <code>Git</code> and what is in the Openshift cluster. By default, Argo CD will auto-sync applications with the following <code>SyncPolocies</code> for an <code>ApplicationSet</code> every 3 minutes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Automatically sync when cluster state changes (syncPolicy/automated/selfHeal=true)</p>
+</li>
+<li>
+<p>Delete resources that are no longer defined in the source repository (syncPolicy/automated/prune=true)</p>
+</li>
+<li>
+<p>Delete resources that are no longer defined in the source repository at the end of a sync operation (syncOptions/CreateNamespace=true)</p>
+</li>
+<li>
+<p>Automatically create namespace if it does not exist (syncOptions/CreateNamespace=true)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>There&#8217;s additional options to configure the <code>ApplicationSet</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Replace resources instead of applying changes from the source repository (syncOptions/Replace=false)</p>
+</li>
+<li>
+<p>Allow applications to have empty resources (syncPolicy/automated/allowEmpty=false)</p>
+</li>
+<li>
+<p>Only synchronize out-of-sync resources (syncOptions/ApplyOutOfSyncOnly=false)</p>
+</li>
+<li>
+<p>Disable kubectl validation (syncOptions/Validate=false)</p>
+</li>
+<li>
+<p>Prune propagation policy (syncOptions/PrunePropagationPolicy=background)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>By default:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: rhte2023-application
+  namespace: openshift-gitops
+spec:
+...
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+        - PruneLast=true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the before applications is deployed, change the application as shown below and sync in the ArgoCD Console the changes manually:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Change application replicas</p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc scale deploy rhte2023-application --replicas=1</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application14.png" alt="application14">
+</div>
+</div>
+<div class="paragraph">
+<p>After a while, application will scale automatically to the initial number of replicas (3)</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Commit a change on the deployment yaml file</p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd rhte2023/04_deploy_applications/rhte2023-application/base
+sed -i 's/replicas: 3/replicas: 5/g' 100-deployment.yaml
+git add 100-deployment.yaml
+git commit -m "incresing number of replicas"
+git push origin main</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the change has been pushed, sync the application again.</p>
+</div>
+<div class="paragraph">
+<p>ArgoCD Console</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application15.png" alt="application15">
+</div>
+</div>
+<div class="paragraph">
+<p>ACM Topology</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application16.png" alt="application16">
+</div>
+</div>
+</div>
+</div>
+<h1 id="_note" class="sect0"><a class="anchor" href="#_note"></a>NOTE:</h1>
+<div class="paragraph">
+<p>Also, you can sync applications going through the argocd cli as follows:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">argocd app sync rhte2023-application-gitops</code></pre>
+</div>
+</div>
+<div class="exampleblock">
+<div class="content">
+
 </div>
 </div>
 <nav class="pagination">
