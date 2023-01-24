@@ -7,6 +7,7 @@ The `ApplicationSet` leverages the cluster decision generator to interface Kuber
 
 `ApplicationSet` is a sub-project of `Argo CD` that adds multicluster support. You will go through this section to create ApplicationSets from the Red Hat Advanced Cluster Management.
 
+[#applicationacm]
 == Creating an Argo CD application from ACM
 
 An ArgoCD application can be created in ACM from the UI Console as follow:
@@ -20,11 +21,7 @@ Go throught the ACM Console and login with Openshift user:
 oc get route -n open-cluster-management
 ----
 
->> Applications
-
-image::application/application01.png[]
-
->> Create Application > ApplicationSet
+>> Applications >> Create Application > ApplicationSet
 
 image::application/application02.png[]
 
@@ -67,6 +64,7 @@ image::application/application08.png[]
 
 image::application/application09.png[]
 
+[#applicationcli]
 == Creating an Argo CD application from CLI
 
 
