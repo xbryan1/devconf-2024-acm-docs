@@ -227,6 +227,7 @@ spec:
 == Syncing an ArgoCD Application
 
 Syncing in ArgoCD means matching the state described in `Git` and what is in the Openshift cluster. There are 3 sync strategies:
+
 - **Manual or automatic sync**
 - **Auto-pruning of resources** - applicable for automatic sync
 - **Self-Heal** - only applicable for automatic sync.

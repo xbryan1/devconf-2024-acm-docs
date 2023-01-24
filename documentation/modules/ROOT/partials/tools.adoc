@@ -13,6 +13,9 @@ Please have them installed and configured before you get started.
 | https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.10.10/openshift-client-linux-4.10.10.tar.gz[Download]
 | https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.10.10/openshift-client-mac-4.10.10.tar.gz[Download]
 
+| `ArgoCD CLI`
+| https://argo-cd.readthedocs.io/en/stable/cli_installation/#download-with-curl[Download]
+| https://argo-cd.readthedocs.io/en/stable/cli_installation/#mac[Download]
 
 |===
 
