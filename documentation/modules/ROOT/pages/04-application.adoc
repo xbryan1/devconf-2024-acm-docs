@@ -21,46 +21,46 @@ Go throught the ACM Console and login with Openshift user:
 oc get route -n open-cluster-management
 ----
 
->> Applications >> Create Application > ApplicationSet
+**>> Applications >> Create Application > ApplicationSet**
 
 image::application/application02.png[]
 
->> General
+**>> General**
 
-ApplicationSet name: rhte2023-application
-Argo server: openshift-gitops
-Requeue time: 180
+* ApplicationSet name: rhte2023-application
+* Argo server: openshift-gitops
+* Requeue time: 180
 
 image::application/application03.png[]
 
->> Template
+**>> Template**
 
-URL: https://github.com/xbryan1/rhte-2023-acm-apps.git
-Revision: main
-Path: rhte2023/04_deploy_applications/rhte2023-application
-Remote Namespace: rhte2023-application
+* URL: https://github.com/xbryan1/rhte-2023-acm-apps.git
+* Revision: main
+* Path: rhte2023/04_deploy_applications/rhte2023-application
+* Remote Namespace: rhte2023-application
 
 image::application/application04.png[]
 
->> Sync policy
+**>> Sync policy**
 
 image::application/application05.png[]
 
->> Placement
+**>> Placement**
 
-Cluster sets: rhte2023-gitops-clusters
+* Cluster sets: rhte2023-gitops-clusters
 
 image::application/application06.png[]
 
->> Review and Submit
+**>> Review and Submit**
 
 image::application/application07.png[]
 
->> Wait until application is deployed, and check the application topoloy
+**>> Wait until application is deployed, and check the application topoloy**
 
 image::application/application08.png[]
 
->> Check from the Argo CD WebConsole the application status
+**>> Check from the Argo CD WebConsole the application status**
 
 image::application/application09.png[]
 
