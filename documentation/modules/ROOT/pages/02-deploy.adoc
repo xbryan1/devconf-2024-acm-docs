@@ -129,6 +129,13 @@ watch oc get pod -n open-cluster-management
 
 After the ACM Operator is installed, it provides a dashboard UI. We can access it through a OpenShift `Route`. List routes in the `open-cluster-management` namespace and get address of console  https://multicloud-console.apps.<YOUR_DOMAIN>.
 
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc get route -n open-cluster-management
+----
+
 image::deploy/deploy09.png[]
 
 NOTE: Multicluster Hub has to be installed and the RHACM Console accesible to proceed with the next steps.
