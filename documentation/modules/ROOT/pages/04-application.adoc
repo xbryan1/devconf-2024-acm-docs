@@ -7,23 +7,69 @@ The `ApplicationSet` leverages the cluster decision generator to interface Kuber
 
 `ApplicationSet` is a sub-project of `Argo CD` that adds multicluster support. You will go through this section to create ApplicationSets from the Red Hat Advanced Cluster Management.
 
-== Install Pipelines Operator 
+== Creating an Argo CD application from ACM
+
+An ArgoCD application can be created in ACM from the UI Console as follow:
+
+Go throught the ACM Console and login with Openshift user:
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc apply -k 00_boostrap/base/pipelines_operator/base/
+oc get route -n open-cluster-management
 ----
 
-== Bootstrap GitOps repository 
+>> Applications
 
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-oc apply -k 03_deploy_application/base/application01/base
-----
+image::application/application01.png[]
+
+>> Create Application > ApplicationSet
+
+image::application/application02.png[]
+
+>> General
+
+ApplicationSet name: rhte2023-application
+Argo server: openshift-gitops
+Requeue time: 180
+
+image::application/application03.png[]
+
+>> Template
+
+URL: https://github.com/xbryan1/rhte-2023-acm-apps.git
+Revision: main
+Path: rhte2023/04_deploy_applications/rhte2023-application
+Remote Namespace: rhte2023-application
+
+image::application/application04.png[]
+
+>> Sync policy
+
+image::application/application05.png[]
+
+>> Placement
+
+Cluster sets: rhte2023-gitops-clusters
+
+image::application/application06.png[]
+
+>> Review and Submit
+
+image::application/application07.png[]
+
+>> Wait until application is deployed, and check the application topoloy
+
+image::application/application08.png[]
+
+>> Check from the Argo CD WebConsole the application status
+
+image::application/application09.png[]
+
+== Creating an Argo CD application from CLI
+
+
 
 == Drift detection and auto-healing
 

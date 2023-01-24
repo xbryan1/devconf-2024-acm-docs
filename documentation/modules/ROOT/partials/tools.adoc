@@ -1,4 +1,5 @@
 Also, the following CLI tools are required for running the exercises in this hands-on. 
+
 Please have them installed and configured before you get started.
 
 |===

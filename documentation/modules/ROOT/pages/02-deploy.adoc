@@ -13,9 +13,12 @@ image::deploy/deploy01.png[]
  
 image::deploy/deploy02.png[]
 
-NOTE: The OpenShift Container Platform provided in this lab meets the minimal https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#requirements-and-recommendations[requirements] from the official documentation. The cluster hub components will be installed on worker nodes, no https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#installing-on-infra-node[infrastructure] nodes will be provided.
+NOTE: 
+====
+- The OpenShift Container Platform provided in this lab meets the minimal https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#requirements-and-recommendations[requirements] from the official documentation. The cluster hub components will be installed on worker nodes, no https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#installing-on-infra-node[infrastructure] nodes will be provided.
+- OpenShift Container Platform required access: Cluster administrator (cluster-admin) permissions.
+====
 
-NOTE: OpenShift Container Platform required access: Cluster administrator (cluster-admin) permissions.
 
 [#install]
 == Install ACM Operator
@@ -33,17 +36,17 @@ git clone https://github.com/xbryan1/rhte-2023-acm-apps
 
 Directories structure
 
-image::deploy/deploy03.png[]
+image::deploy/deploy03.png[float="right"]
 
 - **Declarative approach with Kustomize**
 
-Run the following command to see how kustomize parse `YAML` files. This example does not apply any configuration, in order to apply it use `oc appl -k` or `oc apply --kustomize=''` to pocess a kustomization directory
+YAML files uses Kustomize templates, just to take a look how it works, run the following command. This example does not apply any configuration.
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-cd rhte-2023-acm-apps/rhte2023/; oc kustomize 00_boostrap/base/acm_operator/base
+cd rhte-2023-acm-apps/rhte2023/; oc kustomize 02_boostrap/base/acm_operator/base
 ----
 
 image::deploy/deploy04.png[]
@@ -56,7 +59,7 @@ Enabling master node scheduling will be able to deploy workloads on master nodes
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc replace -k 00_boostrap/base/openshift/base
+oc replace -k 02_boostrap/base/openshift/base
 ----
 
 image::deploy/deploy05.png[]
@@ -69,14 +72,14 @@ WARNING: This configuration is not recommended for production.
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc apply -k 00_boostrap/base/acm_operator/base
+oc apply -k 02_boostrap/base/acm_operator/base
 ----
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc get pod -n open-cluster-management
+watch oc get pod -n open-cluster-management
 ----
 
 image::deploy/deploy06.png[]
@@ -89,7 +92,7 @@ After installing the ACM Operator we also need to create the CRD object `MultiCl
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc apply -k 00_boostrap/base/acm_multiclusterhub/base
+oc apply -k 02_boostrap/base/acm_multiclusterhub/base
 ----
 
 image::deploy/deploy07.png[]
@@ -118,7 +121,7 @@ oc logs multiclusterhub-operator-xxx-xxx -n open-cluster-management
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc get pod -n open-cluster-management
+watch oc get pod -n open-cluster-management
 ----
 
 [#console]
@@ -139,7 +142,7 @@ Run the following command to install the GitOps Operator based on ArgoCD.
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc apply -k 00_boostrap/base/gitops_operator/base/
+oc apply -k 02_boostrap/base/gitops_operator/base/
 ----
 
 image::deploy/deploy10.png[]
@@ -157,7 +160,7 @@ oc get route -n openshift-gitops
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc get pods -n openshift-gitops
+watch oc get pods -n openshift-gitops
 ----
 
 image::deploy/deploy12.png[]
@@ -186,7 +189,7 @@ image::deploy/deploy18.png[]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc apply -k 00_boostrap/base/gitops_acm/base/
+oc apply -k 02_boostrap/base/gitops_acm/base/
 ----
 
 image::deploy/deploy11.png[]
@@ -208,7 +211,7 @@ oc label ManagedCluster local-cluster cluster.open-cluster-management.io/cluster
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc label ManagedCluster local-cluster gitops-cluster=true environment=development
+oc label ManagedCluster local-cluster gitops-cluster=true environment=production
 ----
 
 and check that cluster `local-cluster` is added as an ArgoCD Cluster from the **ArgoCD Console > Settings > Clusters** where we expect to see `local-cluster` as one of the clusters
