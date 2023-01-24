@@ -177,35 +177,24 @@
 <img src="_images/deploy/deploy02.png" alt="deploy02">
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-The OpenShift Container Platform provided in this lab meets the minimal <a href="https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#requirements-and-recommendations">requirements</a> from the official documentation. The cluster hub components will be installed on worker nodes, no <a href="https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#installing-on-infra-node">infrastructure</a> nodes will be provided.
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-OpenShift Container Platform required access: Cluster administrator (cluster-admin) permissions.
-</td>
-</tr>
-</table>
 </div>
 </div>
+<h1 id="_note" class="sect0"><a class="anchor" href="#_note"></a>NOTE:</h1>
+<div class="ulist">
+<ul>
+<li>
+<p>The OpenShift Container Platform provided in this lab meets the minimal <a href="https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#requirements-and-recommendations">requirements</a> from the official documentation. The cluster hub components will be installed on worker nodes, no <a href="https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html/install/installing#installing-on-infra-node">infrastructure</a> nodes will be provided.</p>
+</li>
+<li>
+<p>OpenShift Container Platform required access: Cluster administrator (cluster-admin) permissions.</p>
+</li>
+</ul>
 </div>
-<div class="sect1">
-<h2 id="install"><a class="anchor" href="#install"></a>Install ACM Operator</h2>
-<div class="sectionbody">
+<div class="exampleblock">
+<div class="content">
+<div id="install" class="paragraph">
+<p>== Install ACM Operator</p>
+</div>
 <div class="paragraph">
 <p>We will go through <code>Kustomize</code> templates to perform ACM Operator installation:</p>
 </div>
@@ -224,7 +213,7 @@ OpenShift Container Platform required access: Cluster administrator (cluster-adm
 <div class="paragraph">
 <p>Directories structure</p>
 </div>
-<div class="imageblock">
+<div class="imageblock right">
 <div class="content">
 <img src="_images/deploy/deploy03.png" alt="deploy03">
 </div>
@@ -237,11 +226,11 @@ OpenShift Container Platform required access: Cluster administrator (cluster-adm
 </ul>
 </div>
 <div class="paragraph">
-<p>Run the following command to see how kustomize parse <code>YAML</code> files. This example does not apply any configuration, in order to apply it use <code>oc appl -k</code> or <code>oc apply --kustomize=''</code> to pocess a kustomization directory</p>
+<p>YAML files uses Kustomize templates, just to take a look how it works, run the following command. This example does not apply any configuration.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd rhte-2023-acm-apps/rhte2023/; oc kustomize 00_boostrap/base/acm_operator/base</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd rhte-2023-acm-apps/rhte2023/; oc kustomize 02_boostrap/base/acm_operator/base</code></pre>
 </div>
 </div>
 <div class="imageblock">
@@ -261,7 +250,7 @@ OpenShift Container Platform required access: Cluster administrator (cluster-adm
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc replace -k 00_boostrap/base/openshift/base</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc replace -k 02_boostrap/base/openshift/base</code></pre>
 </div>
 </div>
 <div class="imageblock">
@@ -290,12 +279,12 @@ This configuration is not recommended for production.
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 00_boostrap/base/acm_operator/base</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 02_boostrap/base/acm_operator/base</code></pre>
 </div>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pod -n open-cluster-management</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">watch oc get pod -n open-cluster-management</code></pre>
 </div>
 </div>
 <div class="imageblock">
@@ -315,7 +304,7 @@ This configuration is not recommended for production.
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 00_boostrap/base/acm_multiclusterhub/base</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 02_boostrap/base/acm_multiclusterhub/base</code></pre>
 </div>
 </div>
 <div class="imageblock">
@@ -346,14 +335,12 @@ This configuration is not recommended for production.
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pod -n open-cluster-management</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">watch oc get pod -n open-cluster-management</code></pre>
 </div>
 </div>
+<div id="console" class="paragraph">
+<p>== Access to the ACM Web Console</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="console"><a class="anchor" href="#console"></a>Access to the ACM Web Console</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>After the ACM Operator is installed, it provides a dashboard UI. We can access it through a OpenShift <code>Route</code>. List routes in the <code>open-cluster-management</code> namespace and get address of console  <a href="https://multicloud-console.apps.&lt;YOUR_DOMAIN&gt" class="bare">https://multicloud-console.apps.&lt;YOUR_DOMAIN&gt</a>;.</p>
 </div>
@@ -374,17 +361,15 @@ Multicluster Hub has to be installed and the RHACM Console accesible to proceed 
 </tr>
 </table>
 </div>
+<div id="gitops" class="paragraph">
+<p>== Install GitOps Operator</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="gitops"><a class="anchor" href="#gitops"></a>Install GitOps Operator</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>Run the following command to install the GitOps Operator based on ArgoCD.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 00_boostrap/base/gitops_operator/base/</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 02_boostrap/base/gitops_operator/base/</code></pre>
 </div>
 </div>
 <div class="imageblock">
@@ -402,7 +387,7 @@ Multicluster Hub has to be installed and the RHACM Console accesible to proceed 
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -n openshift-gitops</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">watch oc get pods -n openshift-gitops</code></pre>
 </div>
 </div>
 <div class="imageblock">
@@ -435,11 +420,9 @@ Multicluster Hub has to be installed and the RHACM Console accesible to proceed 
 <img src="_images/deploy/deploy15.png" alt="deploy15">
 </div>
 </div>
+<div id="gitopsacm" class="paragraph">
+<p>== Integrate GitOps and ACM</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="gitopsacm"><a class="anchor" href="#gitopsacm"></a>Integrate GitOps and ACM</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>ACM introduces a new <code>gitopscluster</code> resource kind, which connects to a <code>placement</code> resource to determine which clusters to import into Argo CD. This integration allows you to expand your fleet, while having Argo CD automatically engage in working with your new clusters. This means if you leverage Argo CD <code>ApplicationSets</code>, your application payloads are automatically applied to your new clusters as they are registered by RHACM in your Argo CD instances.</p>
 </div>
@@ -457,7 +440,7 @@ Multicluster Hub has to be installed and the RHACM Console accesible to proceed 
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 00_boostrap/base/gitops_acm/base/</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 02_boostrap/base/gitops_acm/base/</code></pre>
 </div>
 </div>
 <div class="imageblock">
@@ -465,11 +448,9 @@ Multicluster Hub has to be installed and the RHACM Console accesible to proceed 
 <img src="_images/deploy/deploy11.png" alt="deploy11">
 </div>
 </div>
+<div id="managedcluster" class="paragraph">
+<p>== Registering local-cluster to GitOps</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="managedcluster"><a class="anchor" href="#managedcluster"></a>Registering local-cluster to GitOps</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>After the ACM/GitOps integration is done, you will label <code>local-cluster</code> (ACM) with <code>ClusterSet rhte2023-gitops-clusters</code> and environment <code>development</code>. This configuration will let us deploy applications into this Openshift cluster.</p>
 </div>
@@ -480,7 +461,7 @@ Multicluster Hub has to be installed and the RHACM Console accesible to proceed 
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc label ManagedCluster local-cluster gitops-cluster=true environment=development</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc label ManagedCluster local-cluster gitops-cluster=true environment=production</code></pre>
 </div>
 </div>
 <div class="paragraph">

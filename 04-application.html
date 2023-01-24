@@ -159,23 +159,111 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_install_pipelines_operator"><a class="anchor" href="#_install_pipelines_operator"></a>Install Pipelines Operator</h2>
+<h2 id="_creating_an_argo_cd_application_from_acm"><a class="anchor" href="#_creating_an_argo_cd_application_from_acm"></a>Creating an Argo CD application from ACM</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>An ArgoCD application can be created in ACM from the UI Console as follow:</p>
+</div>
+<div class="paragraph">
+<p>Go throught the ACM Console and login with Openshift user:</p>
+</div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 00_boostrap/base/pipelines_operator/base/</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n open-cluster-management</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>&gt;&gt; Applications</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application01.png" alt="application01">
+</div>
+</div>
+<div class="paragraph">
+<p>&gt;&gt; Create Application &gt; ApplicationSet</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application02.png" alt="application02">
+</div>
+</div>
+<div class="paragraph">
+<p>&gt;&gt; General</p>
+</div>
+<div class="paragraph">
+<p>ApplicationSet name: rhte2023-application
+Argo server: openshift-gitops
+Requeue time: 180</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application03.png" alt="application03">
+</div>
+</div>
+<div class="paragraph">
+<p>&gt;&gt; Template</p>
+</div>
+<div class="paragraph">
+<p>URL: <a href="https://github.com/xbryan1/rhte-2023-acm-apps.git" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps.git</a>
+Revision: main
+Path: rhte2023/04_deploy_applications/rhte2023-application
+Remote Namespace: rhte2023-application</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application04.png" alt="application04">
+</div>
+</div>
+<div class="paragraph">
+<p>&gt;&gt; Sync policy</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application05.png" alt="application05">
+</div>
+</div>
+<div class="paragraph">
+<p>&gt;&gt; Placement</p>
+</div>
+<div class="paragraph">
+<p>Cluster sets: rhte2023-gitops-clusters</p>
+</div>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="application/application06.png" alt="application06">
+</div>
+</div>
+<div class="paragraph">
+<p>&gt;&gt; Review and Submit</p>
+</div>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="application/application07.png" alt="application07">
+</div>
+</div>
+<div class="paragraph">
+<p>&gt;&gt; Wait until application is deployed, and check the application topoloy</p>
+</div>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="application/application08.png" alt="application08">
+</div>
+</div>
+<div class="paragraph">
+<p>&gt;&gt; Check from the Argo CD WebConsole the application status</p>
+</div>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="application/application09.png" alt="application09">
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_bootstrap_gitops_repository"><a class="anchor" href="#_bootstrap_gitops_repository"></a>Bootstrap GitOps repository</h2>
+<h2 id="_creating_an_argo_cd_application_from_cli"><a class="anchor" href="#_creating_an_argo_cd_application_from_cli"></a>Creating an Argo CD application from CLI</h2>
 <div class="sectionbody">
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 03_deploy_application/base/application01/base</code></pre>
-</div>
-</div>
+
 </div>
 </div>
 <div class="sect1">
