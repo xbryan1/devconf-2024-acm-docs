@@ -46,7 +46,7 @@ YAML files uses Kustomize templates, just to take a look how it works, run the f
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-cd rhte-2023-acm-apps/rhte2023/; oc kustomize 02_boostrap/base/acm_operator/base
+cd rhte-2023-acm-apps/rhte2023/; oc kustomize 02_bootstrap/base/acm_operator/base
 ----
 
 image::deploy/deploy04.png[]
@@ -59,7 +59,7 @@ Enabling master node scheduling will be able to deploy workloads on master nodes
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc replace -k 02_boostrap/base/openshift/base
+oc replace -k 02_bootstrap/base/openshift/base
 ----
 
 image::deploy/deploy05.png[]
@@ -72,7 +72,7 @@ WARNING: This configuration is not recommended for production.
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc apply -k 02_boostrap/base/acm_operator/base
+oc apply -k 02_bootstrap/base/acm_operator/base
 ----
 
 [.lines_space]
@@ -92,7 +92,7 @@ After installing the ACM Operator we also need to create the CRD object `MultiCl
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc apply -k 02_boostrap/base/acm_multiclusterhub/base
+oc apply -k 02_bootstrap/base/acm_multiclusterhub/base
 ----
 
 image::deploy/deploy07.png[]
@@ -149,7 +149,7 @@ Run the following command to install the GitOps Operator based on ArgoCD.
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc apply -k 02_boostrap/base/gitops_operator/base/
+oc apply -k 02_bootstrap/base/gitops_operator/base/
 ----
 
 image::deploy/deploy10.png[]
@@ -196,7 +196,7 @@ image::deploy/deploy18.png[]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc apply -k 02_boostrap/base/gitops_acm/base/
+oc apply -k 02_bootstrap/base/gitops_acm/base/
 ----
 
 image::deploy/deploy11.png[]
@@ -231,3 +231,24 @@ and the `local-cluster` belongs to `ClusterSet rhte2023-gitops-clusters` through
 
 image::deploy/deploy19.png[]
 image::deploy/deploy20.png[]
+
+[#deployall]
+== Creating an ArgoCD Setup app-of-apps 
+
+One option to setup an app-of-apps in Argo CD for the bootstrap instead of going step by step as we have seen :-)
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+cd rhte2023/02_bootstrap/argocd; oc create -f rhte2023-bootstrap-gitops.yaml
+----
+
+or from argocd cli 
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+argocd app create rhte2023-bootstrap-gitops --project default --repo https://github.com/xbryan1/rhte-2023-acm-apps.git --path rhte2023/02_bootstrap/base --dest-namespace openshift-gitops --dest-server https://api.jclaretm.nasatam.support:6443
+----

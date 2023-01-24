@@ -8,6 +8,7 @@
 ** xref:02-deploy.adoc#gitops[Install GitOps Operator]
 ** xref:02-deploy.adoc#gitopsacm[Integrate GitOps and ACM]
 ** xref:02-deploy.adoc#managedcluster[Registering local-cluster to GitOps]
+** xref:02-deploy.adoc#deployall[Creating an ArgoCD Setup app-of-apps ]
 
 * xref:03-installcluster.adoc[3. Install a new Openshift Cluster]
 ** xref:03-installcluster.adoc#credentials[Setup credentials]
