@@ -160,11 +160,81 @@
 <h2 id="multiclusterapplication"><a class="anchor" href="#multiclusterapplication"></a>Advanced Cluster Management Multicluster Application</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Finally, you are going to check if your applications are fault tolerant.</p>
+<p>Finally, you are going to check if your applications are fault tolerant. In this LAB, you have deployed three applications:
+. rhte2023-app01: Deployed on local-cluster (the OpenShift cluster where Red Hat Advanced Cluster Management is installed).
+. rhte2023-app02: Deployed on any of both clusters.
+. rhte2023-app03: Deployed on the managed cluster (the OpenShift cluster installed by Red Hat Advanced Cluster Management).</p>
+</div>
+<div class="paragraph">
+<p>Now, we are going to hibernate the rhte2023-cluster01 cluster to check if the applications are fault tolerant.</p>
+</div>
+<div class="paragraph">
+<p>As the rhte2023-app01 application is on local-cluster only, this application is not going to be affected by the hibernation.
+The rhte2023-app02 application is running in rhe2023-cluster01 but can run on any OpenShift clusters. So when the cluster rhte2023-cluster01 is hibernated, the application is going will be moved to the local-cluster.
+Finally, the rhte2023-app03 application is running in rhte2023-cluster01 only. So this application will not be available when the cluster is hibernated.</p>
+</div>
+<div class="paragraph">
+<p>You can check the rhte2023-app02 application status in Red Hat Advanced Cluster Management web interface. You can go into "Applications" section and search for "rhte2023-app02". You will see that the application is running on 1 Remote cluster</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/hibernate/hibernate01.png" alt="hibernate01">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="hibernategui"><a class="anchor" href="#hibernategui"></a>Hibernate the cluster using the web interface</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To hibernate the cluster, you need to enter into the Red Hat Advanced Cluster Management web interface route first. You can find it in the open-cluster-management namespace.</p>
+</div>
+<div class="paragraph">
+<p>After entering into Red Hat Advanced Cluster Management web interface, you need to enter into the "Infrastructure" &#8594; "Clusters" section.</p>
+</div>
+<div class="paragraph">
+<p>You should click into the three dot button on the bottom right to get the cluster options.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/hibernate/hibernate02.png" alt="hibernate02">
+</div>
+</div>
+<div class="paragraph">
+<p>Now, you can select "Hibernate cluster".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/hibernate/hibernate03.png" alt="hibernate03">
+</div>
+</div>
+<div class="paragraph">
+<p>The next page will ask for Hibernate confirmation. You should select the "Hibernate" button.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/hibernate/hibernate04.png" alt="hibernate04">
+</div>
+</div>
+<div class="paragraph">
+<p>You can wait some time until the cluster is hibernated. When the cluster is Hibernated, you can check that the application has moved to the Local cluster.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/hibernate/hibernate05.png" alt="hibernate05">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="hibernatecli"><a class="anchor" href="#hibernatecli"></a>Hibernate the cluster using the CLI</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To hibernate the cluster using the CLI, you need to patch the ClusterDeployment object adding the powerState: Hibernating into the spec section. You can use this command to hibernate the cluster:</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k 03_deploy_application/base/application01/base</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc patch ClusterDeployment rhte2023-cluster01 -n rhte2023-cluster01 --type merge -p '{"spec":{"powerState":"Hibernating"}}'</code></pre>
 </div>
 </div>
 </div>
