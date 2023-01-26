@@ -1,11 +1,52 @@
 [#multiclusterapplication]
 == Advanced Cluster Management Multicluster Application
 
-Finally, you are going to check if your applications are fault tolerant.
+Finally, you are going to check if your applications are fault tolerant. In this LAB, you have deployed three applications:
+. rhte2023-app01: Deployed on local-cluster (the OpenShift cluster where Red Hat Advanced Cluster Management is installed).
+. rhte2023-app02: Deployed on any of both clusters.
+. rhte2023-app03: Deployed on the managed cluster (the OpenShift cluster installed by Red Hat Advanced Cluster Management).
+
+Now, we are going to hibernate the rhte2023-cluster01 cluster to check if the applications are fault tolerant.
+
+As the rhte2023-app01 application is on local-cluster only, this application is not going to be affected by the hibernation.
+The rhte2023-app02 application is running in rhe2023-cluster01 but can run on any OpenShift clusters. So when the cluster rhte2023-cluster01 is hibernated, the application is going will be moved to the local-cluster.
+Finally, the rhte2023-app03 application is running in rhte2023-cluster01 only. So this application will not be available when the cluster is hibernated.
+
+You can check the rhte2023-app02 application status in Red Hat Advanced Cluster Management web interface. You can go into "Applications" section and search for "rhte2023-app02". You will see that the application is running on 1 Remote cluster
+
+image::hibernate/hibernate01.png[]
+
+[#hibernategui]
+== Hibernate the cluster using the web interface
+
+To hibernate the cluster, you need to enter into the Red Hat Advanced Cluster Management web interface route first. You can find it in the open-cluster-management namespace.
+
+After entering into Red Hat Advanced Cluster Management web interface, you need to enter into the "Infrastructure" -> "Clusters" section.
+
+You should click into the three dot button on the bottom right to get the cluster options.
+
+image::hibernate/hibernate02.png[]
+
+Now, you can select "Hibernate cluster".
+
+image::hibernate/hibernate03.png[]
+
+The next page will ask for Hibernate confirmation. You should select the "Hibernate" button.
+
+image::hibernate/hibernate04.png[]
+
+You can wait some time until the cluster is hibernated. When the cluster is Hibernated, you can check that the application has moved to the Local cluster.
+
+image::hibernate/hibernate05.png[]
+
+[#hibernatecli]
+== Hibernate the cluster using the CLI
+
+To hibernate the cluster using the CLI, you need to patch the ClusterDeployment object adding the powerState: Hibernating into the spec section. You can use this command to hibernate the cluster:
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc apply -k 03_deploy_application/base/application01/base
+oc patch ClusterDeployment rhte2023-cluster01 -n rhte2023-cluster01 --type merge -p '{"spec":{"powerState":"Hibernating"}}'
 ----
