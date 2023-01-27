@@ -125,6 +125,7 @@ In the Cluster details form, you will need to choose a Cluster name, a Cluster s
 In the Cluster name, you can choose `rhte2023-cluster01` as the Cluster name.
 In the Cluster set, you can choose the default Cluster set.
 In the Base DNS domain, you need to use the Base DNS domain received by email.
+In the "Release image", select the 4.10.X release image.
 
 image::install/create03.png[]
 
@@ -147,6 +148,8 @@ image::install/create07.png[]
 Finally, you can review the data and create the cluster
 
 image::install/create08.png[]
+
+The cluster installation will take around 30 minutes. So go the next section, you can do it while the cluster is being installed.
 
 [#installcli]
 == Deploy a new OpenShift cluster via CLI
@@ -348,4 +351,4 @@ Now, apply the file:
 oc create -f rhte2023-cluster01.yaml
 ----
 
-The second cluster installation, will be launched.
+The second cluster installation, will be launched. The cluster installation will take around 30 minutes. So, go the next section, you can do it while the cluster is being installed.
