@@ -98,7 +98,19 @@
     <a class="nav-link" href="03-installcluster.html#credentials">Setup credentials</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-installcluster.html#credscli">Setup credentials via CLI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="03-installcluster.html#install">Deploy new Openshift Cluster</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-installcluster.html#installgui">Deploy a new OpenShift cluster via web interface</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-installcluster.html#installcli">Deploy a new OpenShift cluster via CLI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-installcluster.html#occontextnew">Switching context for the new cluster</a>
   </li>
 </ul>
   </li>
@@ -172,23 +184,18 @@
 <p><code>ApplicationSet</code> is a sub-project of <code>Argo CD</code> that adds multicluster support. You will go through this section to create ApplicationSets from the Red Hat Advanced Cluster Management.</p>
 </div>
 <div class="paragraph">
-<p>Next both sections, from ACM or CLI will deploy the same application.</p>
+<p>We are gonna deploy some applications to understand the how it works.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="applicationacm"><a class="anchor" href="#applicationacm"></a>Creating an Argo CD application from ACM</h2>
+<h2 id="applicationacm"><a class="anchor" href="#applicationacm"></a>Application 1- Creating an Argo CD application from ACM</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>An ArgoCD application can be created in ACM from the UI Console as follow:</p>
+<p>The first Application will be created from the Advanced Cluster Management console to introoduce you with the options:</p>
 </div>
 <div class="paragraph">
-<p>Go throught the ACM Console and login with Openshift user:</p>
-</div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n open-cluster-management</code></pre>
-</div>
+<p>Go throught the Advanced Cluster Management Console and login with Openshift user:</p>
 </div>
 <div class="paragraph">
 <p><strong>&gt;&gt; Applications &gt;&gt; Create Application &gt; ApplicationSet</strong></p>
@@ -204,7 +211,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>ApplicationSet name: rhte2023-application</p>
+<p>ApplicationSet name: rhte2023-application-01</p>
 </li>
 <li>
 <p>Argo server: openshift-gitops</p>
@@ -231,10 +238,10 @@
 <p>Revision: main</p>
 </li>
 <li>
-<p>Path: rhte2023/04_deploy_applications/rhte2023-application</p>
+<p>Path: rhte2023/04_deploy_applications/rhte2023-application-01</p>
 </li>
 <li>
-<p>Remote Namespace: rhte2023-application</p>
+<p>Remote Namespace: rhte2023-application-01</p>
 </li>
 </ul>
 </div>
@@ -257,7 +264,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Cluster sets: rhte2023-gitops-clusters</p>
+<p>Cluster sets: rhte2023-gitops-clusters-vendor</p>
 </li>
 </ul>
 </div>
@@ -293,13 +300,18 @@
 <div class="ulist">
 <ul>
 <li>
-<p>&gt;&gt; Check Application pods on one of the cluster**</p>
+<p>&gt;&gt; Check Application pods on both clusters**</p>
 </li>
 </ul>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pod,route -n rhte2023-application</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get pod,route -n rhte2023-app01</code></pre>
+</div>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get pod,route -n rhte2023-app01</code></pre>
 </div>
 </div>
 </div>

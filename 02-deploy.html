@@ -98,7 +98,19 @@
     <a class="nav-link" href="03-installcluster.html#credentials">Setup credentials</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-installcluster.html#credscli">Setup credentials via CLI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="03-installcluster.html#install">Deploy new Openshift Cluster</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-installcluster.html#installgui">Deploy a new OpenShift cluster via web interface</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-installcluster.html#installcli">Deploy a new OpenShift cluster via CLI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-installcluster.html#occontextnew">Switching context for the new cluster</a>
   </li>
 </ul>
   </li>
@@ -357,7 +369,7 @@ This configuration is not recommended for production.
 </div>
 </div>
 <div class="paragraph">
-<p>Wait until all pods are in <code>Running</code> status. It can take a couple of minutes approx.</p>
+<p>Wait until all pods are in <code>Running</code> status and <code>Ready</code>. It can take a couple of minutes approx.</p>
 </div>
 <div class="paragraph">
 <p>After installing the Advanced Cluster Management Operator, we also need to create the CRD object <code>MultiClusterHub</code>.</p>
@@ -383,7 +395,7 @@ This configuration is not recommended for production.
 </div>
 </div>
 <div class="paragraph">
-<p>Wait until the Advanced Cluster Management Operatator is installed. It can take up to 10 minutes.</p>
+<p>Wait until the Advanced Cluster Management Operatator is <code>Runnig</code> status, in the meanwhile the status is <code>Installing</code>. It can take up to 10 minutes.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -405,6 +417,11 @@ This configuration is not recommended for production.
 <div class="sectionbody">
 <div class="paragraph">
 <p>Advanced Cluster Management Console is integrated with the Openshift Console, so once the ACM Operator is installed, the Openshift Console will show a new item "All Clusters" on the side navigation menu as below:</p>
+</div>
+<div class="paragraph">
+<p>Console: <a href="https://console-openshift-console.apps.&lt;your_domain&gt;/" class="bare">https://console-openshift-console.apps.&lt;your_domain&gt;/</a>
+User: kubeadmin
+Password: &lt;your_passoword&gt;</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -452,7 +469,7 @@ This configuration is not recommended for production.
 <div class="ulist">
 <ul>
 <li>
-<p>Pods in <code>openshift-gitops</code> namespace in <code>Running</code> status</p>
+<p>Pods in <code>openshift-gitops</code> namespace in <code>Running</code> status and <code>Ready</code>. It can takes a up 2 minutes.</p>
 </li>
 </ul>
 </div>
@@ -679,6 +696,14 @@ spec:
 <div class="imageblock">
 <div class="content">
 <img src="_images/deploy/deploy20.png" alt="deploy20">
+</div>
+</div>
+<div class="paragraph">
+<p>ArgoCD Console &gt; Applications</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/deploy/deploy23.png" alt="deploy23">
 </div>
 </div>
 </div>

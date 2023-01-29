@@ -98,7 +98,19 @@
     <a class="nav-link" href="#credentials">Setup credentials</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#credscli">Setup credentials via CLI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#install">Deploy new Openshift Cluster</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#installgui">Deploy a new OpenShift cluster via web interface</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#installcli">Deploy a new OpenShift cluster via CLI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#occontextnew">Switching context for the new cluster</a>
   </li>
 </ul>
   </li>
@@ -611,6 +623,75 @@ spec:
 </div>
 <div class="paragraph">
 <p>The second cluster installation, will be launched. The cluster installation will take around 30 minutes. So, go the next section, you can do it while the cluster is being installed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="occontextnew"><a class="anchor" href="#occontextnew"></a>Switching context for the new cluster</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once the clusters installation in completed and in order to easily switch between Openshift clusters in this lab, we will create a new context for the new rhte2023-cluster01.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Login into the <code>rhte2023-cluster01</code></p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc login -u kubeadmin -p &lt;password&gt; --insecure-skip-tls-verify <a href="https://&lt;your_new_cluster&gt;:6443" class="bare">https://&lt;your_new_cluster&gt;:6443</a></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Rename the current context to <code>cluster01</code></p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc config rename-context $(oc config current-context) cluster01</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>List <code>cluster01</code> context</p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc config get-contexts cluster01</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Check the new oc context works properly</p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get nodes</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="managedcluster"><a class="anchor" href="#managedcluster"></a>Registering rhte2023-cluster01 to GitOps</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s add the new cluster <code>rhte2023-cluster01</code> to the existing <code>ClusterSet</code> <strong>rhte2023-gitops-clusters-vendor</strong> as follows:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster rhte2023-cluster01 cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters-vendor --overwrite</code></pre>
+</div>
 </div>
 </div>
 </div>
