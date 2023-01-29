@@ -9,10 +9,10 @@ The `ApplicationSet` leverages the cluster decision generator to interface Kuber
 
 We are gonna deploy some applications to understand the how it works.
 
-[#applicationacm]
-== Application 1- Creating an Argo CD application from ACM
+[#applicationacm01]
+== Application 1 - Deploying a ChatBot application
 
-The first Application will be created from the Advanced Cluster Management console to introoduce you with the options:
+The first Application will be created from the Advanced Cluster Management console and it will be deployed on those Clusters matching **Vendor=Openshift** and **Platform=AWS** labels.
 
 Go throught the Advanced Cluster Management Console and login with Openshift user:
 
@@ -43,7 +43,7 @@ image::application/application05.png[]
 
 **>> Placement**
 
-* Cluster sets: rhte2023-gitops-clusters-vendor
+* Cluster sets: rhte2023-gitops-clusters
 
 image::application/application06.png[]
 
@@ -65,52 +65,171 @@ image::application/application09.png[]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm get pod,route -n rhte2023-app01
+oc --context acm get pod,route -n rhte2023-application-01
 ----
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context cluster01 get pod,route -n rhte2023-app01
+oc --context cluster01 get pod,route -n rhte2023-application-01
 ----
 
-[#applicationcli]
-== Creating an Argo CD application from CLI
+[#applicationreplicas]
+== Application 1 - Change number of replicas
 
-* **Login into the ArgoCD instance**:
+Once the `rhte2023-application-01` is already deployed, let's change the application replicas:
 
-Get ArgoCD route exposed in `openshift-gitops` namespace
+- Change application replicas
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc get route openshift-gitops-server -n openshift-gitops
+oc --context acm scale deploy rhte2023-application-01 --replicas=1
 ----
-
-Get the ArgoCD admin password from the secret `openshift-gitops-cluster` in `openshift-gitops` namespace
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc get secret/openshift-gitops-cluster -n openshift-gitops -o jsonpath='{.data.admin\.password}' | base64 -d
+oc --context get pod -n rhte2023-application-01
 ----
 
-Login into the ArgoCD instance on the ACM Openshift Cluster:
+After a while, application will scale automatically to the initial number of replicas (5).
+
+- Make a change on the deployment yaml file
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-argocd --insecure --grpc-web login <your_argocd:route> --username admin --password <your_password>
+cd rhte2023/04_deploy_applications/rhte2023-application-01/base
+sed -i 's/replicas: 5/replicas: 3/g' 100-deployment.yaml
+git add 100-deployment.yaml
+git commit -m "decreasing number of replicas"
+git push origin main
 ----
 
+Once the change has been pushed, sync the application again.
+
+ArgoCD Console
+
+image::application/application15.png[]
+
+ACM Topology
+
+image::application/application16.png[]
+
+[#applicationacm02]
+== Application 2 - Deploying a ChatDraw application
+
+The second Application will be created from the Advanced Cluster Management console and it will be deployed on those Clusters matching **Version=4.10.x** and **Environment=Development** labels. The Openshift Version value is filled automatically, but we need to label the **Development" clusters as follows:
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc --context acm label ManagedCluster rhte2023-cluster01 Environment=Development --overwrite
+----
+
+Once labeled, let's go throught the Advanced Cluster Management Console and create the second application.
+
+**>> Applications >> Create Application > ApplicationSet**
+
+**>> General**
+
+* ApplicationSet name: rhte2023-application-02
+* Argo server: openshift-gitops
+* Requeue time: 180
+
+**>> Template**
+
+* URL: https://github.com/xbryan1/rhte-2023-acm-apps.git
+* Revision: main
+* Path: rhte2023/04_deploy_applications/rhte2023-application-02
+* Remote Namespace: rhte2023-application-02
+
+**>> Sync policy**
+
+**>> Placement**
+
+* Cluster sets: rhte2023-gitops-clusters
+
+**>> Review and Submit**
+
+**>> Wait until application is deployed, and check the application topoloy**
+
+**>> Check from the Argo CD Web UI the application status**
+
+**>> Check Application pods on both clusters**
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc --context acm get pod,route -n rhte2023-application-02
+----
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc --context cluster01 get pod,route -n rhte2023-application-02
+----
+
+[#applicationimages]
+== Application 2 - Change container image
+
+Once the `rhte2023-application-02` is already deployed, let's change the application image:
+
+- Change application image commit and push your changes.
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+cd rhte2023/04_deploy_applications/rhte2023-application-02/base
+sed -i 's/chatdraw:latest/chatdraw:rhte2023/g' 100-deployment.yaml
+git add 100-deployment.yaml
+git commit -m "changing the application image"
+git push origin main
+----
+
+Once the change has been pushed, sync the application again and verify that the application has been changed (background color)
+
+[#applicationacm03]
+== Application - Deploying multiple Applications
+
+The third and fourth Applications will be created from the ArgoCD command line and it will be deployed on those Clusters 
+
+- matching **Location=eu-west-2** and **Area=Fringe** labels
+- selecting a cluster with the largest allocatable CPU and memory.
+
+Let's label the **Area" cluster as follows:
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc --context acm label ManagedCluster rhte2023-cluster01 Area=Fringe --overwrite
+----
+
+Once labeled, let's go through the ArgoCD CLI commands to create both applications.
+
+* **Change repository**:
+
+Check the following directory and change the `repoURL` for your repository in `rhte2023-application-03.yaml` and `rhte2023-application-04.yaml` files before create the Application.:
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+cd rhte2023/04_deploy_applications/argocd
+----
 
 * **Create an ArgoCD Application**:
 
-Run the following command to create a `rhte2023-application-gitops` which will create an `ApplicationSet` to deploy the application across 2 Openshift Clusters
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
@@ -141,171 +260,53 @@ argocd app list
 argocd app get rhte2023-application-gitops
 ----
 
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-argocd app get rhte2023-application-local-cluster
-argocd app history rhte2023-application-local-cluster
-----
-
-At the same time, check the CRDs created:
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-oc get Application,ApplicationSet -n openshift-gitops
-----
-
 - **Check the Application and ApplicationSet created**
 
 The ArgoCD application will create the 'ApplicationSet' on ACM/ArgoCD which will deploy the application.
 
-- ArgoCD Applications view
+- Check Application pods
 
-image::application/application10.png[]
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc --context cluster01 get pod,route -n rhte2023-application-03
+----
+
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc --context cluster01 get pod,route -n rhte2023-application-04
+----
+
+- ArgoCD Applications view
 
 - ACM discover ArgoCD Applications
 
-image::application/application11.png[]
+[#applicationimages]
+== Application - Sync and Diff
 
-- ArgoCD GitOps Application will be created and the application will be deployed
+The third Application is deployed with an **HPA - horizontal pod autoscaler** that let you specify the minimum and maximum number of pods you want to run. It means that this application will change the number of replicas and it will not match what is defined in Git repository. As a conclusion the ArgoCD the application will be **out of sync**.
 
-image::application/application12.png[]
-image::application/application13.png[]
+- Check and Sync the Application from the ArgoCD UI
 
-`ApplicationSet` CRD uses https://argocd-applicationset.readthedocs.io/en/stable/Generators-Cluster-Decision-Resource/[clusterDecisionResource] generator to generate a list of Openshift clusters where deploy the Application. Take a look at the YAML file
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-cd /rhte2023/04_deploy_applications/argocd; cat rhte2023-application.yaml
-----
-
-[.lines_space]
-[.console-input]
-[source,yaml, subs="+macros,+attributes"]
-----
-apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
-metadata:
-  name: rhte2023-application
-  namespace: openshift-gitops
-spec:
-  generators:
-  - clusterDecisionResource:
-      configMapRef: acm-placement
-      labelSelector:
-        matchLabels:
-          cluster.open-cluster-management.io/placement: rhte2023-gitops-clusters
-      requeueAfterSeconds: 180
-  template:
-    metadata:
-      labels:
-        velero.io/exclude-from-backup: "true"
-      name: rhte2023-application-{{name}}
-    spec:
-      destination:
-        namespace: rhte2023-application
-        server: '{{server}}'
-      project: default
-      source:
-        path: rhte2023/04_deploy_applications/rhte2023-application
-        repoURL: https://github.com/xbryan1/rhte-2023-acm-apps.git
-        targetRevision: main
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
-        syncOptions:
-        - CreateNamespace=true
-        - PruneLast=true
-----
-
-[#applicationsync]
-== Syncing an ArgoCD Application
-
-Syncing in ArgoCD means matching the state described in `Git` and what is in the Openshift cluster. There are 3 sync strategies:
-
-- **Manual or automatic sync**
-- **Auto-pruning of resources** - applicable for automatic sync
-- **Self-Heal** - only applicable for automatic sync.
-
-By default, Argo CD will auto-sync applications with the following `SyncPolocies` for an `ApplicationSet` every 3 minutes:
-
-* Automatically sync when cluster state changes (**syncPolicy/automated/selfHeal=true**)
-* Delete resources that are no longer defined in the source repository (**syncPolicy/automated/prune=true**)
-* Delete resources that are no longer defined in the source repository at the end of a sync operation (**syncOptions/CreateNamespace=true**)
-* Automatically create namespace if it does not exist (**syncOptions/CreateNamespace=true**)
-
-There's additional options to configure the `ApplicationSet`:
-
-* Replace resources instead of applying changes from the source repository (**syncOptions/Replace=false**)
-* Allow applications to have empty resources (**syncPolicy/automated/allowEmpty=false**)
-* Only synchronize out-of-sync resources (**syncOptions/ApplyOutOfSyncOnly=false**)
-* Disable kubectl validation (**syncOptions/Validate=false**)
-* Prune propagation policy (**syncOptions/PrunePropagationPolicy=background**)
-
-By default:
-
-[.lines_space]
-[.console-input]
-[source,yaml, subs="+macros,+attributes"]
-----
-apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
-metadata:
-  name: rhte2023-application
-  namespace: openshift-gitops
-spec:
-...
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
-        syncOptions:
-        - CreateNamespace=true
-        - PruneLast=true
-----
-
-Once the before applications is deployed, change the application as shown below and sync in the ArgoCD Console the changes manually:
-
-- Change application replicas
+- Solve the issue removing the replica definition as follows:
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc scale deploy rhte2023-application --replicas=1
-----
-
-image::application/application14.png[]
-
-After a while, application will scale automatically to the initial number of replicas (3)
-
-- Commit a change on the deployment yaml file
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-cd rhte2023/04_deploy_applications/rhte2023-application/base
-sed -i 's/replicas: 3/replicas: 5/g' 100-deployment.yaml
+cd rhte2023/04_deploy_applications/rhte2023-application-03/base
+sed -i 's/replicas://d' 100-deployment.yaml
 git add 100-deployment.yaml
-git commit -m "incresing number of replicas"
+git commit -m "removing the replicas definition"
 git push origin main
 ----
 
-Once the change has been pushed, sync the application again.
+Commit and push your changes. 
 
-ArgoCD Console
+- Sync and Refresh again.
 
-image::application/application15.png[]
-
-ACM Topology
-
-image::application/application16.png[]
-
-NOTE: Also, you can sync applications going through the argocd cli `argocd app sync rhte2023-application-gitops`
+NOTE: This issue could be solved adding https://argo-cd.readthedocs.io/en/stable/user-guide/diffing/#application-level-configuration[ignoreDifferences] into the deployment definition.
