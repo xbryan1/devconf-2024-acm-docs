@@ -252,9 +252,15 @@ cd rhte-2023-acm-apps/rhte2023/</code></pre>
 <div class="paragraph">
 <p>Most of the files used in this lab are based in <a href="https://kustomize.io/">Kustomize</a> which is a CLI configuration manager for Kubernetes objects with a <code>kustomization.yaml</code> file. It is integrated with <code>oc</code> and <code>kubectl</code> command line tools and allows you to customize raw, template-free YAML files for multiple purposes declaratively. Kustomize relies on the following configuration layering to enable reusability:</p>
 </div>
-<div class="paragraph">
-<p><strong>Base Layer</strong>: This layer specifies the most common resources.
-<strong>Overlays</strong>: This layer specifies use-case specific resources by utilizing patches to override other kustomization files and/or Kubernetes manifests.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Base Layer</strong>: This layer specifies the most common resources.</p>
+</li>
+<li>
+<p><strong>Overlays</strong>: This layer specifies use-case specific resources by utilizing patches to override other kustomization files and/or Kubernetes manifests.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>Take a look and see how it works with this example. It does not apply any configuration, just render the YAMS files provided based on the <code>kustomization.yaml</code> configuration:</p>
@@ -431,7 +437,7 @@ This configuration is not recommended for production.
 </div>
 </div>
 <div class="paragraph">
-<p>**All Cluster" will provide access to the Advanced Cluster Management Console and "local-cluster" will provide access to the Openshift Cluster.</p>
+<p><strong>All Cluster</strong> will provide access to the Advanced Cluster Management Console and "local-cluster" will provide access to the Openshift Cluster.</p>
 </div>
 <div class="paragraph">
 <p>Also, the ACM provides a dashboard UI. We can access it through a OpenShift <code>Route</code>. List routes in the <code>open-cluster-management</code> namespace and get the address of console <a href="https://multicloud-console.apps.&lt;YOUR_DOMAIN&gt" class="bare">https://multicloud-console.apps.&lt;YOUR_DOMAIN&gt</a>;. But, It will be deprecated in ACM 2.7</p>
@@ -587,13 +593,9 @@ This configuration is not recommended for production.
 </li>
 <li>
 <p>a <code>ManagedClusterSetBinding</code> - <strong>rhte2023-gitops-clusters-vendor</strong>. <code>ManagedClusterSetBinding</code> resource will bind a <code>ManagedClusterSet</code> <strong>rhte2023-gitops-clusters-vendor</strong> to a <code>namespace</code> <strong>openshift-gitops</strong>. It means that applications and policies that are created in the <code>openshift-gitops</code> namespace can only access managed clusters that are included in the bound managed cluster set resource.</p>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>a <code>Placement</code> - <strong>rhte2023-gitops-clusters-placement-vendor</strong> based on a ManagedCluster label <strong>vendor=Openshift</strong> and claim <strong>platform=AWS</strong></p>
-</li>
-</ul>
-</div>
 </li>
 </ul>
 </div>
@@ -673,7 +675,7 @@ When you integrate ACM with the GitOps operator for every managed cluster that i
 </div>
 </div>
 <div class="paragraph">
-<p>and the <code>local-cluster</code> belongs to <code>ClusterSet rhte2023-gitops-clusters</code> through <code>Openshift Console &gt; Advanced Cluster Management &gt; Clusters &gt; Cluster sets</code></p>
+<p>and the <code>local-cluster</code> belongs to <code>ClusterSet rhte2023-gitops-clusters-vendor</code> through <code>Openshift Console &gt; Advanced Cluster Management &gt; Clusters &gt; Cluster sets</code></p>
 </div>
 <div class="imageblock">
 <div class="content">
