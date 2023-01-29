@@ -59,6 +59,9 @@
     <a class="nav-link" href="#architecture">Hands-on Lab Environment</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#occontext">Switching context between clusters</a>
+  </li>
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#sources">Hands-on Lab Git repository</a>
   </li>
 </ul>
@@ -178,6 +181,62 @@
 <img src="_images/setup/setup01.png" alt="setup01">
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="occontext"><a class="anchor" href="#occontext"></a>Switching context between clusters</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to easily switch between Openshift clusters in this lab, we will create a new context for the local-cluster.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Login into the local-cluster</p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc login -u kubeadmin -p &lt;password&gt; --insecure-skip-tls-verify <a href="https://&lt;your_cluster&gt;:6443" class="bare">https://&lt;your_cluster&gt;:6443</a></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Rename the current context to <code>acm</code></p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc config rename-context $(oc config current-context) acm</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>List <code>acm</code> context</p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc config get-contexts acm</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Check the new oc context works properly</p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get nodes</code></pre>
+</div>
+</div>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -211,8 +270,7 @@
 <h2 id="sources"><a class="anchor" href="#sources"></a>Hands-on Lab Git repository</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This is the hands-on lab repository
-You might fork the project where where you will find all YAML files to setup lab environment,  deploy applications and apply any change.</p>
+<p>This is the hands-on lab <code>Git</code> repository, you might fork the project into your <code>Github</code> account as follows:</p>
 </div>
 <div class="paragraph">
 <p>On GitHub.com, navigate to the <a href="https://github.com/xbryan1/rhte-2023-acm-apps" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps</a> repository.</p>
@@ -224,6 +282,9 @@ You might fork the project where where you will find all YAML files to setup lab
 <div class="content">
 <img src="_images/setup/setup02.png" alt="setup02">
 </div>
+</div>
+<div class="paragraph">
+<p>You will find the <code>rhte2023</code> folder where there are all resources you need for this lab.</p>
 </div>
 <div class="paragraph">
 <p>Also, the following CLI tools are required for running the exercises in this hands-on.</p>
@@ -252,13 +313,13 @@ You might fork the project where where you will find all YAML files to setup lab
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Openshift client 4.10</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.10.10/openshift-client-linux-4.10.10.tar.gz">Download</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.10.10/openshift-client-mac-4.10.10.tar.gz">Download</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.10.10/openshift-client-linux-4.10.10.tar.gz">Download</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>ArgoCD CLI</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://argo-cd.readthedocs.io/en/stable/cli_installation/#download-with-curl">Download</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://argo-cd.readthedocs.io/en/stable/cli_installation/#mac">Download</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://argo-cd.readthedocs.io/en/stable/cli_installation/#download-with-curl">Download</a></p></td>
 </tr>
 </tbody>
 </table>
@@ -269,7 +330,7 @@ You might fork the project where where you will find all YAML files to setup lab
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Some of these tools are available through the Web Terminal provided by the <a href="https://docs.openshift.com/container-platform/4.10/web_console/odc-about-web-terminal.html">Web Terminal Operator</a>.
+You can launch an embedded command line terminal instance through the <a href="https://docs.openshift.com/container-platform/4.10/web_console/odc-about-web-terminal.html">Web Terminal Operator</a>. This terminal instance is preinstalled with common CLI tools for interacting with the cluster, such as oc, kubectl,odo, kn, tkn, helm, kubens, subctl, and kubectx. No argocd binaries are included.
 </td>
 </tr>
 </table>
