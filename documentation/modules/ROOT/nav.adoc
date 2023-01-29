@@ -1,5 +1,6 @@
 * xref:01-setup.adoc[1. Environment Setup]
 ** xref:01-setup.adoc#architecture[Hands-on Lab Environment]
+** xref:01-setup.adoc#occontext[Switching context between clusters]
 ** xref:01-setup.adoc#sources[Hands-on Lab Git repository]
 
 * xref:02-deploy.adoc[2. Install Advanced Management and GitOps Operators]

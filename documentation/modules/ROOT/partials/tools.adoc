@@ -10,13 +10,13 @@ Please have them installed and configured before you get started.
 | https://git-scm.com/download/linux[Download]
 
 | `Openshift client 4.10`
-| https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.10.10/openshift-client-linux-4.10.10.tar.gz[Download]
 | https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.10.10/openshift-client-mac-4.10.10.tar.gz[Download]
+| https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/4.10.10/openshift-client-linux-4.10.10.tar.gz[Download]
 
 | `ArgoCD CLI`
-| https://argo-cd.readthedocs.io/en/stable/cli_installation/#download-with-curl[Download]
 | https://argo-cd.readthedocs.io/en/stable/cli_installation/#mac[Download]
+| https://argo-cd.readthedocs.io/en/stable/cli_installation/#download-with-curl[Download]
 
 |===
 
-TIP: Some of these tools are available through the Web Terminal provided by the https://docs.openshift.com/container-platform/4.10/web_console/odc-about-web-terminal.html[Web Terminal Operator].
+TIP: You can launch an embedded command line terminal instance through the https://docs.openshift.com/container-platform/4.10/web_console/odc-about-web-terminal.html[Web Terminal Operator]. This terminal instance is preinstalled with common CLI tools for interacting with the cluster, such as oc, kubectl,odo, kn, tkn, helm, kubens, subctl, and kubectx. No argocd binaries are included.

@@ -9,9 +9,9 @@ Welcome to this RHTE 2023 hands-on lab where you will learn how to deploy multic
 
 In this hands-on lab, we'll show you how to:
 
-- Install GitOps and ACM Operators
-- Integrate GitOps instance and ACM Applications
-- Deploy a new Openshift Cluster
+- Install GitOps and Advanced Cluster Management Operators
+- Integrate an GitOps/ArgoCD instance and Advanced Cluster Management Applications
+- Deploy a new Openshift Cluster from Advanced Cluster Management
 - Bootstrap a GitOps environment.
 - Deploy Multicluster applications
 

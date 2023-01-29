@@ -12,6 +12,47 @@ This hands-on lab will be based on two OpenShift clusters. The first one has bee
 
 image::setup/setup01.png[]
 
+[#occontext]
+== Switching context between clusters
+
+In order to easily switch between Openshift clusters in this lab, we will create a new context for the local-cluster. 
+
+- Login into the local-cluster
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc login -u kubeadmin -p <password> --insecure-skip-tls-verify https://<your_cluster>:6443
+----
+
+- Rename the current context to `acm`
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc config rename-context $(oc config current-context) acm
+----
+
+- List `acm` context
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc config get-contexts acm
+----
+
+- Check the new oc context works properly
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc --context acm get nodes
+----
+
 [NOTE]
 ====
 Tested versions:
@@ -24,8 +65,7 @@ Tested versions:
 [#sources]
 == Hands-on Lab Git repository
 
-This is the hands-on lab repository 
-You might fork the project where where you will find all YAML files to setup lab environment,  deploy applications and apply any change.
+This is the hands-on lab `Git` repository, you might fork the project into your `Github` account as follows:
 
 On GitHub.com, navigate to the https://github.com/xbryan1/rhte-2023-acm-apps repository.
 
@@ -33,7 +73,6 @@ In the top-right corner of the page, click Fork.
 
 image::setup/setup02.png[]
 
+You will find the `rhte2023` folder where there are all resources you need for this lab.
+
 include::../partials/tools.adoc[]
-
-
-
