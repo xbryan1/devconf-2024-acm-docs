@@ -270,11 +270,6 @@ cd rhte-2023-acm-apps/rhte2023/</code></pre>
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm kustomize 02_bootstrap/base/acm_operator/base</code></pre>
 </div>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/deploy/deploy04.png" alt="deploy04">
-</div>
-</div>
 <div class="ulist">
 <ul>
 <li>
@@ -299,12 +294,7 @@ cd rhte-2023-acm-apps/rhte2023/</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>We are expecting "true" value.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/deploy/deploy05.png" alt="deploy05">
-</div>
+<p>We are expecting <strong>true</strong> as a  result.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -367,12 +357,7 @@ This configuration is not recommended for production.
 </div>
 </div>
 <div class="paragraph">
-<p>Wait until all pods are in <code>Running</code> status as below:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/deploy/deploy06.png" alt="deploy06">
-</div>
+<p>Wait until all pods are in <code>Running</code> status. It can take a couple of minutes approx.</p>
 </div>
 <div class="paragraph">
 <p>After installing the Advanced Cluster Management Operator, we also need to create the CRD object <code>MultiClusterHub</code>.</p>
@@ -389,11 +374,6 @@ This configuration is not recommended for production.
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm apply -k 02_bootstrap/base/acm_multiclusterhub/base</code></pre>
 </div>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/deploy/deploy07.png" alt="deploy07">
-</div>
-</div>
 <div class="paragraph">
 <p>Let&#8217;s check the results as follows:</p>
 </div>
@@ -405,22 +385,17 @@ This configuration is not recommended for production.
 <div class="paragraph">
 <p>Wait until the Advanced Cluster Management Operatator is installed. It can take up to 10 minutes.</p>
 </div>
-<div class="imageblock">
+<div class="listingblock lines_space console-input">
 <div class="content">
-<img src="_images/deploy/deploy08.png" alt="deploy08">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">watch oc --context acm get pod -n open-cluster-management</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If the multiclusterhub is not in <code>Running</code> status after a while, check the operator logs or pods status as follows:</p>
+<p>If the multiclusterhub is not in <code>Running</code> status after a while, check the operator logs or pods status.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm logs multiclusterhub-operator-xxx-xxx -n open-cluster-management</code></pre>
-</div>
-</div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">watch oc --context acm get pod -n open-cluster-management</code></pre>
 </div>
 </div>
 </div>
@@ -447,11 +422,6 @@ This configuration is not recommended for production.
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get route -n open-cluster-management</code></pre>
 </div>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/deploy/deploy09.png" alt="deploy09">
-</div>
-</div>
 <div class="paragraph">
 <p>Let&#8217;s switch to the Advanced Cluster Management Console and Login with Openshift to check that it is working properly.</p>
 </div>
@@ -476,11 +446,6 @@ This configuration is not recommended for production.
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm apply -k 02_bootstrap/base/gitops_operator/base/</code></pre>
 </div>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/deploy/deploy10.png" alt="deploy10">
-</div>
-</div>
 <div class="paragraph">
 <p>Let&#8217;s check the results as follows:</p>
 </div>
@@ -494,11 +459,6 @@ This configuration is not recommended for production.
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">watch oc --context acm get pods -n openshift-gitops</code></pre>
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/deploy/deploy12.png" alt="deploy12">
 </div>
 </div>
 <div class="ulist">
@@ -576,11 +536,6 @@ This configuration is not recommended for production.
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm apply -k 02_bootstrap/base/gitops_acm/base/</code></pre>
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/deploy/deploy11.png" alt="deploy11">
 </div>
 </div>
 <div class="paragraph">
@@ -688,14 +643,14 @@ When you integrate ACM with the GitOps operator for every managed cluster that i
 <h2 id="deployall"><a class="anchor" href="#deployall"></a>Argo CD — App Of Everything</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Keep pushing!</p>
+<p>Weel done, keep pushing!</p>
 </div>
 <div class="paragraph">
 <p>This is the last step of this section where will automate with ArgoCD everything that we were doing so far, creating one Argo CD application looking into the application git repository path <code>rhte-2023-acm-apps/rhte2023/02_bootstrap</code>.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm apply -k 02_bootstrap/argocd/base/</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm apply -f 02_bootstrap/argocd/rhte2023-bootstrap-gitops.yaml</code></pre>
 </div>
 </div>
 <div class="listingblock lines_space console-input">
