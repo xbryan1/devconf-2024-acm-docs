@@ -67,7 +67,7 @@ oc --context acm get nodes
 [#sources]
 == Hands-on Lab Git repository
 
-This is the hands-on lab `Git` repository, you might fork the project into your `Github` account as follows:
+You might fork the hands-on lab `Git` repository into your `Github` account as follows:
 
 On GitHub.com, navigate to the https://github.com/xbryan1/rhte-2023-acm-apps repository.
 

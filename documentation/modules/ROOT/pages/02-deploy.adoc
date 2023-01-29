@@ -55,8 +55,6 @@ Take a look and see how it works with this example. It does not apply any config
 oc --context acm kustomize 02_bootstrap/base/acm_operator/base
 ----
 
-image::deploy/deploy04.png[]
-
 - **Enable master node scheduling**
 
 Let's start getting our hands dirty. We are going to enable master nodes for scheduling workloads to take advantage of all limited resources that we have in this lab.
@@ -77,9 +75,7 @@ Let's check the results as follows:
 oc --context acm get scheduler cluster -o yaml -o=jsonpath='{.spec.mastersSchedulable}{"\n"}'
 ----
 
-We are expecting "true" value.
-
-image::deploy/deploy05.png[]
+We are expecting **true** as a  result.
 
 WARNING: This configuration is not recommended for production.
 
@@ -109,9 +105,7 @@ Let's check the results as follows:
 watch oc --context acm get pod -n open-cluster-management
 ----
 
-Wait until all pods are in `Running` status as below:
-
-image::deploy/deploy06.png[]
+Wait until all pods are in `Running` status. It can take a couple of minutes approx.
 
 After installing the Advanced Cluster Management Operator, we also need to create the CRD object `MultiClusterHub`. 
 
@@ -124,8 +118,6 @@ After installing the Advanced Cluster Management Operator, we also need to creat
 oc --context acm apply -k 02_bootstrap/base/acm_multiclusterhub/base
 ----
 
-image::deploy/deploy07.png[]
-
 Let's check the results as follows:
 
 [.lines_space]
@@ -137,22 +129,20 @@ watch oc --context acm get mch -o=jsonpath='{.items[0].status.phase}' -n open-cl
 
 Wait until the Advanced Cluster Management Operatator is installed. It can take up to 10 minutes.
 
-image::deploy/deploy08.png[]
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+watch oc --context acm get pod -n open-cluster-management
+----
 
-If the multiclusterhub is not in `Running` status after a while, check the operator logs or pods status as follows:
+If the multiclusterhub is not in `Running` status after a while, check the operator logs or pods status.
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
 oc --context acm logs multiclusterhub-operator-xxx-xxx -n open-cluster-management
-----
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-watch oc --context acm get pod -n open-cluster-management
 ----
 
 [#console]
@@ -173,8 +163,6 @@ Also, the ACM provides a dashboard UI. We can access it through a OpenShift `Rou
 oc --context acm get route -n open-cluster-management
 ----
 
-image::deploy/deploy09.png[]
-
 Let's switch to the Advanced Cluster Management Console and Login with Openshift to check that it is working properly.
 
 image::deploy/deploy21.png[]
@@ -193,8 +181,6 @@ Let's install it:
 oc --context acm apply -k 02_bootstrap/base/gitops_operator/base/
 ----
 
-image::deploy/deploy10.png[]
-
 Let's check the results as follows:
 
 - Pods in `openshift-gitops` namespace in `Running` status
@@ -205,8 +191,6 @@ Let's check the results as follows:
 ----
 watch oc --context acm get pods -n openshift-gitops
 ----
-
-image::deploy/deploy12.png[]
 
 - ArgoCD dashboard UI is accessible from the Openshift Console
 
@@ -249,8 +233,6 @@ Let's run the following commands to perform the Openshift GitOps Operator integr
 ----
 oc --context acm apply -k 02_bootstrap/base/gitops_acm/base/
 ----
-
-image::deploy/deploy11.png[]
 
 It will create:
 
@@ -315,7 +297,7 @@ image::deploy/deploy20.png[]
 [#deployall]
 == Argo CD — App Of Everything
 
-Keep pushing! 
+Weel done, keep pushing! 
 
 This is the last step of this section where will automate with ArgoCD everything that we were doing so far, creating one Argo CD application looking into the application git repository path `rhte-2023-acm-apps/rhte2023/02_bootstrap`. 
  
@@ -323,7 +305,7 @@ This is the last step of this section where will automate with ArgoCD everything
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm apply -k 02_bootstrap/argocd/base/
+oc --context acm apply -f 02_bootstrap/argocd/rhte2023-bootstrap-gitops.yaml
 ----
 
 [.lines_space]
