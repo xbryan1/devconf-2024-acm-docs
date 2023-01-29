@@ -105,7 +105,7 @@ Let's check the results as follows:
 watch oc --context acm get pod -n open-cluster-management
 ----
 
-Wait until all pods are in `Running` status. It can take a couple of minutes approx.
+Wait until all pods are in `Running` status and `Ready`. It can take a couple of minutes approx.
 
 After installing the Advanced Cluster Management Operator, we also need to create the CRD object `MultiClusterHub`. 
 
@@ -127,7 +127,7 @@ Let's check the results as follows:
 watch oc --context acm get mch -o=jsonpath='{.items[0].status.phase}' -n open-cluster-management
 ----
 
-Wait until the Advanced Cluster Management Operatator is installed. It can take up to 10 minutes.
+Wait until the Advanced Cluster Management Operatator is `Runnig` status, in the meanwhile the status is `Installing`. It can take up to 10 minutes.
 
 [.lines_space]
 [.console-input]
@@ -149,6 +149,10 @@ oc --context acm logs multiclusterhub-operator-xxx-xxx -n open-cluster-managemen
 == Access to the Advanced Cluster Management Web Console
 
 Advanced Cluster Management Console is integrated with the Openshift Console, so once the ACM Operator is installed, the Openshift Console will show a new item "All Clusters" on the side navigation menu as below:
+
+Console: https://console-openshift-console.apps.<your_domain>/
+User: kubeadmin
+Password: <your_passoword>
 
 image::deploy/deploy00.png[]
 
@@ -183,7 +187,7 @@ oc --context acm apply -k 02_bootstrap/base/gitops_operator/base/
 
 Let's check the results as follows:
 
-- Pods in `openshift-gitops` namespace in `Running` status
+- Pods in `openshift-gitops` namespace in `Running` status and `Ready`. It can takes a up 2 minutes.
 
 [.lines_space]
 [.console-input]
@@ -332,3 +336,8 @@ Let's check the results as follows:
 ACM > Applications > Search > bootstrap
 
 image::deploy/deploy20.png[]
+
+ArgoCD Console > Applications 
+
+image::deploy/deploy23.png[]
+

@@ -352,3 +352,56 @@ oc create -f rhte2023-cluster01.yaml
 ----
 
 The second cluster installation, will be launched. The cluster installation will take around 30 minutes. So, go the next section, you can do it while the cluster is being installed.
+
+[#occontextnew]
+== Switching context for the new cluster
+
+Once the clusters installation in completed and in order to easily switch between Openshift clusters in this lab, we will create a new context for the new rhte2023-cluster01. 
+
+- Login into the `rhte2023-cluster01`
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc login -u kubeadmin -p <password> --insecure-skip-tls-verify https://<your_new_cluster>:6443
+----
+
+- Rename the current context to `cluster01`
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc config rename-context $(oc config current-context) cluster01
+----
+
+- List `cluster01` context
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc config get-contexts cluster01
+----
+
+- Check the new oc context works properly
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc --context cluster01 get nodes
+----
+
+[#managedcluster]
+== Registering rhte2023-cluster01 to GitOps
+
+Let's add the new cluster `rhte2023-cluster01` to the existing `ClusterSet` **rhte2023-gitops-clusters-vendor** as follows:
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc --context acm label ManagedCluster rhte2023-cluster01 cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters-vendor --overwrite
+----

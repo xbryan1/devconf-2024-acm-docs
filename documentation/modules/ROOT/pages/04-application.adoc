@@ -7,21 +7,14 @@ The `ApplicationSet` leverages the cluster decision generator to interface Kuber
 
 `ApplicationSet` is a sub-project of `Argo CD` that adds multicluster support. You will go through this section to create ApplicationSets from the Red Hat Advanced Cluster Management.
 
-Next both sections, from ACM or CLI will deploy the same application.
+We are gonna deploy some applications to understand the how it works.
 
 [#applicationacm]
-== Creating an Argo CD application from ACM
+== Application 1- Creating an Argo CD application from ACM
 
-An ArgoCD application can be created in ACM from the UI Console as follow:
+The first Application will be created from the Advanced Cluster Management console to introoduce you with the options:
 
-Go throught the ACM Console and login with Openshift user:
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-oc get route -n open-cluster-management
-----
+Go throught the Advanced Cluster Management Console and login with Openshift user:
 
 **>> Applications >> Create Application > ApplicationSet**
 
@@ -29,7 +22,7 @@ image::application/application02.png[]
 
 **>> General**
 
-* ApplicationSet name: rhte2023-application
+* ApplicationSet name: rhte2023-application-01
 * Argo server: openshift-gitops
 * Requeue time: 180
 
@@ -39,8 +32,8 @@ image::application/application03.png[]
 
 * URL: https://github.com/xbryan1/rhte-2023-acm-apps.git
 * Revision: main
-* Path: rhte2023/04_deploy_applications/rhte2023-application
-* Remote Namespace: rhte2023-application
+* Path: rhte2023/04_deploy_applications/rhte2023-application-01
+* Remote Namespace: rhte2023-application-01
 
 image::application/application04.png[]
 
@@ -50,7 +43,7 @@ image::application/application05.png[]
 
 **>> Placement**
 
-* Cluster sets: rhte2023-gitops-clusters
+* Cluster sets: rhte2023-gitops-clusters-vendor
 
 image::application/application06.png[]
 
@@ -66,13 +59,20 @@ image::application/application08.png[]
 
 image::application/application09.png[]
 
-** >> Check Application pods on one of the cluster**
+** >> Check Application pods on both clusters**
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc get pod,route -n rhte2023-application
+oc --context acm get pod,route -n rhte2023-app01
+----
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc --context cluster01 get pod,route -n rhte2023-app01
 ----
 
 [#applicationcli]
