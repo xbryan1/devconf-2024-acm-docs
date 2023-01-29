@@ -42,8 +42,9 @@ image::deploy/deploy03.png[]
 
 Most of the files used in this lab are based in https://kustomize.io/[Kustomize] which is a CLI configuration manager for Kubernetes objects with a `kustomization.yaml` file. It is integrated with `oc` and `kubectl` command line tools and allows you to customize raw, template-free YAML files for multiple purposes declaratively. Kustomize relies on the following configuration layering to enable reusability:
 
-**Base Layer**: This layer specifies the most common resources.
-**Overlays**: This layer specifies use-case specific resources by utilizing patches to override other kustomization files and/or Kubernetes manifests.
+- **Base Layer**: This layer specifies the most common resources.
+
+- **Overlays**: This layer specifies use-case specific resources by utilizing patches to override other kustomization files and/or Kubernetes manifests.
 
 Take a look and see how it works with this example. It does not apply any configuration, just render the YAMS files provided based on the `kustomization.yaml` configuration:
 
@@ -161,7 +162,7 @@ Advanced Cluster Management Console is integrated with the Openshift Console, so
 
 image::deploy/deploy00.png[]
 
-**All Cluster" will provide access to the Advanced Cluster Management Console and "local-cluster" will provide access to the Openshift Cluster.
+**All Cluster** will provide access to the Advanced Cluster Management Console and "local-cluster" will provide access to the Openshift Cluster.
 
 Also, the ACM provides a dashboard UI. We can access it through a OpenShift `Route`. List routes in the `open-cluster-management` namespace and get the address of console https://multicloud-console.apps.<YOUR_DOMAIN>. But, It will be deprecated in ACM 2.7
 
@@ -256,7 +257,8 @@ It will create:
 * a `ManagedClusterSet` - **rhte2023-gitops-clusters-vendor**. `ManagedClusterSet` resources allow the grouping of cluster resources. We will add both Openshift Cluster `local-cluster` and `rhte2023-cluster01` into this `ManagedClusterSet` which enables deployment across all of the Openshift Cluster.
 
 * a `ManagedClusterSetBinding` - **rhte2023-gitops-clusters-vendor**. `ManagedClusterSetBinding` resource will bind a `ManagedClusterSet` **rhte2023-gitops-clusters-vendor** to a `namespace` **openshift-gitops**. It means that applications and policies that are created in the `openshift-gitops` namespace can only access managed clusters that are included in the bound managed cluster set resource.
-- a `Placement` - **rhte2023-gitops-clusters-placement-vendor** based on a ManagedCluster label **vendor=Openshift** and claim **platform=AWS**
+
+* a `Placement` - **rhte2023-gitops-clusters-placement-vendor** based on a ManagedCluster label **vendor=Openshift** and claim **platform=AWS**
 
 [.lines_space]
 [.console-input]
@@ -306,7 +308,7 @@ image::deploy/deploy16.png[]
 
 image::deploy/deploy17.png[]
 
-and the `local-cluster` belongs to `ClusterSet rhte2023-gitops-clusters` through `Openshift Console > Advanced Cluster Management > Clusters > Cluster sets`
+and the `local-cluster` belongs to `ClusterSet rhte2023-gitops-clusters-vendor` through `Openshift Console > Advanced Cluster Management > Clusters > Cluster sets`
 
 image::deploy/deploy20.png[]
 

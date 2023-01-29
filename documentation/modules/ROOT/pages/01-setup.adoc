@@ -12,6 +12,17 @@ This hands-on lab will be based on two OpenShift clusters. The first one has bee
 
 image::setup/setup01.png[]
 
+[NOTE]
+====
+Tested versions:
+
+- Red Hat OpenShift 4.10
+- Red Hat Advanced Cluster Management 2.6
+- Gitops Operator 1.7
+====
+
+include::../partials/tools.adoc[]
+
 [#occontext]
 == Switching context between clusters
 
@@ -53,15 +64,6 @@ oc config get-contexts acm
 oc --context acm get nodes
 ----
 
-[NOTE]
-====
-Tested versions:
-
-- Red Hat OpenShift 4.10
-- Red Hat Advanced Cluster Management 2.6
-- Gitops Operator 1.7
-====
-
 [#sources]
 == Hands-on Lab Git repository
 
@@ -74,5 +76,3 @@ In the top-right corner of the page, click Fork.
 image::setup/setup02.png[]
 
 You will find the `rhte2023` folder where there are all resources you need for this lab.
-
-include::../partials/tools.adoc[]
