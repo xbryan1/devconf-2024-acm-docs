@@ -20,10 +20,13 @@
 ** xref:03-installcluster.adoc#occontextnew[Switching context for the new cluster]
 
 * xref:04-application.adoc[4. Deploy a Multicluster Application with GitOps]
-** xref:04-application.adoc#application[Deploy GitOps Application]
-** xref:04-application.adoc#applicationacm[Creating an Argo CD application from ACM]
-** xref:04-application.adoc#applicationcli[Creating an Argo CD application from CLI]
-** xref:04-application.adoc#applicationsync[Syncing an ArgoCD Application]
+** xref:04-application.adoc#applicationacm01[Application 1 - Deploying a ChatBot application]
+** xref:04-application.adoc#applicationreplicas[Application 1 - Change number of replicas]
+** xref:04-application.adoc#applicationacm02[Application 2 - Deploying a ChatDraw application]
+** xref:04-application.adoc#applicationimages[Application 2 - Change container image]
+** xref:04-application.adoc#applicationacm03[Application - Deploying multiple Applications]
+** xref:04-application.adoc#applicationimages[Application - Sync and Diff]
+
 
 * xref:05-policies.adoc[5. Setup Advanced Cluster Management Policies]
 ** xref:05-policies.adoc#setup[Configure Policies]
