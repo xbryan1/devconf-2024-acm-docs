@@ -580,6 +580,152 @@ subjects:
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="policiesgitops"><a class="anchor" href="#policiesgitops"></a>Setup Policies via GitOps</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now, you know how to create Policies. So, you can learn how to create the Policies using GitOps. If you want to deploy the policies using a GitOps model, you can create the same namespace and the same Compliance Operator policies using GitOps.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="firstpolicygitops"><a class="anchor" href="#firstpolicygitops"></a>Setup the first policy via GitOps</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>First, you need to enter into the Red Hat Advanced Management web interface, and select "Applications".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/gitops01.png" alt="gitops01">
+</div>
+</div>
+<div class="paragraph">
+<p>You should go to "Create application".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/gitops02.png" alt="gitops02">
+</div>
+</div>
+<div class="paragraph">
+<p>You should select "ApplicationSet".</p>
+</div>
+<div class="paragraph">
+<p>On the next page, you can use "gitops-namespace-policy" as the name and "openshift-gitops" as the Argo server".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/gitops03.png" alt="gitops03">
+</div>
+</div>
+<div class="paragraph">
+<p>On the "Template" page, you should use the following information:
+- Repository type: Git
+- URL: <a href="https://github.com/xbryan1/rhte-2023-acm-apps" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps</a>
+- Revision: main
+- Path: rhte2023/05_policies/gitops_policy_namespace
+- Remote namespace: gitops-policies</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/gitops04.png" alt="gitops04">
+</div>
+</div>
+<div class="paragraph">
+<p>You can use the default values on the "Sync policy" page.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/gitops05.png" alt="gitops05">
+</div>
+</div>
+<div class="paragraph">
+<p>You should use "rhte2023-gitops-clusters as the "Existing placement" policy.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/gitops06.png" alt="gitops06">
+</div>
+</div>
+<div class="paragraph">
+<p>Now, you can review your policy and create it.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/gitops07.png" alt="gitops07">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="secondpolicygitops"><a class="anchor" href="#secondpolicygitops"></a>Setup the second policy via GitOps</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>First, you need to access into the Red Hat Advanced Management web interface, and select "Applications".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/gitops01.png" alt="gitops01">
+</div>
+</div>
+<div class="paragraph">
+<p>You should go to "Create application".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/gitops02.png" alt="gitops02">
+</div>
+</div>
+<div class="paragraph">
+<p>You should select "ApplicationSet".</p>
+</div>
+<div class="paragraph">
+<p>On the next page, you can use "gitops-compliance-policy" as the name and "openshift-gitops" as the Argo server".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/gitops08.png" alt="gitops08">
+</div>
+</div>
+<div class="paragraph">
+<p>On the "Template" page, you should use the following information:
+- Repository type: Git
+- URL: <a href="https://github.com/xbryan1/rhte-2023-acm-apps" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps</a>
+- Revision: main
+- Path: rhte2023/05_policies/gitops_policy_compliance
+- Remote namespace: gitops-policies</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/gitops09.png" alt="gitops09">
+</div>
+</div>
+<div class="paragraph">
+<p>You can use the default values on the "Sync policy" page.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/gitops05.png" alt="gitops05">
+</div>
+</div>
+<div class="paragraph">
+<p>You should use "rhte2023-gitops-clusters" as the "Existing placement" policy.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/gitops06.png" alt="gitops06">
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, you can review your policy and create it.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/gitops10.png" alt="gitops10">
+</div>
+</div>
+</div>
+</div>
 <nav class="pagination">
   <span class="prev"><a href="04-application.html">4. Deploy a Multicluster Application with GitOps</a></span>
   <span class="next"><a href="06-multiclusterapplication.html">6. Advanced Cluster Management Multicluster Application</a></span>
