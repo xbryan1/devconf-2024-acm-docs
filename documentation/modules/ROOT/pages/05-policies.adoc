@@ -315,3 +315,86 @@ oc create -f compliance-policy.yaml
 ----
 
 Once the policy is created, you can view that the policy is not compliant, and you can see that the Compliance Operator will be automatically installed. After the operator is installed, the policy will be compliant.
+
+
+[#policiesgitops]
+== Setup Policies via GitOps
+
+Now, you know how to create Policies. So, you can learn how to create the Policies using GitOps. If you want to deploy the policies using a GitOps model, you can create the same namespace and the same Compliance Operator policies using GitOps.
+
+[#firstpolicygitops]
+== Setup the first policy via GitOps
+
+First, you need to enter into the Red Hat Advanced Management web interface, and select "Applications".
+
+image::policies/gitops01.png[]
+
+You should go to "Create application".
+
+image::policies/gitops02.png[]
+
+You should select "ApplicationSet".
+
+On the next page, you can use "gitops-namespace-policy" as the name and "openshift-gitops" as the Argo server".
+
+image::policies/gitops03.png[]
+
+On the "Template" page, you should use the following information:
+- Repository type: Git
+- URL: https://github.com/xbryan1/rhte-2023-acm-apps
+- Revision: main
+- Path: rhte2023/05_policies/gitops_policy_namespace
+- Remote namespace: gitops-policies
+
+image::policies/gitops04.png[]
+
+You can use the default values on the "Sync policy" page.
+
+image::policies/gitops05.png[]
+
+You should use "rhte2023-gitops-clusters as the "Existing placement" policy.
+
+image::policies/gitops06.png[]
+
+Now, you can review your policy and create it.
+
+image::policies/gitops07.png[]
+
+
+[#secondpolicygitops]
+== Setup the second policy via GitOps
+
+First, you need to access into the Red Hat Advanced Management web interface, and select "Applications".
+
+image::policies/gitops01.png[]
+
+You should go to "Create application".
+
+image::policies/gitops02.png[]
+
+You should select "ApplicationSet".
+
+On the next page, you can use "gitops-compliance-policy" as the name and "openshift-gitops" as the Argo server".
+
+image::policies/gitops08.png[]
+
+On the "Template" page, you should use the following information:
+- Repository type: Git
+- URL: https://github.com/xbryan1/rhte-2023-acm-apps
+- Revision: main
+- Path: rhte2023/05_policies/gitops_policy_compliance
+- Remote namespace: gitops-policies
+
+image::policies/gitops09.png[]
+
+You can use the default values on the "Sync policy" page.
+
+image::policies/gitops05.png[]
+
+You should use "rhte2023-gitops-clusters" as the "Existing placement" policy.
+
+image::policies/gitops06.png[]
+
+Finally, you can review your policy and create it.
+
+image::policies/gitops10.png[]
