@@ -449,7 +449,10 @@ git push origin main</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Cluster sets: rhte2023-gitops-clusters-versionv</p>
+<p>Cluster sets: rhte2023-gitops-clusters</p>
+</li>
+<li>
+<p>Placement:</p>
 </li>
 </ul>
 </div>
@@ -525,7 +528,7 @@ git push origin main</code></pre>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster rhte2023-cluster01 Area=Fringe --overwrite</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster rhte2023-cluster01 area=fringe --overwrite</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -600,7 +603,7 @@ git push origin main</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">argocd app create rhte2023-application-gitops \
 --project default \
---repo <a href="https://github.com/xbryan1/rhte-2023-acm-apps.git" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps.git</a> \
+--repo &lt;your_forke_repository&gt; \
 --path rhte2023/04_deploy_applications/argocd \
 --dest-namespace openshift-gitops
 --dest-server <a href="https://api.&lt;your_domain&gt;:6443" class="bare">https://api.&lt;your_domain&gt;:6443</a></code></pre>
