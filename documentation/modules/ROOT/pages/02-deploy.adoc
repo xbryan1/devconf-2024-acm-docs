@@ -312,14 +312,15 @@ image::deploy/deploy20.png[]
 
 Weel done, keep pushing! 
 
-This is the last step of this section where will automate with ArgoCD everything that we were doing so far, creating one Argo CD application looking into the application git repository path `rhte-2023-acm-apps/rhte2023/02_bootstrap`. 
+This is the last step of this section where will automate with ArgoCD everything that we were doing so far. Let's change the `ApplicationSet` YAML file according to your environment.  `rhte-2023-acm-apps/rhte2023/02_bootstrap`. 
  
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm apply -f 02_bootstrap/argocd/rhte2023-bootstrap-gitops.yaml
-----
+cd rhte-2023-acm-apps/rhte2023/02_bootstrap
+vi rhte2023-bootstrap-gitops.yaml
+---
 
 [.lines_space]
 [.console-input]
@@ -338,6 +339,16 @@ spec:
   source:
     path: rhte2023/02_bootstrap/base
     repoURL: https://github.com/<your_github_account>/rhte-2023-acm-apps.git
+----
+
+and create the ApplicationSet as follows:
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+
+oc --context acm apply -f 02_bootstrap/argocd/rhte2023-bootstrap-gitops.yaml
 ----
 
 Let's check the results as follows:
