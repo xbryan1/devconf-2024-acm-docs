@@ -156,7 +156,7 @@ oc --context acm apply -k 02_bootstrap/base/gitops_operator/base/
 
 Let's check the results as follows:
 
-- Pods in `openshift-gitops` namespace in `Running` status and `Ready`. It can takes a up 2 minutes.
+- Wait until pods in `openshift-gitops` namespace in `Running` status and `Ready`. It can takes a up 2 minutes.
 
 [.lines_space]
 [.console-input]
@@ -281,15 +281,16 @@ image::deploy/deploy20.png[]
 
 Weel done, keep pushing! 
 
-This is the last step of this section where will automate with ArgoCD everything that we were doing so far. Let's change the `ApplicationSet` YAML file according to your environment.  `rhte-2023-acm-apps/rhte2023/02_bootstrap`. 
+This is the last step of this section where will automate with ArgoCD everything that we were doing so far. Let's change the `ApplicationSet` YAML file according to your environment. 
  
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-cd rhte-2023-acm-apps/rhte2023/02_bootstrap
 vi rhte2023-bootstrap-gitops.yaml
----
+----
+
+and change `server` to you `` and `repoURL` to your git repository forked:
 
 [.lines_space]
 [.console-input]
@@ -310,13 +311,12 @@ spec:
     repoURL: https://github.com/<your_github_account>/rhte-2023-acm-apps.git
 ----
 
-and create the ApplicationSet as follows:
+finally, let's create the ApplicationSet:
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-
 oc --context acm apply -f 02_bootstrap/argocd/rhte2023-bootstrap-gitops.yaml
 ----
 
