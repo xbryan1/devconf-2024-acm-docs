@@ -86,14 +86,14 @@ Once the `rhte2023-application-01` is already deployed, let's change the applica
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm scale deploy rhte2023-application-01 --replicas=1
+oc --context acm scale deployment/rhte2023-application-01 -n rhte2023-application-01 --replicas=1
 ----
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context get pod -n rhte2023-application-01
+oc --context acm get pod -n rhte2023-application-01
 ----
 
 After a while, application will scale automatically to the initial number of replicas (5).
@@ -154,7 +154,7 @@ Once labeled, let's go throught the Advanced Cluster Management Console and crea
 
 **>> Placement**
 
-* Cluster sets: rhte2023-gitops-clusters
+* Cluster sets: rhte2023-gitops-clusters-versionv
 
 **>> Review and Submit**
 
@@ -206,7 +206,7 @@ The third and fourth Applications will be created from the ArgoCD command line a
 - matching **Location=eu-west-2** and **Area=Fringe** labels
 - selecting a cluster with the largest allocatable CPU and memory.
 
-Let's label the **Area" cluster as follows:
+Let's label the **Area** cluster as follows:
 
 [.lines_space]
 [.console-input]
@@ -221,11 +221,40 @@ Once labeled, let's go through the ArgoCD CLI commands to create both applicatio
 
 Check the following directory and change the `repoURL` for your repository in `rhte2023-application-03.yaml` and `rhte2023-application-04.yaml` files before create the Application.:
 
+* **Get ArgoCD Credentials**
+
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-cd rhte2023/04_deploy_applications/argocd
+oc get secret/openshift-gitops-cluster -n openshift-gitops -o jsonpath='{.data.admin\.password}' | base64 -d
+----
+
+* **Get ArgoCD Route**
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc get route -n openshift-gitops
+----
+
+* **Login into ArgoCD**
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+argocd login openshift-gitops-server-openshift-gitops.apps.<your_domain> --username admin --password <your_password>--insecure
+----
+
+* **List ArgoCD Clusters**
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+argocd cluster list
 ----
 
 * **Create an ArgoCD Application**:
@@ -260,10 +289,6 @@ argocd app list
 argocd app get rhte2023-application-gitops
 ----
 
-- **Check the Application and ApplicationSet created**
-
-The ArgoCD application will create the 'ApplicationSet' on ACM/ArgoCD which will deploy the application.
-
 - Check Application pods
 
 [.lines_space]
@@ -273,12 +298,27 @@ The ArgoCD application will create the 'ApplicationSet' on ACM/ArgoCD which will
 oc --context cluster01 get pod,route -n rhte2023-application-03
 ----
 
-
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
 oc --context cluster01 get pod,route -n rhte2023-application-04
+----
+
+- Check Application route
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc --context cluster01 get route -n rhte2023-application-03
+----
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc --context cluster01 get route -n rhte2023-application-04
 ----
 
 - ArgoCD Applications view

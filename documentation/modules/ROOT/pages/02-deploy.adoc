@@ -240,11 +240,11 @@ oc --context acm apply -k 02_bootstrap/base/gitops_acm/base/
 
 It will create:
 
-* a `ManagedClusterSet` - **rhte2023-gitops-clusters-vendor**. `ManagedClusterSet` resources allow the grouping of cluster resources. We will add both Openshift Cluster `local-cluster` and `rhte2023-cluster01` into this `ManagedClusterSet` which enables deployment across all of the Openshift Cluster.
+* a `ManagedClusterSet` - **rhte2023-gitops-clusters**. `ManagedClusterSet` resources allow the grouping of cluster resources. We will add both Openshift Cluster `local-cluster` and `rhte2023-cluster01` into this `ManagedClusterSet` which enables deployment across all of the Openshift Cluster.
 
-* a `ManagedClusterSetBinding` - **rhte2023-gitops-clusters-vendor**. `ManagedClusterSetBinding` resource will bind a `ManagedClusterSet` **rhte2023-gitops-clusters-vendor** to a `namespace` **openshift-gitops**. It means that applications and policies that are created in the `openshift-gitops` namespace can only access managed clusters that are included in the bound managed cluster set resource.
+* a `ManagedClusterSetBinding` - **rhte2023-gitops-clusters**. `ManagedClusterSetBinding` resource will bind a `ManagedClusterSet` **rhte2023-gitops-clusters** to a `namespace` **openshift-gitops**. It means that applications and policies that are created in the `openshift-gitops` namespace can only access managed clusters that are included in the bound managed cluster set resource.
 
-* a `Placement` - **rhte2023-gitops-clusters-placement-vendor** based on a ManagedCluster label **vendor=Openshift** and claim **platform=AWS**
+* a `Placement` - **rhte2023-gitops-clusters-placement** based on a ManagedCluster label **vendor=Openshift** and claim **platform=AWS**
 
 [.lines_space]
 [.console-input]
@@ -254,7 +254,7 @@ It will create:
 apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: Placement
 metadata:
-  name: rhte2023-gitops-clusters-placement-vendor
+  name: rhte2023-gitops-clusters-placement
   namespace: openshift-gitops
 spec:
   predicates:
@@ -279,13 +279,13 @@ NOTE: When you integrate ACM with the GitOps operator for every managed cluster 
 [#managedcluster]
 == Registering local-cluster to GitOps
 
-After the ACM/GitOps integration is done, let's add `local-cluster` to `ClusterSet` **rhte2023-gitops-clusters-vendor**. This configuration will let us deploy applications matching Clusters **vendor=Openshift** and **platform=AWS**.
+After the ACM/GitOps integration is done, let's add `local-cluster` to `ClusterSet` **rhte2023-gitops-clusters**. This configuration will let us deploy applications matching Clusters **vendor=Openshift** and **platform=AWS**.
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm label ManagedCluster local-cluster cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters-vendor --overwrite
+oc --context acm label ManagedCluster local-cluster cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters --overwrite
 ----
 
 and check that cluster `local-cluster` is added as an ArgoCD Cluster from the **ArgoCD Console > Settings > Clusters** where we expect to see `local-cluster` as one of the clusters
@@ -294,7 +294,7 @@ image::deploy/deploy16.png[]
 
 image::deploy/deploy17.png[]
 
-and the `local-cluster` belongs to `ClusterSet rhte2023-gitops-clusters-vendor` through `Openshift Console > Advanced Cluster Management > Clusters > Cluster sets`
+and the `local-cluster` belongs to `ClusterSet rhte2023-gitops-clusters` through `Openshift Console > Advanced Cluster Management > Clusters > Cluster sets`
 
 image::deploy/deploy20.png[]
 

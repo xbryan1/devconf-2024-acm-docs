@@ -18,6 +18,7 @@
 ** xref:03-installcluster.adoc#installgui[Deploy a new OpenShift cluster via web interface]
 ** xref:03-installcluster.adoc#installcli[Deploy a new OpenShift cluster via CLI]
 ** xref:03-installcluster.adoc#occontextnew[Switching context for the new cluster]
+** xref:03-installcluster.adoc#managedcluster[Registering rhte2023-cluster01 to GitOps]
 
 * xref:04-application.adoc[4. Deploy a Multicluster Application with GitOps]
 ** xref:04-application.adoc#applicationacm01[Application 1 - Deploying a ChatBot application]

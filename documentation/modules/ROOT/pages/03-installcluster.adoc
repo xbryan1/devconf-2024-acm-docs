@@ -403,5 +403,5 @@ Let's add the new cluster `rhte2023-cluster01` to the existing `ClusterSet` **rh
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm label ManagedCluster rhte2023-cluster01 cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters-vendor --overwrite
+oc --context acm label ManagedCluster rhte2023-cluster01 cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters --overwrite
 ----
