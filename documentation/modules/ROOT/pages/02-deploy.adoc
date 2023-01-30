@@ -24,37 +24,6 @@ image::deploy/deploy02.png[]
 
 We will go through the Advanced Custer Management Operator installation following below steps:
 
-- **Clone Git repository**. After it has been forked before, clone it and change directory to the `rhte2023` folder 
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-git clone https://github.com/<your_github_account>/rhte-2023-acm-apps
-cd rhte-2023-acm-apps/rhte2023/
-----
-
-All directories in the `rhte2023` folder:
-
-image::deploy/deploy03.png[]
-
-- **Kustomize as a configuration manager**
-
-Most of the files used in this lab are based in https://kustomize.io/[Kustomize] which is a CLI configuration manager for Kubernetes objects with a `kustomization.yaml` file. It is integrated with `oc` and `kubectl` command line tools and allows you to customize raw, template-free YAML files for multiple purposes declaratively. Kustomize relies on the following configuration layering to enable reusability:
-
-- **Base Layer**: This layer specifies the most common resources.
-
-- **Overlays**: This layer specifies use-case specific resources by utilizing patches to override other kustomization files and/or Kubernetes manifests.
-
-Take a look and see how it works with this example. It does not apply any configuration, just render the YAMS files provided based on the `kustomization.yaml` configuration:
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-oc --context acm kustomize 02_bootstrap/base/acm_operator/base
-----
-
 - **Enable master node scheduling**
 
 Let's start getting our hands dirty. We are going to enable master nodes for scheduling workloads to take advantage of all limited resources that we have in this lab.

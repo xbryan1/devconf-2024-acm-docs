@@ -75,4 +75,12 @@ In the top-right corner of the page, click Fork.
 
 image::setup/setup02.png[]
 
-You will find the `rhte2023` folder where there are all resources you need for this lab.
+After it has been forked before, clone it and change directory to the `rhte-2023-acm-apps/rhte2023/` folder 
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+git clone https://github.com/<your_github_account>/rhte-2023-acm-apps
+cd rhte-2023-acm-apps/rhte2023/
+----
