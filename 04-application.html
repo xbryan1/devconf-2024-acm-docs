@@ -112,6 +112,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="03-installcluster.html#occontextnew">Switching context for the new cluster</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-installcluster.html#managedcluster">Registering rhte2023-cluster01 to GitOps</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item is-current-page" data-depth="1">
@@ -337,12 +340,12 @@
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm scale deploy rhte2023-application-01 --replicas=1</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm scale deployment/rhte2023-application-01 -n rhte2023-application-01 --replicas=1</code></pre>
 </div>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context get pod -n rhte2023-application-01</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get pod -n rhte2023-application-01</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -446,7 +449,7 @@ git push origin main</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Cluster sets: rhte2023-gitops-clusters</p>
+<p>Cluster sets: rhte2023-gitops-clusters-versionv</p>
 </li>
 </ul>
 </div>
@@ -518,7 +521,7 @@ git push origin main</code></pre>
 </ul>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s label the **Area" cluster as follows:</p>
+<p>Let&#8217;s label the <strong>Area</strong> cluster as follows:</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -538,9 +541,52 @@ git push origin main</code></pre>
 <div class="paragraph">
 <p>Check the following directory and change the <code>repoURL</code> for your repository in <code>rhte2023-application-03.yaml</code> and <code>rhte2023-application-04.yaml</code> files before create the Application.:</p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Get ArgoCD Credentials</strong></p>
+</li>
+</ul>
+</div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd rhte2023/04_deploy_applications/argocd</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get secret/openshift-gitops-cluster -n openshift-gitops -o jsonpath='{.data.admin\.password}' | base64 -d</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Get ArgoCD Route</strong></p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n openshift-gitops</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Login into ArgoCD</strong></p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">argocd login openshift-gitops-server-openshift-gitops.apps.&lt;your_domain&gt; --username admin --password &lt;your_password&gt;--insecure</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>List ArgoCD Clusters</strong></p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">argocd cluster list</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -583,16 +629,6 @@ git push origin main</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Check the Application and ApplicationSet created</strong></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The ArgoCD application will create the 'ApplicationSet' on ACM/ArgoCD which will deploy the application.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
 <p>Check Application pods</p>
 </li>
 </ul>
@@ -605,6 +641,23 @@ git push origin main</code></pre>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get pod,route -n rhte2023-application-04</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Check Application route</p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get route -n rhte2023-application-03</code></pre>
+</div>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get route -n rhte2023-application-04</code></pre>
 </div>
 </div>
 <div class="ulist">

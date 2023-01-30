@@ -112,6 +112,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="03-installcluster.html#occontextnew">Switching context for the new cluster</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-installcluster.html#managedcluster">Registering rhte2023-cluster01 to GitOps</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -567,13 +570,13 @@ Password: &lt;your_passoword&gt;</p>
 <div class="ulist">
 <ul>
 <li>
-<p>a <code>ManagedClusterSet</code> - <strong>rhte2023-gitops-clusters-vendor</strong>. <code>ManagedClusterSet</code> resources allow the grouping of cluster resources. We will add both Openshift Cluster <code>local-cluster</code> and <code>rhte2023-cluster01</code> into this <code>ManagedClusterSet</code> which enables deployment across all of the Openshift Cluster.</p>
+<p>a <code>ManagedClusterSet</code> - <strong>rhte2023-gitops-clusters</strong>. <code>ManagedClusterSet</code> resources allow the grouping of cluster resources. We will add both Openshift Cluster <code>local-cluster</code> and <code>rhte2023-cluster01</code> into this <code>ManagedClusterSet</code> which enables deployment across all of the Openshift Cluster.</p>
 </li>
 <li>
-<p>a <code>ManagedClusterSetBinding</code> - <strong>rhte2023-gitops-clusters-vendor</strong>. <code>ManagedClusterSetBinding</code> resource will bind a <code>ManagedClusterSet</code> <strong>rhte2023-gitops-clusters-vendor</strong> to a <code>namespace</code> <strong>openshift-gitops</strong>. It means that applications and policies that are created in the <code>openshift-gitops</code> namespace can only access managed clusters that are included in the bound managed cluster set resource.</p>
+<p>a <code>ManagedClusterSetBinding</code> - <strong>rhte2023-gitops-clusters</strong>. <code>ManagedClusterSetBinding</code> resource will bind a <code>ManagedClusterSet</code> <strong>rhte2023-gitops-clusters</strong> to a <code>namespace</code> <strong>openshift-gitops</strong>. It means that applications and policies that are created in the <code>openshift-gitops</code> namespace can only access managed clusters that are included in the bound managed cluster set resource.</p>
 </li>
 <li>
-<p>a <code>Placement</code> - <strong>rhte2023-gitops-clusters-placement-vendor</strong> based on a ManagedCluster label <strong>vendor=Openshift</strong> and claim <strong>platform=AWS</strong></p>
+<p>a <code>Placement</code> - <strong>rhte2023-gitops-clusters-placement</strong> based on a ManagedCluster label <strong>vendor=Openshift</strong> and claim <strong>platform=AWS</strong></p>
 </li>
 </ul>
 </div>
@@ -583,7 +586,7 @@ Password: &lt;your_passoword&gt;</p>
 apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: Placement
 metadata:
-  name: rhte2023-gitops-clusters-placement-vendor
+  name: rhte2023-gitops-clusters-placement
   namespace: openshift-gitops
 spec:
   predicates:
@@ -632,11 +635,11 @@ When you integrate ACM with the GitOps operator for every managed cluster that i
 <h2 id="managedcluster"><a class="anchor" href="#managedcluster"></a>Registering local-cluster to GitOps</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>After the ACM/GitOps integration is done, let&#8217;s add <code>local-cluster</code> to <code>ClusterSet</code> <strong>rhte2023-gitops-clusters-vendor</strong>. This configuration will let us deploy applications matching Clusters <strong>vendor=Openshift</strong> and <strong>platform=AWS</strong>.</p>
+<p>After the ACM/GitOps integration is done, let&#8217;s add <code>local-cluster</code> to <code>ClusterSet</code> <strong>rhte2023-gitops-clusters</strong>. This configuration will let us deploy applications matching Clusters <strong>vendor=Openshift</strong> and <strong>platform=AWS</strong>.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster local-cluster cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters-vendor --overwrite</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster local-cluster cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters --overwrite</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -653,7 +656,7 @@ When you integrate ACM with the GitOps operator for every managed cluster that i
 </div>
 </div>
 <div class="paragraph">
-<p>and the <code>local-cluster</code> belongs to <code>ClusterSet rhte2023-gitops-clusters-vendor</code> through <code>Openshift Console &gt; Advanced Cluster Management &gt; Clusters &gt; Cluster sets</code></p>
+<p>and the <code>local-cluster</code> belongs to <code>ClusterSet rhte2023-gitops-clusters</code> through <code>Openshift Console &gt; Advanced Cluster Management &gt; Clusters &gt; Cluster sets</code></p>
 </div>
 <div class="imageblock">
 <div class="content">

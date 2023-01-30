@@ -112,6 +112,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#occontextnew">Switching context for the new cluster</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#managedcluster">Registering rhte2023-cluster01 to GitOps</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -696,7 +699,7 @@ spec:
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster rhte2023-cluster01 cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters-vendor --overwrite</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster rhte2023-cluster01 cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters --overwrite</code></pre>
 </div>
 </div>
 </div>
