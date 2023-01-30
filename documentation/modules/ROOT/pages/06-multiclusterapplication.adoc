@@ -2,6 +2,7 @@
 == Advanced Cluster Management Multicluster Application
 
 Finally, you are going to check if your applications are fault tolerant. In this LAB, you have deployed four applications:
+
 . rhte2023-application-01: Deployed on both clusters.
 . rhte2023-application-02: Deployed on the remote cluster. 
 . rhte2023-application-03: Deployed on the remote cluster.
