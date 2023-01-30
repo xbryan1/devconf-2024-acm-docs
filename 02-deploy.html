@@ -245,55 +245,6 @@
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Clone Git repository</strong>. After it has been forked before, clone it and change directory to the <code>rhte2023</code> folder</p>
-</li>
-</ul>
-</div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone <a href="https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps" class="bare">https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps</a>
-cd rhte-2023-acm-apps/rhte2023/</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>All directories in the <code>rhte2023</code> folder:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/deploy/deploy03.png" alt="deploy03">
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Kustomize as a configuration manager</strong></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Most of the files used in this lab are based in <a href="https://kustomize.io/">Kustomize</a> which is a CLI configuration manager for Kubernetes objects with a <code>kustomization.yaml</code> file. It is integrated with <code>oc</code> and <code>kubectl</code> command line tools and allows you to customize raw, template-free YAML files for multiple purposes declaratively. Kustomize relies on the following configuration layering to enable reusability:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Base Layer</strong>: This layer specifies the most common resources.</p>
-</li>
-<li>
-<p><strong>Overlays</strong>: This layer specifies use-case specific resources by utilizing patches to override other kustomization files and/or Kubernetes manifests.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Take a look and see how it works with this example. It does not apply any configuration, just render the YAMS files provided based on the <code>kustomization.yaml</code> configuration:</p>
-</div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm kustomize 02_bootstrap/base/acm_operator/base</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
 <p><strong>Enable master node scheduling</strong></p>
 </li>
 </ul>
