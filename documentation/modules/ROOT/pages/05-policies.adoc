@@ -340,6 +340,7 @@ On the next page, you can use "gitops-namespace-policy" as the name and "openshi
 image::policies/gitops03.png[]
 
 On the "Template" page, you should use the following information:
+
 - Repository type: Git
 - URL: https://github.com/xbryan1/rhte-2023-acm-apps
 - Revision: main
@@ -364,7 +365,27 @@ image::policies/gitops07.png[]
 [#secondpolicygitops]
 == Setup the second policy via GitOps
 
-First, you need to access into the Red Hat Advanced Management web interface, and select "Applications".
+Before deploying the second policy using GitOps, you need to delete the policy created previously to avoid conflicts.
+
+First, you need to access into the Red Hat Advanced Management web interface and select "Governance".
+
+image::policies/delete01.png[]
+
+Now, you need to choose "Policies" on the top center menu.
+
+You need to choose the "compliance-policy" created previosly, and click into the three dot button on the right bottom side.
+
+image::policies/delete02.png[]
+
+Select "Delete" on the menu.
+
+image::policies/delete03.png[]
+
+Ensure that the two options are marked and delete the policy.
+
+image::policies/delete04.png[]
+
+Now, you can to access into the Red Hat Advanced Management web interface, and select "Applications".
 
 image::policies/gitops01.png[]
 
@@ -379,6 +400,7 @@ On the next page, you can use "gitops-compliance-policy" as the name and "opensh
 image::policies/gitops08.png[]
 
 On the "Template" page, you should use the following information:
+
 - Repository type: Git
 - URL: https://github.com/xbryan1/rhte-2023-acm-apps
 - Revision: main
