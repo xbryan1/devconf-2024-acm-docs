@@ -30,7 +30,13 @@
 
 
 * xref:05-policies.adoc[5. Setup Advanced Cluster Management Policies]
-** xref:05-policies.adoc#setup[Configure Policies]
+** xref:05-policies.adoc#firstpolicygui[Setup the first policy via web]
+** xref:05-policies.adoc#secondpolicygui[Setup the second policy via web]
+** xref:05-policies.adoc#firstpolicycli[Setup the first policy via CLI]
+** xref:05-policies.adoc#secondpolicycli[Setup the second policy via CLI]
+** xref:05-policies.adoc#firstpolicygitops[Setup the first policy using GitOps]
+** xref:05-policies.adoc#secondpolicygitops[Setup the first policy using GitOps]
 
 * xref:06-multiclusterapplication.adoc[6. Advanced Cluster Management Multicluster Application]
-** xref:06-policies.adoc#hibernate[Hibernate / Resume OCP Clusters across your domain]
+** xref:06-policies.adoc#hibernategui[Hibernate clusters via web]
+** xref:06-policies.adoc#hibernatecli[Hibernate clusters via CLI]
