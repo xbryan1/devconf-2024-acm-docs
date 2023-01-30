@@ -447,7 +447,7 @@ Password: &lt;your_passoword&gt;</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Pods in <code>openshift-gitops</code> namespace in <code>Running</code> status and <code>Ready</code>. It can takes a up 2 minutes.</p>
+<p>Wait until pods in <code>openshift-gitops</code> namespace in <code>Running</code> status and <code>Ready</code>. It can takes a up 2 minutes.</p>
 </li>
 </ul>
 </div>
@@ -653,21 +653,19 @@ When you integrate ACM with the GitOps operator for every managed cluster that i
 <p>Weel done, keep pushing!</p>
 </div>
 <div class="paragraph">
-<p>This is the last step of this section where will automate with ArgoCD everything that we were doing so far. Let&#8217;s change the <code>ApplicationSet</code> YAML file according to your environment.  <code>rhte-2023-acm-apps/rhte2023/02_bootstrap</code>.</p>
+<p>This is the last step of this section where will automate with ArgoCD everything that we were doing so far. Let&#8217;s change the <code>ApplicationSet</code> YAML file according to your environment.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd rhte-2023-acm-apps/rhte2023/02_bootstrap
-vi rhte2023-bootstrap-gitops.yaml
----
-
-[.lines_space]
-[.console-input]
-[source,yaml, subs="+macros,+attributes"]</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi rhte2023-bootstrap-gitops.yaml</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>apiVersion: argoproj.io/v1alpha1
+<p>and change <code>server</code> to you <code>` and `repoURL</code> to your git repository forked:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: rhte2023-bootstrap-gitops
@@ -679,31 +677,34 @@ spec:
   project: default
   source:
     path: rhte2023/02_bootstrap/base
-    repoURL: <a href="https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git</a></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>and create the ApplicationSet as follows:
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]</pre>
+    repoURL: <a href="https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git</a></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>oc --context acm apply -f 02_bootstrap/argocd/rhte2023-bootstrap-gitops.yaml</p>
+<p>finally, let&#8217;s create the ApplicationSet:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock lines_space console-input">
 <div class="content">
-<pre>Let's check the results as follows:
-
-ACM &gt; Applications &gt; Search &gt; bootstrap
-
-image::deploy/deploy20.png[]
-
-ArgoCD Console &gt; Applications
-
-image::deploy/deploy23.png[]</pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm apply -f 02_bootstrap/argocd/rhte2023-bootstrap-gitops.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s check the results as follows:</p>
+</div>
+<div class="paragraph">
+<p>ACM &gt; Applications &gt; Search &gt; bootstrap</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/deploy/deploy20.png" alt="deploy20">
+</div>
+</div>
+<div class="paragraph">
+<p>ArgoCD Console &gt; Applications</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/deploy/deploy23.png" alt="deploy23">
 </div>
 </div>
 </div>
