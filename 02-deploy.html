@@ -684,16 +684,21 @@ When you integrate ACM with the GitOps operator for every managed cluster that i
 <p>Weel done, keep pushing!</p>
 </div>
 <div class="paragraph">
-<p>This is the last step of this section where will automate with ArgoCD everything that we were doing so far, creating one Argo CD application looking into the application git repository path <code>rhte-2023-acm-apps/rhte2023/02_bootstrap</code>.</p>
+<p>This is the last step of this section where will automate with ArgoCD everything that we were doing so far. Let&#8217;s change the <code>ApplicationSet</code> YAML file according to your environment.  <code>rhte-2023-acm-apps/rhte2023/02_bootstrap</code>.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm apply -f 02_bootstrap/argocd/rhte2023-bootstrap-gitops.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd rhte-2023-acm-apps/rhte2023/02_bootstrap
+vi rhte2023-bootstrap-gitops.yaml
+---
+
+[.lines_space]
+[.console-input]
+[source,yaml, subs="+macros,+attributes"]</code></pre>
 </div>
 </div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
+<div class="paragraph">
+<p>apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: rhte2023-bootstrap-gitops
@@ -705,26 +710,31 @@ spec:
   project: default
   source:
     path: rhte2023/02_bootstrap/base
-    repoURL: <a href="https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git</a></code></pre>
+    repoURL: <a href="https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git</a></p>
 </div>
-</div>
-<div class="paragraph">
-<p>Let&#8217;s check the results as follows:</p>
-</div>
-<div class="paragraph">
-<p>ACM &gt; Applications &gt; Search &gt; bootstrap</p>
-</div>
-<div class="imageblock">
+<div class="listingblock">
 <div class="content">
-<img src="_images/deploy/deploy20.png" alt="deploy20">
+<pre>and create the ApplicationSet as follows:
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>ArgoCD Console &gt; Applications</p>
+<p>oc --context acm apply -f 02_bootstrap/argocd/rhte2023-bootstrap-gitops.yaml</p>
 </div>
-<div class="imageblock">
+<div class="listingblock">
 <div class="content">
-<img src="_images/deploy/deploy23.png" alt="deploy23">
+<pre>Let's check the results as follows:
+
+ACM &gt; Applications &gt; Search &gt; bootstrap
+
+image::deploy/deploy20.png[]
+
+ArgoCD Console &gt; Applications
+
+image::deploy/deploy23.png[]</pre>
 </div>
 </div>
 </div>
