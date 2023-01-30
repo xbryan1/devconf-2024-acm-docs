@@ -619,12 +619,26 @@ subjects:
 </div>
 </div>
 <div class="paragraph">
-<p>On the "Template" page, you should use the following information:
-- Repository type: Git
-- URL: <a href="https://github.com/xbryan1/rhte-2023-acm-apps" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps</a>
-- Revision: main
-- Path: rhte2023/05_policies/gitops_policy_namespace
-- Remote namespace: gitops-policies</p>
+<p>On the "Template" page, you should use the following information:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Repository type: Git</p>
+</li>
+<li>
+<p>URL: <a href="https://github.com/xbryan1/rhte-2023-acm-apps" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps</a></p>
+</li>
+<li>
+<p>Revision: main</p>
+</li>
+<li>
+<p>Path: rhte2023/05_policies/gitops_policy_namespace</p>
+</li>
+<li>
+<p>Remote namespace: gitops-policies</p>
+</li>
+</ul>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -661,7 +675,45 @@ subjects:
 <h2 id="secondpolicygitops"><a class="anchor" href="#secondpolicygitops"></a>Setup the second policy via GitOps</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>First, you need to access into the Red Hat Advanced Management web interface, and select "Applications".</p>
+<p>Before deploying the second policy using GitOps, you need to delete the policy created previously to avoid conflicts.</p>
+</div>
+<div class="paragraph">
+<p>First, you need to access into the Red Hat Advanced Management web interface and select "Governance".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/delete01.png" alt="delete01">
+</div>
+</div>
+<div class="paragraph">
+<p>Now, you need to choose "Policies" on the top center menu.</p>
+</div>
+<div class="paragraph">
+<p>You need to choose the "compliance-policy" created previosly, and click into the three dot button on the right bottom side.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/delete02.png" alt="delete02">
+</div>
+</div>
+<div class="paragraph">
+<p>Select "Delete" on the menu.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/delete03.png" alt="delete03">
+</div>
+</div>
+<div class="paragraph">
+<p>Ensure that the two options are marked and delete the policy.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/delete04.png" alt="delete04">
+</div>
+</div>
+<div class="paragraph">
+<p>Now, you can to access into the Red Hat Advanced Management web interface, and select "Applications".</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -688,12 +740,26 @@ subjects:
 </div>
 </div>
 <div class="paragraph">
-<p>On the "Template" page, you should use the following information:
-- Repository type: Git
-- URL: <a href="https://github.com/xbryan1/rhte-2023-acm-apps" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps</a>
-- Revision: main
-- Path: rhte2023/05_policies/gitops_policy_compliance
-- Remote namespace: gitops-policies</p>
+<p>On the "Template" page, you should use the following information:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Repository type: Git</p>
+</li>
+<li>
+<p>URL: <a href="https://github.com/xbryan1/rhte-2023-acm-apps" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps</a></p>
+</li>
+<li>
+<p>Revision: main</p>
+</li>
+<li>
+<p>Path: rhte2023/05_policies/gitops_policy_compliance</p>
+</li>
+<li>
+<p>Remote namespace: gitops-policies</p>
+</li>
+</ul>
 </div>
 <div class="imageblock">
 <div class="content">
