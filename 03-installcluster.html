@@ -86,7 +86,7 @@
     <a class="nav-link" href="02-deploy.html#managedcluster">Registering local-cluster to GitOps</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="02-deploy.html#deployall">Creating an ArgoCD Setup app-of-apps </a>
+    <a class="nav-link" href="02-deploy.html#deployall">App Of Everything</a>
   </li>
 </ul>
   </li>
@@ -111,6 +111,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#occontextnew">Switching context for the new cluster</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#registertnew">Registering rhte2023-cluster01 to GitOps</a>
   </li>
 </ul>
   </li>
@@ -244,7 +247,7 @@
 </li>
 </ol>
 </div>
-<div class="listingblock">
+<div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ssh-keygen</code></pre>
 </div>
@@ -386,7 +389,7 @@ stringData:
 </div>
 <div class="paragraph">
 <p>In the Cluster details form, you will need to choose a Cluster name, a Cluster set and the Base DNS domain.
-In the Cluster name, you can choose <code>rhte2023-cluster01</code> as the Cluster name.
+In the Cluster name, you can choose <strong>rhte2023-cluster01</strong> as the Cluster name.
 In the Cluster set, you can choose the <strong>rhte2023-gitops-clusters</strong> Cluster set.
 In the Base DNS domain, you need to use the Base DNS domain received by email.
 In the "Release image", select the 4.10.X release image.</p>
@@ -655,7 +658,7 @@ spec:
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Remember completing both sections below once the new Cluster is deployed.
+Remember completing both sections below once the new Cluster <code>rhte2023-cluster01</code> is deployed.
 </td>
 </tr>
 </table>
@@ -677,7 +680,7 @@ Remember completing both sections below once the new Cluster is deployed.
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc login -u kubeadmin -p &lt;password&gt; --insecure-skip-tls-verify <a href="https://&lt;your_new_cluster&gt;:6443" class="bare">https://&lt;your_new_cluster&gt;:6443</a></code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc login -u kubeadmin -p &lt;password&gt; --insecure-skip-tls-verify <a href="https://&lt;your_cluster_API_address&gt;:6443" class="bare">https://&lt;your_cluster_API_address&gt;:6443</a></code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -719,15 +722,18 @@ Remember completing both sections below once the new Cluster is deployed.
 </div>
 </div>
 <div class="sect1">
-<h2 id="managedcluster"><a class="anchor" href="#managedcluster"></a>Registering rhte2023-cluster01 to GitOps</h2>
+<h2 id="registertnew"><a class="anchor" href="#registertnew"></a>Registering rhte2023-cluster01 to GitOps</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Let&#8217;s add the new cluster <code>rhte2023-cluster01</code> to the existing <code>ClusterSet</code> <strong>rhte2023-gitops-clusters-vendor</strong> as follows:</p>
+<p>Let’s add the new cluster rhte2023-cluster01 to the existing ClusterSet rhte2023-gitops-clusters-vendor as follows:</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster rhte2023-cluster01 cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters --overwrite</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Well done!! ;-)</p>
 </div>
 </div>
 </div>

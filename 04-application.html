@@ -86,7 +86,7 @@
     <a class="nav-link" href="02-deploy.html#managedcluster">Registering local-cluster to GitOps</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="02-deploy.html#deployall">Creating an ArgoCD Setup app-of-apps </a>
+    <a class="nav-link" href="02-deploy.html#deployall">App Of Everything</a>
   </li>
 </ul>
   </li>
@@ -111,6 +111,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="03-installcluster.html#occontextnew">Switching context for the new cluster</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-installcluster.html#registertnew">Registering rhte2023-cluster01 to GitOps</a>
   </li>
 </ul>
   </li>
@@ -205,7 +208,7 @@
 <p>The <code>ApplicationSet</code> leverages the cluster decision generator to interface Kubernetes custom resources that use custom resource-specific logic to decide which managed clusters to deploy to. A cluster decision resource generates a list of managed clusters, which are then rendered into the template fields of the ApplicationSet resource. This is done using duck-typing, which does not require knowledge of the full shape of the referenced Kubernetes resource.</p>
 </div>
 <div class="paragraph">
-<p><code>ApplicationSet</code> is a sub-project of <code>Argo CD</code> that adds multicluster support. You will go through this section to create ApplicationSets from the Red Hat Advanced Cluster Management.</p>
+<p><code>ApplicationSet</code> is a sub-project of <code>Argo CD</code> that adds multicluster support. You will go through this section to create ApplicationSets from the Red Hat Advanced Cluster Management and from the ArgoCD CLI.</p>
 </div>
 <div class="paragraph">
 <p>We are gonna deploy some applications to understand the how it works.</p>
@@ -216,13 +219,23 @@
 <h2 id="applicationacm01"><a class="anchor" href="#applicationacm01"></a>Application 1 - Deploying a ChatBot application</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The first Application will be created from the Advanced Cluster Management console and it will be deployed on those Clusters matching <strong>Vendor=Openshift</strong> and <strong>Platform=AWS</strong> labels.</p>
+<p>The first Application will be created from the Advanced Cluster Management console and it will be placed on those Clusters matching labels:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Vendor=Openshift</strong></p>
+</li>
+<li>
+<p><strong>Platform=AWS</strong></p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>Go throught the Advanced Cluster Management Console and login with Openshift user:</p>
 </div>
 <div class="paragraph">
-<p><strong>&gt;&gt; Applications &gt;&gt; Create Application &gt; ApplicationSet</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet</strong></p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -230,18 +243,18 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>&gt;&gt; General</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; General</strong></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>ApplicationSet name: rhte2023-application-01</p>
+<p><strong>ApplicationSet name</strong>: rhte2023-application-01</p>
 </li>
 <li>
-<p>Argo server: openshift-gitops</p>
+<p><strong>Argo server</strong>: openshift-gitops</p>
 </li>
 <li>
-<p>Requeue time: 180</p>
+<p><strong>Requeue time</strong>: 180</p>
 </li>
 </ul>
 </div>
@@ -251,21 +264,21 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>&gt;&gt; Template</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; Template</strong></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>URL: <a href="https://github.com/xbryan1/rhte-2023-acm-apps.git" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps.git</a></p>
+<p><strong>URL</strong>: <a href="https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git</a></p>
 </li>
 <li>
-<p>Revision: main</p>
+<p><strong>Revision</strong>: main</p>
 </li>
 <li>
-<p>Path: rhte2023/04_deploy_applications/rhte2023-application-01</p>
+<p><strong>Path</strong>: rhte2023/04_deploy_applications/rhte2023-application-01</p>
 </li>
 <li>
-<p>Remote Namespace: rhte2023-application-01</p>
+<p><strong>Remote Namespace</strong>: rhte2023-application-01</p>
 </li>
 </ul>
 </div>
@@ -275,7 +288,23 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>&gt;&gt; Sync policy</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; Sync policy</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Automatically sync when cluster state changes</strong> (syncPolicy/automated/selfHeal=true)</p>
+</li>
+<li>
+<p><strong>*Delete resources that are no longer defined in the source repository</strong> (syncPolicy/automated/prune=true)</p>
+</li>
+<li>
+<p><strong>Delete resources that are no longer defined in the source repository at the end of a sync operation</strong> (syncOptions/CreateNamespace=true)</p>
+</li>
+<li>
+<p><strong>Automatically create namespace if it does not exist</strong> (syncOptions/CreateNamespace=true)</p>
+</li>
+</ul>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -283,12 +312,12 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>&gt;&gt; Placement</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; Placement</strong></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Cluster sets: rhte2023-gitops-clusters</p>
+<p>Placement: rhte2023-gitops-clusters</p>
 </li>
 </ul>
 </div>
@@ -298,7 +327,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>&gt;&gt; Review and Submit</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; Review and Submit</strong></p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -306,7 +335,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>&gt;&gt; Wait until application is deployed, and check the application topoloy</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; rhte2023-application-01 (filter by ApplicationSet) &gt; Topology</strong></p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -314,29 +343,60 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>&gt;&gt; Check from the Argo CD Web UI the application status</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Advanced Configuration &gt; Placements</strong></p>
+</div>
+<div class="paragraph">
+<p>Check the number of cluster matching with <strong>Placement &gt; rhte2023-gitops-clusters</strong>, so we expect deploy the Application <strong>rhte2023-application-01</strong> in all of them.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application08b.png" alt="application08b">
+</div>
+</div>
+<div class="paragraph">
+<p>Also, let&#8217;s check from the ArgoCD Console what is the Application status:</p>
+</div>
+<div class="paragraph">
+<p><strong>Argo CD Console &gt; Applications</strong></p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/application/application09.png" alt="application09">
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>&gt;&gt; Check Application pods on both clusters**</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>Also, let&#8217;s check the Application deployment pods on both clusters.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get pod,route -n rhte2023-application-01</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get pod -n rhte2023-application-01</code></pre>
 </div>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get pod,route -n rhte2023-application-01</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get pod -n rhte2023-application-01</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Finally, let&#8217;s check how is the Application deployed:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get route -n rhte2023-application-01</code></pre>
+</div>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get route -n rhte2023-application-01</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application09b.png" alt="application09b">
+</div>
+</div>
+<div class="paragraph">
+<p>This is a GPT3 Chatbot, so just make questions on the chat to get bot&#8217;s answers.</p>
 </div>
 </div>
 </div>
@@ -344,34 +404,47 @@
 <h2 id="applicationreplicas"><a class="anchor" href="#applicationreplicas"></a>Application 1 - Change number of replicas</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Once the <code>rhte2023-application-01</code> is already deployed, let&#8217;s change the application replicas:</p>
+<p>In order to check how ArgoCD and ACM are monitoring the Application, let&#8217;s make changes and see what happens.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Change application replicas</p>
+<p><strong>Change application replicas</strong></p>
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>Let&#8217;s change the number of replicas in both clusters and check how it is fixed automatically.</p>
+</div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm scale deployment/rhte2023-application-01 -n rhte2023-application-01 --replicas=1</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm scale deployment/rhte2023-application-01 -n rhte2023-application-01 --replicas=0
+oc --context cluster01 scale deployment/rhte2023-application-01 -n rhte2023-application-01 --replicas=0</code></pre>
 </div>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get pod -n rhte2023-application-01</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get pod -n rhte2023-application-01
+oc --context cluster01 get pod -n rhte2023-application-01</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>After a while, application will scale automatically to the initial number of replicas (5).</p>
 </div>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="application/application09c.png" alt="application09c">
+</div>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Make a change on the deployment yaml file</p>
+<p><strong>Make a change on the deployment yaml file</strong></p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>Now, let&#8217;s make a persistent changes on the Git repository:</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -382,8 +455,25 @@ git commit -m "decreasing number of replicas"
 git push origin main</code></pre>
 </div>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+See how configure a token GitHub <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">Creating a personal access token</a>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>Once the change has been pushed, sync the application again.</p>
+</div>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="application/application09c.png" alt="application09c">
+</div>
 </div>
 <div class="paragraph">
 <p>ArgoCD Console</p>
@@ -394,12 +484,7 @@ git push origin main</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>ACM Topology</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/application/application16.png" alt="application16">
-</div>
+<p>Great job man!!</p>
 </div>
 </div>
 </div>
@@ -407,11 +492,11 @@ git push origin main</code></pre>
 <h2 id="applicationacm02"><a class="anchor" href="#applicationacm02"></a>Application 2 - Deploying a ChatDraw application</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The second Application will be created from the Advanced Cluster Management console and it will be deployed on those Clusters matching <strong>Version=4.10.x</strong> and <strong>Environment=Development</strong> labels. The Openshift Version value is filled automatically, but we need to label the **Development" clusters as follows:</p>
+<p>The second Application will be created from the Advanced Cluster Management console and it will be deployed on those Clusters matching <strong>environment=development</strong> label. The Openshift Version value is filled automatically, but we need to label the **development" clusters as follows:</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster rhte2023-cluster01 Environment=Development --overwrite</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster rhte2023-cluster01 environment=development --overwrite</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -459,7 +544,7 @@ git push origin main</code></pre>
 <p><strong>&gt;&gt; Sync policy</strong></p>
 </div>
 <div class="paragraph">
-<p><strong>&gt;&gt; Placement</strong></p>
+<p><strong>&gt;&gt; ClusterSet and Placement</strong></p>
 </div>
 <div class="ulist">
 <ul>
@@ -467,7 +552,7 @@ git push origin main</code></pre>
 <p>Cluster sets: rhte2023-gitops-clusters</p>
 </li>
 <li>
-<p>Placement:</p>
+<p>Placement: rhte2023-gitops-clusters-environment</p>
 </li>
 </ul>
 </div>
@@ -618,9 +703,10 @@ git push origin main</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">argocd app create rhte2023-application-gitops \
 --project default \
---repo &lt;your_forke_repository&gt; \
+--repo &lt;your_forked_repository&gt; \
 --path rhte2023/04_deploy_applications/argocd \
---dest-namespace openshift-gitops
+--sync-policy automated \
+--dest-namespace openshift-gitops \
 --dest-server <a href="https://api.&lt;your_domain&gt;:6443" class="bare">https://api.&lt;your_domain&gt;:6443</a></code></pre>
 </div>
 </div>

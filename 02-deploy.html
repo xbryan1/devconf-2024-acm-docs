@@ -86,7 +86,7 @@
     <a class="nav-link" href="#managedcluster">Registering local-cluster to GitOps</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#deployall">Creating an ArgoCD Setup app-of-apps </a>
+    <a class="nav-link" href="#deployall">App Of Everything</a>
   </li>
 </ul>
   </li>
@@ -111,6 +111,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="03-installcluster.html#occontextnew">Switching context for the new cluster</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-installcluster.html#registertnew">Registering rhte2023-cluster01 to GitOps</a>
   </li>
 </ul>
   </li>
@@ -315,7 +318,15 @@ This configuration is not recommended for production.
 </ul>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s install the Advanced Cluster Management Operator running the following command which will create the following resources:</p>
+<p>Let&#8217;s install the Advanced Cluster Management Operator.</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm apply -k 02_bootstrap/base/acm_operator/base</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It will create the following resouces:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -329,11 +340,6 @@ This configuration is not recommended for production.
 <p><code>Subscription</code> - Advanced Cluster Management Operator</p>
 </li>
 </ul>
-</div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm apply -k 02_bootstrap/base/acm_operator/base</code></pre>
-</div>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s check the results as follows:</p>
@@ -393,10 +399,25 @@ This configuration is not recommended for production.
 <div class="paragraph">
 <p>Advanced Cluster Management Console is integrated with the Openshift Console, so once the ACM Operator is installed, the Openshift Console will show a new item "All Clusters" on the side navigation menu as below:</p>
 </div>
-<div class="paragraph">
-<p>Console: <a href="https://console-openshift-console.apps.&lt;your_domain&gt;/" class="bare">https://console-openshift-console.apps.&lt;your_domain&gt;/</a>
-User: kubeadmin
-Password: &lt;your_passoword&gt;</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Access to Advanced Cluster Management Console</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Console: <a href="https://console-openshift-console.apps.&lt;your_domain&gt;/" class="bare">https://console-openshift-console.apps.&lt;your_domain&gt;/</a></p>
+</li>
+<li>
+<p>User: kubeadmin</p>
+</li>
+<li>
+<p>Password: &lt;your_passoword&gt;</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -407,7 +428,7 @@ Password: &lt;your_passoword&gt;</p>
 <p><strong>All Cluster</strong> will provide access to the Advanced Cluster Management Console and "local-cluster" will provide access to the Openshift Cluster.</p>
 </div>
 <div class="paragraph">
-<p>Also, the ACM provides a dashboard UI. We can access it through a OpenShift <code>Route</code>. List routes in the <code>open-cluster-management</code> namespace and get the address of console <a href="https://multicloud-console.apps.&lt;YOUR_DOMAIN&gt" class="bare">https://multicloud-console.apps.&lt;YOUR_DOMAIN&gt</a>;. But, It will be deprecated in ACM 2.7</p>
+<p>Also, the Advanced Cluster Management provides a dashboard UI. We can access it through a OpenShift <code>Route</code>. List routes in the <code>open-cluster-management</code> namespace and get the address of console <a href="https://multicloud-console.apps.&lt;your_domain&gt" class="bare">https://multicloud-console.apps.&lt;your_domain&gt</a>;.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -415,7 +436,7 @@ Password: &lt;your_passoword&gt;</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s switch to the Advanced Cluster Management Console and Login with Openshift to check that it is working properly.</p>
+<p>Let&#8217;s switch to the Advanced Cluster Management Console and Login with Openshift to check that we can access properly.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -433,20 +454,20 @@ Password: &lt;your_passoword&gt;</p>
 <div class="paragraph">
 <p>Let&#8217;s install it:</p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Setup GitOps Operator</strong>:</p>
+</li>
+</ul>
+</div>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm apply -k 02_bootstrap/base/gitops_operator/base/</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s check the results as follows:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Wait until pods in <code>openshift-gitops</code> namespace in <code>Running</code> status and <code>Ready</code>. It can takes a up 2 minutes.</p>
-</li>
-</ul>
+<p>Wait until pods in <code>openshift-gitops</code> namespace are in <code>Running</code> status and <code>Ready</code>. It can takes a up 2 minutes.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -456,7 +477,7 @@ Password: &lt;your_passoword&gt;</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Tracking Kubernetes resources by label</p>
+<p><strong>Change tracking resources from label to annotation</strong>:</p>
 </li>
 </ul>
 </div>
@@ -468,9 +489,12 @@ Password: &lt;your_passoword&gt;</p>
 <div class="ulist">
 <ul>
 <li>
-<p>ArgoCD dashboard UI is accessible from the Openshift Console</p>
+<p><strong>Access to ArgoCD Console</strong>:</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>ArgoCD Console is accessible from the Openshift Console</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -483,23 +507,19 @@ Password: &lt;your_passoword&gt;</p>
 </div>
 </div>
 <div class="paragraph">
+<p>Login into the ArgoCD Console with the Openshift credentials.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/deploy/deploy15.png" alt="deploy15">
+</div>
+</div>
+<div class="paragraph">
 <p>Also, an Openshift <code>Route</code> is created:</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get route -n openshift-gitops</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Login into the ArgoCD Console with the Openshift credentials.</p>
-</li>
-</ul>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/deploy/deploy15.png" alt="deploy15">
 </div>
 </div>
 </div>
@@ -613,7 +633,7 @@ When you integrate ACM with the GitOps operator for every managed cluster that i
 <h2 id="managedcluster"><a class="anchor" href="#managedcluster"></a>Registering local-cluster to GitOps</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>After the ACM/GitOps integration is done, let&#8217;s add <code>local-cluster</code> to <code>ClusterSet</code> <strong>rhte2023-gitops-clusters</strong>. This configuration will let us deploy applications matching Clusters <strong>vendor=Openshift</strong> and <strong>platform=AWS</strong>.</p>
+<p>After the ACM/GitOps integration is done, let&#8217;s add <code>local-cluster</code> to <code>ClusterSet</code> <strong>rhte2023-gitops-clusters</strong>.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -686,10 +706,10 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s check the results as follows:</p>
+<p>Let&#8217;s check the results from the Advaced Cluster Management Console and ArgoCD Console:</p>
 </div>
 <div class="paragraph">
-<p>ACM &gt; Applications &gt; Search &gt; bootstrap</p>
+<p><strong>ACM &gt; Applications &gt; Search &gt; bootstrap</strong></p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -697,7 +717,7 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>ArgoCD Console &gt; Applications</p>
+<p><strong>ArgoCD Console &gt; Applications</strong></p>
 </div>
 <div class="imageblock">
 <div class="content">
