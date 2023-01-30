@@ -23,6 +23,8 @@ To setup the credentials, you will need the following information:
 . A Global Pull Secret. If you don't have one, you can get it from https://console.redhat.com/openshift/install/pull-secret
 . A SSH public and private key. If you don't have one, you can generate it with the following command:
 
+[.lines_space]
+[.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
 ssh-keygen
@@ -122,8 +124,8 @@ As the cluster will be installed on Amazon Web Services, you will need to choose
 image::install/create02.png[]
 
 In the Cluster details form, you will need to choose a Cluster name, a Cluster set and the Base DNS domain. 
-In the Cluster name, you can choose `rhte2023-cluster01` as the Cluster name.
-In the Cluster set, you can choose the *rhte2023-gitops-clusters* Cluster set.
+In the Cluster name, you can choose **rhte2023-cluster01** as the Cluster name.
+In the Cluster set, you can choose the **rhte2023-gitops-clusters** Cluster set.
 In the Base DNS domain, you need to use the Base DNS domain received by email.
 In the "Release image", select the 4.10.X release image.
 
@@ -353,7 +355,7 @@ oc create -f rhte2023-cluster01.yaml
 
 The second cluster installation, will be launched. The cluster installation will take around 30 minutes. So, go the next section, you can do it while the cluster is being installed.
 
-NOTE: Remember completing both sections below once the new Cluster is deployed.
+NOTE: Remember completing both sections below once the new Cluster `rhte2023-cluster01` is deployed.
 
 [#occontextnew]
 == Switching context for the new cluster
@@ -366,7 +368,7 @@ Once the clusters installation in completed and in order to easily switch betwee
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc login -u kubeadmin -p <password> --insecure-skip-tls-verify https://<your_new_cluster>:6443
+oc login -u kubeadmin -p <password> --insecure-skip-tls-verify https://<your_cluster_API_address>:6443
 ----
 
 - Rename the current context to `cluster01`
@@ -396,10 +398,10 @@ oc config get-contexts cluster01
 oc --context cluster01 get nodes
 ----
 
-[#managedcluster]
+[#registertnew]
 == Registering rhte2023-cluster01 to GitOps
 
-Let's add the new cluster `rhte2023-cluster01` to the existing `ClusterSet` **rhte2023-gitops-clusters-vendor** as follows:
+Let’s add the new cluster rhte2023-cluster01 to the existing ClusterSet rhte2023-gitops-clusters-vendor as follows:
 
 [.lines_space]
 [.console-input]
@@ -407,3 +409,5 @@ Let's add the new cluster `rhte2023-cluster01` to the existing `ClusterSet` **rh
 ----
 oc --context acm label ManagedCluster rhte2023-cluster01 cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters --overwrite
 ----
+
+Well done!! ;-)
