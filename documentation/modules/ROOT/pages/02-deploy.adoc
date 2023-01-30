@@ -287,10 +287,10 @@ This is the last step of this section where will automate with ArgoCD everything
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-vi rhte2023-bootstrap-gitops.yaml
+vi 02_bootstrap/argocd/rhte2023-bootstrap-gitops.yaml
 ----
 
-and change `server` to you `` and `repoURL` to your git repository forked:
+and change `server` to your cluster `https://<your_cluster>:6443` and `repoURL` to your git repository `https://github.com/<your_github_account>/rhte-2023-acm-apps.git` forked:
 
 [.lines_space]
 [.console-input]

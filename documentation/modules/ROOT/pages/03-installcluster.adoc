@@ -123,7 +123,7 @@ image::install/create02.png[]
 
 In the Cluster details form, you will need to choose a Cluster name, a Cluster set and the Base DNS domain. 
 In the Cluster name, you can choose `rhte2023-cluster01` as the Cluster name.
-In the Cluster set, you can choose the default Cluster set.
+In the Cluster set, you can choose the *rhte2023-gitops-clusters* Cluster set.
 In the Base DNS domain, you need to use the Base DNS domain received by email.
 In the "Release image", select the 4.10.X release image.
 
