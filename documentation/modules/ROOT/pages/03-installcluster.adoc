@@ -353,6 +353,8 @@ oc create -f rhte2023-cluster01.yaml
 
 The second cluster installation, will be launched. The cluster installation will take around 30 minutes. So, go the next section, you can do it while the cluster is being installed.
 
+NOTE: Remember completing both sections below once the new Cluster is deployed.
+
 [#occontextnew]
 == Switching context for the new cluster
 

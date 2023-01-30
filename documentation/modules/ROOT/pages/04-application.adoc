@@ -154,7 +154,8 @@ Once labeled, let's go throught the Advanced Cluster Management Console and crea
 
 **>> Placement**
 
-* Cluster sets: rhte2023-gitops-clusters-versionv
+* Cluster sets: rhte2023-gitops-clusters
+* Placement: 
 
 **>> Review and Submit**
 
@@ -212,7 +213,7 @@ Let's label the **Area** cluster as follows:
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm label ManagedCluster rhte2023-cluster01 Area=Fringe --overwrite
+oc --context acm label ManagedCluster rhte2023-cluster01 area=fringe --overwrite
 ----
 
 Once labeled, let's go through the ArgoCD CLI commands to create both applications.
@@ -265,7 +266,7 @@ argocd cluster list
 ----
 argocd app create rhte2023-application-gitops \
 --project default \
---repo https://github.com/xbryan1/rhte-2023-acm-apps.git \
+--repo <your_forke_repository> \
 --path rhte2023/04_deploy_applications/argocd \
 --dest-namespace openshift-gitops
 --dest-server https://api.<your_domain>:6443
