@@ -112,9 +112,6 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="03-installcluster.html#occontextnew">Switching context for the new cluster</a>
   </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="03-installcluster.html#managedcluster">Registering rhte2023-cluster01 to GitOps</a>
-  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -657,11 +654,11 @@ When you integrate ACM with the GitOps operator for every managed cluster that i
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi rhte2023-bootstrap-gitops.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi 02_bootstrap/argocd/rhte2023-bootstrap-gitops.yaml</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>and change <code>server</code> to you <code>` and `repoURL</code> to your git repository forked:</p>
+<p>and change <code>server</code> to your cluster <code><a href="https://&lt;your_cluster&gt;:6443" class="bare">https://&lt;your_cluster&gt;:6443</a></code> and <code>repoURL</code> to your git repository <code><a href="https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git</a></code> forked:</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
