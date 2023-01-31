@@ -386,17 +386,23 @@
 </div>
 </div>
 <div class="paragraph">
-<p>Finally, let&#8217;s check how is the Application deployed:</p>
+<p>Finally, let&#8217;s see how the Applications looks like checking the <code>Route</code> and copying on your browser.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get route -n rhte2023-application-01</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p><strong>URL</strong>:</p>
+</div>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get route -n rhte2023-application-01</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p><strong>URL</strong>: <a href="https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain&gt" class="bare">https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain&gt</a>;</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -672,12 +678,15 @@ See how configure a token GitHub <a href="https://docs.github.com/en/authenticat
 </div>
 </div>
 <div class="paragraph">
-<p>Finally, let&#8217;s check how is the Application deployed:</p>
+<p>Finally, let&#8217;s see how the Applications looks like checking the <code>Route</code> and copying on your browser.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get route -n rhte2023-application-02</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p><strong>URL</strong>: <a href="https://rhte2023-application-02-rhte2023-application-02.&lt;your_domain&gt" class="bare">https://rhte2023-application-02-rhte2023-application-02.&lt;your_domain&gt</a>;</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -748,7 +757,7 @@ git push origin main</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Change ApplicationSet according to your environment settings:</strong></p>
+<p><strong>Change ApplicationSet according to your settings:</strong></p>
 </li>
 </ul>
 </div>
@@ -759,6 +768,18 @@ git push origin main</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi cd 04_deploy_applications/argocd/rhte2023-application-03.yaml
 vi cd 04_deploy_applications/argocd/rhte2023-application-04.yaml</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Change Location according to your settings:</strong></p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi cd 04_deploy_applications/argocd/placement_location.yaml</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -824,7 +845,7 @@ vi cd 04_deploy_applications/argocd/rhte2023-application-04.yaml</code></pre>
 --path rhte2023/04_deploy_applications/argocd \
 --sync-policy automated \
 --dest-namespace openshift-gitops \
---dest-server <a href="https://acm_api.&lt;your_domain&gt;:6443" class="bare">https://acm_api.&lt;your_domain&gt;:6443</a></code></pre>
+--dest-server <a href="https://&lt;acm_api&gt;.&lt;your_domain&gt;:6443" class="bare">https://&lt;acm_api&gt;.&lt;your_domain&gt;:6443</a></code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -855,7 +876,7 @@ vi cd 04_deploy_applications/argocd/rhte2023-application-04.yaml</code></pre>
 </ul>
 </div>
 <div class="paragraph">
-<p>If you are not sure where the applications have been placed, check from <strong>Advanced Cluster Management &gt; Applications &gt; Advanced Configuration &gt; Placements</strong>, the number of the clusters matching the <strong>Placements</strong></p>
+<p>In order to see where the Applications have been placed, go to <strong>Advanced Cluster Management &gt; Applications &gt; Advanced Configuration &gt; Placements</strong>, and check the number of the clusters matching <strong>Placements</strong></p>
 </div>
 <div class="ulist">
 <ul>
@@ -868,37 +889,63 @@ vi cd 04_deploy_applications/argocd/rhte2023-application-04.yaml</code></pre>
 </ul>
 </div>
 <div class="paragraph">
-<p>and modify the following command according your results:</p>
+<p>Or going to <strong>Advanced Cluster Management &gt; Applications</strong> and filter per Application name and click on the Topolgy where you can see the Application deployed and the information about the targeted clusters.</p>
+</div>
+<div class="paragraph">
+<p>Once you know where Applications are deployed, just check the Application pods status changing the context according to your environment:</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get pod,route -n rhte2023-application-03</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get pod -n rhte2023-application-03</code></pre>
 </div>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get pod,route -n rhte2023-application-04</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get pod -n rhte2023-application-04</code></pre>
 </div>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Visit the Applications</strong></p>
+<p><strong>Applications routes</strong></p>
 </li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s see how the Applications looks like checking the <code>Route</code> and copying on your browser. In this example, <strong>rhte2023-application-03</strong> is placed on <strong>local-cluster</strong> and <strong>rhte2023-application-04</strong> is placed in <code>rhte2023-cluster01</code>:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get route -n rhte2023-application-03</code></pre>
+</div>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get route -n rhte2023-application-04</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
 <li>
 <p>Application <strong>rhte2023-application-03</strong> &gt; Red Hat Offices</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p><strong>URL</strong>: <a href="https://rhte2023-application-03-rhte2023-application-03.&lt;your_domain&gt" class="bare">https://rhte2023-application-03-rhte2023-application-03.&lt;your_domain&gt</a>;</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/application/application20.png" alt="application20">
 </div>
 </div>
+<div class="paragraph">
+<p><strong>URL</strong>: <a href="https://rhte2023-application-04-rhte2023-application-04.&lt;your_domain&gt" class="bare">https://rhte2023-application-04-rhte2023-application-04.&lt;your_domain&gt</a>;</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Application <strong>rhte2023-application-04</strong> &gt; Tetris</p>
+<p>Application <strong>rhte2023-application-04</strong> &gt; Tetris Game</p>
 </li>
 </ul>
 </div>
@@ -913,15 +960,18 @@ vi cd 04_deploy_applications/argocd/rhte2023-application-04.yaml</code></pre>
 <h2 id="applicationimages"><a class="anchor" href="#applicationimages"></a>Application - Sync and Diff</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The third Application is deployed with an <strong>HPA - horizontal pod autoscaler</strong> that let you specify the minimum and maximum number of pods you want to run. It means that this application will change the number of replicas and it will not match what is defined in Git repository. As a conclusion the ArgoCD the application will be <strong>out of sync</strong>.</p>
+<p>This is the last exercice from this section, and let&#8217;s see a common issue with Application deployments and autoscalers.</p>
+</div>
+<div class="paragraph">
+<p>The third Application is deployed with an <strong>HPA - horizontal pod autoscaler</strong> that let you specify the minimum and maximum number of pods you want to run. It means that this application will change the number of replicas and it will not match what is defined in Git repository, so the application will be <strong>out of sync</strong>. Let&#8217;s see how can fix this kind of issues:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Check and Sync the Application from the ArgoCD UI</p>
+<p><strong>Check and Sync the Application rhte2023-application-03-&lt;cluster&gt; from the ArgoCD UI</strong>. The Application status will be flapping between synced and of of sync status.</p>
 </li>
 <li>
-<p>Solve the issue removing the replica definition as follows:</p>
+<p><strong>Make changes on replicas definition</strong>:</p>
 </li>
 </ul>
 </div>
@@ -940,7 +990,7 @@ git push origin main</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Sync and Refresh again.</p>
+<p><strong>Sync and Refresh the Application again</strong>.</p>
 </li>
 </ul>
 </div>
@@ -951,10 +1001,13 @@ git push origin main</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-This issue could be solved adding <a href="https://argo-cd.readthedocs.io/en/stable/user-guide/diffing/#application-level-configuration">ignoreDifferences</a> into the deployment definition.
+This issue could also be solved adding <a href="https://argo-cd.readthedocs.io/en/stable/user-guide/diffing/#application-level-configuration">ignoreDifferences</a> into the deployment definition.
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>Great! You&#8217;ve completed the 4 Applications deployment! Congratulations!</p>
 </div>
 </div>
 </div>
