@@ -7,7 +7,7 @@ The `ApplicationSet` leverages the cluster decision generator to interface Kuber
 
 `ApplicationSet` is a sub-project of `Argo CD` that adds multicluster support. You will go through this section to create ApplicationSets from the Red Hat Advanced Cluster Management and from the ArgoCD CLI.
 
-We are gonna deploy some applications to understand the how it works.
+We are gonna deploy 4 applications to understand the how it works.
 
 [#applicationacm01]
 == Application 1 - Deploying a ChatBot application
@@ -295,51 +295,58 @@ image::application/application19.png[]
 [#applicationacm03]
 == Application - Deploying multiple Applications
 
-The third and fourth Applications will be created from the ArgoCD command line and it will be deployed on those Clusters 
+The third and fourth Applications will be created from the ArgoCD command line from an ArgoCD Application grouping both Applications **rhte2023-application-03** (RedHat Offices Photos) and **rhte2023-application-04** (Tetris) and deploying boths at the same time:
 
-- matching **Location=eu-west-2** and **Area=Fringe** labels
-- selecting a cluster with the largest allocatable CPU and memory.
+- Application **rhte2023-application-03** will match **Location=eu-west-2** and **area=fringe** labels
+- Application **rhte2023-application-04** will match clusters with less allocatable CPU and memory.
 
-Let's label the **Area** cluster as follows:
 
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-oc --context acm label ManagedCluster rhte2023-cluster01 area=fringe --overwrite
-----
-
-Once labeled, let's go through the ArgoCD CLI commands to create both applications.
-
-* **Change repository**:
-
-Check the following directory and change the `repoURL` for your repository in `rhte2023-application-03.yaml` and `rhte2023-application-04.yaml` files before create the Application.:
-
-* **Get ArgoCD Credentials**
+- **Apply new label to local-cluster**
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc get secret/openshift-gitops-cluster -n openshift-gitops -o jsonpath='{.data.admin\.password}' | base64 -d
+oc --context acm label ManagedCluster local-cluster area=fringe --overwrite
 ----
 
-* **Get ArgoCD Route**
+- **Change ApplicationSet according to your environment settings:**
 
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-oc get route -n openshift-gitops
-----
-
-* **Login into ArgoCD**
+Change **repoURL** repository to your repository **https://github.com/<your_github_account>/rhte-2023-acm-apps.git**
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-argocd login openshift-gitops-server-openshift-gitops.apps.<your_domain> --username admin --password <your_password>--insecure
+vi cd 04_deploy_applications/argocd/rhte2023-application-03.yaml
+vi cd 04_deploy_applications/argocd/rhte2023-application-04.yaml
+----
+
+- **Get ArgoCD password**
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc --context acm get secret/openshift-gitops-cluster -n openshift-gitops -o jsonpath='{.data.admin\.password}' | base64 -d
+----
+
+- **Get ArgoCD Route**
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc --context acm get route -n openshift-gitops
+----
+
+- **Login into ArgoCD**
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+argocd login openshift-gitops-server-openshift-gitops.apps.<your_domain> --username admin --password <your_password> --insecure
 ----
 
 * **List ArgoCD Clusters**
@@ -363,7 +370,7 @@ argocd app create rhte2023-application-gitops \
 --path rhte2023/04_deploy_applications/argocd \
 --sync-policy automated \
 --dest-namespace openshift-gitops \
---dest-server https://api.<your_domain>:6443
+--dest-server https://acm_api.<your_domain>:6443
 
 ----
 
@@ -385,13 +392,20 @@ argocd app list
 argocd app get rhte2023-application-gitops
 ----
 
-- Check Application pods
+- **Check Application pods**
+
+If you are not sure where the applications have been placed, check from **Advanced Cluster Management > Applications > Advanced Configuration > Placements**, the number of the clusters matching the **Placements**
+
+- Application **rhte2023-application-03** > rhte2023-gitops-clusters-location
+- Application **rhte2023-application-04** > rhte2023-gitops-clusters-cpu
+
+and modify the following command according your results:
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context cluster01 get pod,route -n rhte2023-application-03
+oc --context acm get pod,route -n rhte2023-application-03
 ----
 
 [.lines_space]
@@ -401,25 +415,15 @@ oc --context cluster01 get pod,route -n rhte2023-application-03
 oc --context cluster01 get pod,route -n rhte2023-application-04
 ----
 
-- Check Application route
+- **Visit the Applications**
 
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-oc --context cluster01 get route -n rhte2023-application-03
-----
+- Application **rhte2023-application-03** > Red Hat Offices
 
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-oc --context cluster01 get route -n rhte2023-application-04
-----
+image::application/application20.png[]
 
-- ArgoCD Applications view
+- Application **rhte2023-application-04** > Tetris
 
-- ACM discover ArgoCD Applications
+image::application/application21.png[]
 
 [#applicationimages]
 == Application - Sync and Diff
