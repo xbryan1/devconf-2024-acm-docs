@@ -91,7 +91,7 @@ oc --context acm get pod -n rhte2023-application-01
 oc --context cluster01 get pod -n rhte2023-application-01
 ----
 
-Finally, let's check how is the Application deployed:
+Finally, let's see how the Applications looks like checking the `Route` and copying on your browser. 
 
 [.lines_space]
 [.console-input]
@@ -100,12 +100,16 @@ Finally, let's check how is the Application deployed:
 oc --context acm get route -n rhte2023-application-01
 ----
 
+**URL**: 
+
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
 oc --context cluster01 get route -n rhte2023-application-01
 ----
+
+**URL**: https://rhte2023-application-01-rhte2023-application-01.<your_domain>
 
 image::application/application09b.png[]
 
@@ -257,7 +261,7 @@ oc --context acm get pod -n rhte2023-application-02
 oc --context cluster01 get pod -n rhte2023-application-02
 ----
 
-Finally, let's check how is the Application deployed:
+Finally, let's see how the Applications looks like checking the `Route` and copying on your browser. 
 
 [.lines_space]
 [.console-input]
@@ -265,6 +269,8 @@ Finally, let's check how is the Application deployed:
 ----
 oc --context cluster01 get route -n rhte2023-application-02
 ----
+
+**URL**: https://rhte2023-application-02-rhte2023-application-02.<your_domain>
 
 image::application/application18.png[]
 
@@ -300,7 +306,6 @@ The third and fourth Applications will be created from the ArgoCD command line f
 - Application **rhte2023-application-03** will match **Location=eu-west-2** and **area=fringe** labels
 - Application **rhte2023-application-04** will match clusters with less allocatable CPU and memory.
 
-
 - **Apply new label to local-cluster**
 
 [.lines_space]
@@ -310,7 +315,7 @@ The third and fourth Applications will be created from the ArgoCD command line f
 oc --context acm label ManagedCluster local-cluster area=fringe --overwrite
 ----
 
-- **Change ApplicationSet according to your environment settings:**
+- **Change ApplicationSet according to your settings:**
 
 Change **repoURL** repository to your repository **https://github.com/<your_github_account>/rhte-2023-acm-apps.git**
 
@@ -320,6 +325,15 @@ Change **repoURL** repository to your repository **https://github.com/<your_gith
 ----
 vi cd 04_deploy_applications/argocd/rhte2023-application-03.yaml
 vi cd 04_deploy_applications/argocd/rhte2023-application-04.yaml
+----
+
+- **Change Location according to your settings:**
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+vi cd 04_deploy_applications/argocd/placement_location.yaml
 ----
 
 - **Get ArgoCD password**
@@ -370,7 +384,7 @@ argocd app create rhte2023-application-gitops \
 --path rhte2023/04_deploy_applications/argocd \
 --sync-policy automated \
 --dest-namespace openshift-gitops \
---dest-server https://acm_api.<your_domain>:6443
+--dest-server https://<acm_api>.<your_domain>:6443
 
 ----
 
@@ -394,45 +408,70 @@ argocd app get rhte2023-application-gitops
 
 - **Check Application pods**
 
-If you are not sure where the applications have been placed, check from **Advanced Cluster Management > Applications > Advanced Configuration > Placements**, the number of the clusters matching the **Placements**
+In order to see where the Applications have been placed, go to **Advanced Cluster Management > Applications > Advanced Configuration > Placements**, and check the number of the clusters matching **Placements**
 
 - Application **rhte2023-application-03** > rhte2023-gitops-clusters-location
 - Application **rhte2023-application-04** > rhte2023-gitops-clusters-cpu
 
-and modify the following command according your results:
+Or going to **Advanced Cluster Management > Applications** and filter per Application name and click on the Topolgy where you can see the Application deployed and the information about the targeted clusters.
+
+Once you know where Applications are deployed, just check the Application pods status changing the context according to your environment:
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm get pod,route -n rhte2023-application-03
+oc --context acm get pod -n rhte2023-application-03
 ----
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context cluster01 get pod,route -n rhte2023-application-04
+oc --context cluster01 get pod -n rhte2023-application-04
 ----
 
-- **Visit the Applications**
+- **Applications routes**
+
+Let's see how the Applications looks like checking the `Route` and copying on your browser. In this example, **rhte2023-application-03** is placed on **local-cluster** and **rhte2023-application-04** is placed in `rhte2023-cluster01`:
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc --context acm get route -n rhte2023-application-03
+----
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc --context cluster01 get route -n rhte2023-application-04
+----
 
 - Application **rhte2023-application-03** > Red Hat Offices
 
+**URL**: https://rhte2023-application-03-rhte2023-application-03.<your_domain>
+
 image::application/application20.png[]
 
-- Application **rhte2023-application-04** > Tetris
+**URL**: https://rhte2023-application-04-rhte2023-application-04.<your_domain>
+
+- Application **rhte2023-application-04** > Tetris Game
 
 image::application/application21.png[]
 
 [#applicationimages]
 == Application - Sync and Diff
 
-The third Application is deployed with an **HPA - horizontal pod autoscaler** that let you specify the minimum and maximum number of pods you want to run. It means that this application will change the number of replicas and it will not match what is defined in Git repository. As a conclusion the ArgoCD the application will be **out of sync**.
+This is the last exercice from this section, and let's see a common issue with Application deployments and autoscalers.
 
-- Check and Sync the Application from the ArgoCD UI
+The third Application is deployed with an **HPA - horizontal pod autoscaler** that let you specify the minimum and maximum number of pods you want to run. It means that this application will change the number of replicas and it will not match what is defined in Git repository, so the application will be **out of sync**. Let's see how can fix this kind of issues:
 
-- Solve the issue removing the replica definition as follows:
+
+- **Check and Sync the Application rhte2023-application-03-<cluster> from the ArgoCD UI**. The Application status will be flapping between synced and of of sync status.
+
+- **Make changes on replicas definition**:
 
 [.lines_space]
 [.console-input]
@@ -447,6 +486,9 @@ git push origin main
 
 Commit and push your changes. 
 
-- Sync and Refresh again.
+- **Sync and Refresh the Application again**.
 
-NOTE: This issue could be solved adding https://argo-cd.readthedocs.io/en/stable/user-guide/diffing/#application-level-configuration[ignoreDifferences] into the deployment definition.
+NOTE: This issue could also be solved adding https://argo-cd.readthedocs.io/en/stable/user-guide/diffing/#application-level-configuration[ignoreDifferences] into the deployment definition.
+
+
+Great! You've completed the 4 Applications deployment! Congratulations!
