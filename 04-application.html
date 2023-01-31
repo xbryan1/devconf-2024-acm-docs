@@ -211,7 +211,7 @@
 <p><code>ApplicationSet</code> is a sub-project of <code>Argo CD</code> that adds multicluster support. You will go through this section to create ApplicationSets from the Red Hat Advanced Cluster Management and from the ArgoCD CLI.</p>
 </div>
 <div class="paragraph">
-<p>We are gonna deploy some applications to understand the how it works.</p>
+<p>We are gonna deploy 4 applications to understand the how it works.</p>
 </div>
 </div>
 </div>
@@ -725,49 +725,52 @@ git push origin main</code></pre>
 <h2 id="applicationacm03"><a class="anchor" href="#applicationacm03"></a>Application - Deploying multiple Applications</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The third and fourth Applications will be created from the ArgoCD command line and it will be deployed on those Clusters</p>
+<p>The third and fourth Applications will be created from the ArgoCD command line from an ArgoCD Application grouping both Applications <strong>rhte2023-application-03</strong> (RedHat Offices Photos) and <strong>rhte2023-application-04</strong> (Tetris) and deploying boths at the same time:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>matching <strong>Location=eu-west-2</strong> and <strong>Area=Fringe</strong> labels</p>
+<p>Application <strong>rhte2023-application-03</strong> will match <strong>Location=eu-west-2</strong> and <strong>area=fringe</strong> labels</p>
 </li>
 <li>
-<p>selecting a cluster with the largest allocatable CPU and memory.</p>
+<p>Application <strong>rhte2023-application-04</strong> will match clusters with less allocatable CPU and memory.</p>
 </li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Let&#8217;s label the <strong>Area</strong> cluster as follows:</p>
-</div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster rhte2023-cluster01 area=fringe --overwrite</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Once labeled, let&#8217;s go through the ArgoCD CLI commands to create both applications.</p>
-</div>
-<div class="ulist">
-<ul>
 <li>
-<p><strong>Change repository</strong>:</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Check the following directory and change the <code>repoURL</code> for your repository in <code>rhte2023-application-03.yaml</code> and <code>rhte2023-application-04.yaml</code> files before create the Application.:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Get ArgoCD Credentials</strong></p>
+<p><strong>Apply new label to local-cluster</strong></p>
 </li>
 </ul>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get secret/openshift-gitops-cluster -n openshift-gitops -o jsonpath='{.data.admin\.password}' | base64 -d</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster local-cluster area=fringe --overwrite</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Change ApplicationSet according to your environment settings:</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Change <strong>repoURL</strong> repository to your repository <strong><a href="https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git</a></strong></p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi cd 04_deploy_applications/argocd/rhte2023-application-03.yaml
+vi cd 04_deploy_applications/argocd/rhte2023-application-04.yaml</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Get ArgoCD password</strong></p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get secret/openshift-gitops-cluster -n openshift-gitops -o jsonpath='{.data.admin\.password}' | base64 -d</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -779,7 +782,7 @@ git push origin main</code></pre>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n openshift-gitops</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get route -n openshift-gitops</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -791,7 +794,7 @@ git push origin main</code></pre>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">argocd login openshift-gitops-server-openshift-gitops.apps.&lt;your_domain&gt; --username admin --password &lt;your_password&gt;--insecure</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">argocd login openshift-gitops-server-openshift-gitops.apps.&lt;your_domain&gt; --username admin --password &lt;your_password&gt; --insecure</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -821,7 +824,7 @@ git push origin main</code></pre>
 --path rhte2023/04_deploy_applications/argocd \
 --sync-policy automated \
 --dest-namespace openshift-gitops \
---dest-server <a href="https://api.&lt;your_domain&gt;:6443" class="bare">https://api.&lt;your_domain&gt;:6443</a></code></pre>
+--dest-server <a href="https://acm_api.&lt;your_domain&gt;:6443" class="bare">https://acm_api.&lt;your_domain&gt;:6443</a></code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -847,13 +850,29 @@ git push origin main</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Check Application pods</p>
+<p><strong>Check Application pods</strong></p>
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>If you are not sure where the applications have been placed, check from <strong>Advanced Cluster Management &gt; Applications &gt; Advanced Configuration &gt; Placements</strong>, the number of the clusters matching the <strong>Placements</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Application <strong>rhte2023-application-03</strong> &gt; rhte2023-gitops-clusters-location</p>
+</li>
+<li>
+<p>Application <strong>rhte2023-application-04</strong> &gt; rhte2023-gitops-clusters-cpu</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>and modify the following command according your results:</p>
+</div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get pod,route -n rhte2023-application-03</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get pod,route -n rhte2023-application-03</code></pre>
 </div>
 </div>
 <div class="listingblock lines_space console-input">
@@ -864,29 +883,29 @@ git push origin main</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Check Application route</p>
+<p><strong>Visit the Applications</strong></p>
+</li>
+<li>
+<p>Application <strong>rhte2023-application-03</strong> &gt; Red Hat Offices</p>
 </li>
 </ul>
 </div>
-<div class="listingblock lines_space console-input">
+<div class="imageblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get route -n rhte2023-application-03</code></pre>
-</div>
-</div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get route -n rhte2023-application-04</code></pre>
+<img src="_images/application/application20.png" alt="application20">
 </div>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>ArgoCD Applications view</p>
-</li>
-<li>
-<p>ACM discover ArgoCD Applications</p>
+<p>Application <strong>rhte2023-application-04</strong> &gt; Tetris</p>
 </li>
 </ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application21.png" alt="application21">
+</div>
 </div>
 </div>
 </div>
