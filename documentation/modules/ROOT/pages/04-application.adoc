@@ -100,7 +100,7 @@ Finally, let's see how the Applications looks like checking the `Route` and copy
 oc --context acm get route -n rhte2023-application-01
 ----
 
-**URL**: 
+**URL**: https://rhte2023-application-01-rhte2023-application-01.<your_domain_cluster_acm>
 
 [.lines_space]
 [.console-input]
@@ -109,7 +109,7 @@ oc --context acm get route -n rhte2023-application-01
 oc --context cluster01 get route -n rhte2023-application-01
 ----
 
-**URL**: https://rhte2023-application-01-rhte2023-application-01.<your_domain>
+**URL**: https://rhte2023-application-01-rhte2023-application-01.<your_domain_cluster01>
 
 image::application/application09b.png[]
 
@@ -152,7 +152,7 @@ Now, let's make a persistent changes on the Git repository:
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-cd rhte2023/04_deploy_applications/rhte2023-application-01/base
+cd 04_deploy_applications/rhte2023-application-01/base
 sed -i 's/replicas: 5/replicas: 3/g' 100-deployment.yaml
 git add 100-deployment.yaml
 git commit -m "decreasing number of replicas"
@@ -323,8 +323,8 @@ Change **repoURL** repository to your repository **https://github.com/<your_gith
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-vi cd 04_deploy_applications/argocd/rhte2023-application-03.yaml
-vi cd 04_deploy_applications/argocd/rhte2023-application-04.yaml
+vi 04_deploy_applications/argocd/rhte2023-application-03.yaml
+vi 04_deploy_applications/argocd/rhte2023-application-04.yaml
 ----
 
 - **Change Location according to your settings:**
@@ -333,7 +333,7 @@ vi cd 04_deploy_applications/argocd/rhte2023-application-04.yaml
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-vi cd 04_deploy_applications/argocd/placement_location.yaml
+vi 04_deploy_applications/argocd/placement_location.yaml
 ----
 
 - **Get ArgoCD password**
@@ -477,8 +477,8 @@ The third Application is deployed with an **HPA - horizontal pod autoscaler** th
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-cd rhte2023/04_deploy_applications/rhte2023-application-03/base
-sed -i 's/replicas://d' 100-deployment.yaml
+cd 04_deploy_applications/rhte2023-application-03/base
+sed -i 's/replicas:/d' 100-deployment.yaml
 git add 100-deployment.yaml
 git commit -m "removing the replicas definition"
 git push origin main
