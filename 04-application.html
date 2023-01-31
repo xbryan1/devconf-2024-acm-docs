@@ -296,7 +296,7 @@
 <p><strong>Automatically sync when cluster state changes</strong> (syncPolicy/automated/selfHeal=true)</p>
 </li>
 <li>
-<p><strong>*Delete resources that are no longer defined in the source repository</strong> (syncPolicy/automated/prune=true)</p>
+<p><strong>Delete resources that are no longer defined in the source repository</strong> (syncPolicy/automated/prune=true)</p>
 </li>
 <li>
 <p><strong>Delete resources that are no longer defined in the source repository at the end of a sync operation</strong> (syncOptions/CreateNamespace=true)</p>
@@ -346,7 +346,7 @@
 <p><strong>Advanced Cluster Management Console &gt; Applications &gt; Advanced Configuration &gt; Placements</strong></p>
 </div>
 <div class="paragraph">
-<p>Check the number of cluster matching with <strong>Placement &gt; rhte2023-gitops-clusters</strong>, so we expect deploy the Application <strong>rhte2023-application-01</strong> in all of them.</p>
+<p>Check the number of cluster matching with <strong>Placement &gt; rhte2023-gitops-clusters</strong>, so we are expecting see the Application <strong>rhte2023-application-01</strong> deployed in all of them.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -354,18 +354,26 @@
 </div>
 </div>
 <div class="paragraph">
-<p>Also, let&#8217;s check from the ArgoCD Console what is the Application status:</p>
+<p>Also, let&#8217;s check from the ArgoCD Console what is the Application status and from <code>oc</code> client</p>
 </div>
-<div class="paragraph">
+<div class="ulist">
+<ul>
+<li>
 <p><strong>Argo CD Console &gt; Applications</strong></p>
+</li>
+</ul>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/application/application09.png" alt="application09">
 </div>
 </div>
-<div class="paragraph">
-<p>Also, let&#8217;s check the Application deployment pods on both clusters.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Application deployment pods on both clusters</strong></p>
+</li>
+</ul>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -431,9 +439,9 @@ oc --context cluster01 get pod -n rhte2023-application-01</code></pre>
 <div class="paragraph">
 <p>After a while, application will scale automatically to the initial number of replicas (5).</p>
 </div>
-<div class="imageblock unresolved">
+<div class="imageblock">
 <div class="content">
-<img src="application/application09c.png" alt="application09c">
+<img src="_images/application/application09c.png" alt="application09c">
 </div>
 </div>
 <div class="ulist">
@@ -462,7 +470,7 @@ git push origin main</code></pre>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-See how configure a token GitHub <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">Creating a personal access token</a>
+See how configure a token GitHub <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">Creating a personal access token</a> to push changes on your git repository.
 </td>
 </tr>
 </table>
@@ -470,9 +478,9 @@ See how configure a token GitHub <a href="https://docs.github.com/en/authenticat
 <div class="paragraph">
 <p>Once the change has been pushed, sync the application again.</p>
 </div>
-<div class="imageblock unresolved">
+<div class="imageblock">
 <div class="content">
-<img src="application/application09c.png" alt="application09c">
+<img src="_images/application/application09d.png" alt="application09d">
 </div>
 </div>
 <div class="paragraph">
@@ -492,7 +500,17 @@ See how configure a token GitHub <a href="https://docs.github.com/en/authenticat
 <h2 id="applicationacm02"><a class="anchor" href="#applicationacm02"></a>Application 2 - Deploying a ChatDraw application</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The second Application will be created from the Advanced Cluster Management console and it will be deployed on those Clusters matching <strong>environment=development</strong> label. The Openshift Version value is filled automatically, but we need to label the **development" clusters as follows:</p>
+<p>The second Application will be created from the Advanced Cluster Management console and it will be deployed on those Clusters matching label:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>environment=development</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Before create the application, let&#8217;s label the cluster <code>rhte2023-cluster01</code> with the label <strong>environment=development</strong>.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -500,83 +518,174 @@ See how configure a token GitHub <a href="https://docs.github.com/en/authenticat
 </div>
 </div>
 <div class="paragraph">
-<p>Once labeled, let&#8217;s go throught the Advanced Cluster Management Console and create the second application.</p>
+<p>Let&#8217;s create the Application from Advanced Cluster Management:</p>
 </div>
 <div class="paragraph">
-<p><strong>&gt;&gt; Applications &gt;&gt; Create Application &gt; ApplicationSet</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application02.png" alt="application02">
+</div>
 </div>
 <div class="paragraph">
-<p><strong>&gt;&gt; General</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; General</strong></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>ApplicationSet name: rhte2023-application-02</p>
+<p><strong>ApplicationSet name</strong>: rhte2023-application-02</p>
 </li>
 <li>
-<p>Argo server: openshift-gitops</p>
+<p><strong>Argo server</strong>: openshift-gitops</p>
 </li>
 <li>
-<p>Requeue time: 180</p>
+<p><strong>Requeue time</strong>: 180</p>
 </li>
 </ul>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application10.png" alt="application10">
+</div>
+</div>
 <div class="paragraph">
-<p><strong>&gt;&gt; Template</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; Template</strong></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>URL: <a href="https://github.com/xbryan1/rhte-2023-acm-apps.git" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps.git</a></p>
+<p><strong>URL</strong>: <a href="https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git</a></p>
 </li>
 <li>
-<p>Revision: main</p>
+<p><strong>Revision</strong>: main</p>
 </li>
 <li>
-<p>Path: rhte2023/04_deploy_applications/rhte2023-application-02</p>
+<p><strong>Path</strong>: rhte2023/04_deploy_applications/rhte2023-application-02</p>
 </li>
 <li>
-<p>Remote Namespace: rhte2023-application-02</p>
+<p><strong>Remote Namespace</strong>: rhte2023-application-02</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p><strong>&gt;&gt; Sync policy</strong></p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application11.png" alt="application11">
+</div>
 </div>
 <div class="paragraph">
-<p><strong>&gt;&gt; ClusterSet and Placement</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; Sync policy</strong></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Cluster sets: rhte2023-gitops-clusters</p>
+<p><strong>Automatically sync when cluster state changes</strong> (syncPolicy/automated/selfHeal=true)</p>
 </li>
+<li>
+<p><strong>Delete resources that are no longer defined in the source repository</strong> (syncPolicy/automated/prune=true)</p>
+</li>
+<li>
+<p><strong>Delete resources that are no longer defined in the source repository at the end of a sync operation</strong> (syncOptions/CreateNamespace=true)</p>
+</li>
+<li>
+<p><strong>Automatically create namespace if it does not exist</strong> (syncOptions/CreateNamespace=true)</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application12.png" alt="application12">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; Placement</strong></p>
+</div>
+<div class="ulist">
+<ul>
 <li>
 <p>Placement: rhte2023-gitops-clusters-environment</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p><strong>&gt;&gt; Review and Submit</strong></p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application13.png" alt="application13">
+</div>
 </div>
 <div class="paragraph">
-<p><strong>&gt;&gt; Wait until application is deployed, and check the application topoloy</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; Review and Submit</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application14.png" alt="application14">
+</div>
 </div>
 <div class="paragraph">
-<p><strong>&gt;&gt; Check from the Argo CD Web UI the application status</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; rhte2023-application-02 (filter by ApplicationSet) &gt; Topology</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application15.png" alt="application15">
+</div>
 </div>
 <div class="paragraph">
-<p><strong>&gt;&gt; Check Application pods on both clusters</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Advanced Configuration &gt; Placements</strong></p>
+</div>
+<div class="paragraph">
+<p>Check the number of cluster matching with <strong>Placement &gt; rhte2023-gitops-clusters-environment</strong>, so we are expecting see the Application <strong>rhte2023-application-02</strong> deployed in <strong>rhte2023-cluster01</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application16.png" alt="application16">
+</div>
+</div>
+<div class="paragraph">
+<p>Also, let&#8217;s check from the ArgoCD Console what is the Application status and from <code>oc</code> client</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Argo CD Console &gt; Applications</strong></p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application17.png" alt="application17">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Application deployment pods on both clusters</strong></p>
+</li>
+</ul>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get pod,route -n rhte2023-application-02</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get pod -n rhte2023-application-02</code></pre>
 </div>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get pod,route -n rhte2023-application-02</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get pod -n rhte2023-application-02</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Finally, let&#8217;s check how is the Application deployed:</p>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get route -n rhte2023-application-02</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application18.png" alt="application18">
+</div>
+</div>
+<div class="paragraph">
+<p>This is a GPT3 Chatdraw, so just give a description about what you want to see.</p>
 </div>
 </div>
 </div>
@@ -584,18 +693,18 @@ See how configure a token GitHub <a href="https://docs.github.com/en/authenticat
 <h2 id="applicationimages"><a class="anchor" href="#applicationimages"></a>Application 2 - Change container image</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Once the <code>rhte2023-application-02</code> is already deployed, let&#8217;s change the application image:</p>
+<p>Once the <strong>rhte2023-application-02</strong> is already deployed, let&#8217;s change the application image:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Change application image commit and push your changes.</p>
+<p><strong>Change application image commit and push your changes</strong></p>
 </li>
 </ul>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd rhte2023/04_deploy_applications/rhte2023-application-02/base
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd 04_deploy_applications/rhte2023-application-02/base
 sed -i 's/chatdraw:latest/chatdraw:rhte2023/g' 100-deployment.yaml
 git add 100-deployment.yaml
 git commit -m "changing the application image"
@@ -603,7 +712,12 @@ git push origin main</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Once the change has been pushed, sync the application again and verify that the application has been changed (background color)</p>
+<p>Once the change has been pushed, sync the application again and verify that the application has been changed (background red color)</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/application/application19.png" alt="application19">
+</div>
 </div>
 </div>
 </div>
