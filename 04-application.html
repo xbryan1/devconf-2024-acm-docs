@@ -394,7 +394,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>URL</strong>:</p>
+<p><strong>URL</strong>: <a href="https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain_cluster_acm&gt" class="bare">https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain_cluster_acm&gt</a>;</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -402,7 +402,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>URL</strong>: <a href="https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain&gt" class="bare">https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain&gt</a>;</p>
+<p><strong>URL</strong>: <a href="https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain_cluster01&gt" class="bare">https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain_cluster01&gt</a>;</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -462,7 +462,7 @@ oc --context cluster01 get pod -n rhte2023-application-01</code></pre>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd rhte2023/04_deploy_applications/rhte2023-application-01/base
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd 04_deploy_applications/rhte2023-application-01/base
 sed -i 's/replicas: 5/replicas: 3/g' 100-deployment.yaml
 git add 100-deployment.yaml
 git commit -m "decreasing number of replicas"
@@ -766,8 +766,8 @@ git push origin main</code></pre>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi cd 04_deploy_applications/argocd/rhte2023-application-03.yaml
-vi cd 04_deploy_applications/argocd/rhte2023-application-04.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi 04_deploy_applications/argocd/rhte2023-application-03.yaml
+vi 04_deploy_applications/argocd/rhte2023-application-04.yaml</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -779,7 +779,7 @@ vi cd 04_deploy_applications/argocd/rhte2023-application-04.yaml</code></pre>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi cd 04_deploy_applications/argocd/placement_location.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi 04_deploy_applications/argocd/placement_location.yaml</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -977,8 +977,8 @@ vi cd 04_deploy_applications/argocd/rhte2023-application-04.yaml</code></pre>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd rhte2023/04_deploy_applications/rhte2023-application-03/base
-sed -i 's/replicas://d' 100-deployment.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd 04_deploy_applications/rhte2023-application-03/base
+sed -i 's/replicas:/d' 100-deployment.yaml
 git add 100-deployment.yaml
 git commit -m "removing the replicas definition"
 git push origin main</code></pre>
