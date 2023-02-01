@@ -364,11 +364,13 @@ Once the clusters installation in completed and in order to easily switch betwee
 
 - Login into the `rhte2023-cluster01`
 
+NOTE: Once the cluster is deployed, go to cluster section on ACM, choose `rhte2023-cluster01` and you will see the kubeadmin password there.
+
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc login -u kubeadmin -p <password> --insecure-skip-tls-verify https://<your_cluster_API_address>:6443
+oc login -u kubeadmin -p <password> --insecure-skip-tls-verify https://api.<your_cluster>:6443
 ----
 
 - Rename the current context to `cluster01`

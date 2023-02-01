@@ -34,7 +34,7 @@ In order to easily switch between Openshift clusters in this lab, we will create
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc login -u kubeadmin -p <password> --insecure-skip-tls-verify https://<your_cluster>:6443
+oc login -u kubeadmin -p <password> --insecure-skip-tls-verify https://api. <your_cluster>:6443
 ----
 
 - Rename the current context to `acm`
@@ -75,7 +75,7 @@ In the top-right corner of the page, click Fork.
 
 image::setup/setup02.png[]
 
-After it has been forked before, clone it and change directory to the `rhte-2023-acm-apps/rhte2023/` folder 
+After it has been forked, clone it and change directory to the `rhte-2023-acm-apps/rhte2023/` folder 
 
 [.lines_space]
 [.console-input]

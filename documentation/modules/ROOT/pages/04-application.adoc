@@ -100,7 +100,7 @@ Finally, let's see how the Applications looks like checking the `Route` and copy
 oc --context acm get route -n rhte2023-application-01
 ----
 
-**URL**: https://rhte2023-application-01-rhte2023-application-01.<your_domain_cluster_acm>
+**URL**: https://rhte2023-application-01-rhte2023-application-01.<your_domain_cluster>
 
 [.lines_space]
 [.console-input]
@@ -109,7 +109,7 @@ oc --context acm get route -n rhte2023-application-01
 oc --context cluster01 get route -n rhte2023-application-01
 ----
 
-**URL**: https://rhte2023-application-01-rhte2023-application-01.<your_domain_cluster01>
+**URL**: https://rhte2023-application-01-rhte2023-application-01.<your_domain_cluster>
 
 image::application/application09b.png[]
 
@@ -161,15 +161,11 @@ git push origin main
 
 TIP: See how configure a token GitHub https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token[Creating a personal access token] to push changes on your git repository.
 
-Once the change has been pushed, sync the application again.
+Once the change has been pushed, sync the application again from ArgoCD Console and checking the ACM Topology
 
 image::application/application09d.png[]
 
-ArgoCD Console
-
 image::application/application15.png[]
-
-Great job man!!
 
 [#applicationacm02]
 == Application 2 - Deploying a ChatDraw application
@@ -221,7 +217,7 @@ image::application/application12.png[]
 
 **Advanced Cluster Management Console > Applications > Create Application > ApplicationSet > Placement**
 
-* Placement: rhte2023-gitops-clusters-environment
+* **Placement**: rhte2023-gitops-clusters-environment
 
 image::application/application13.png[]
 
@@ -301,10 +297,10 @@ image::application/application19.png[]
 [#applicationacm03]
 == Application - Deploying multiple Applications
 
-The third and fourth Applications will be created from the ArgoCD command line from an ArgoCD Application grouping both Applications **rhte2023-application-03** (RedHat Offices Photos) and **rhte2023-application-04** (Tetris) and deploying boths at the same time:
+The third and fourth Applications will be created from the ArgoCD command line grouping both Applications **rhte2023-application-03** (RedHat Offices Photos) and **rhte2023-application-04** (Tetris) and deploying at the same time:
 
 - Application **rhte2023-application-03** will match **Location=eu-west-2** and **area=fringe** labels
-- Application **rhte2023-application-04** will match clusters with less allocatable CPU and memory.
+- Application **rhte2023-application-04** will match clusters with the largest allocatable **CPU and memory** allocatable CPU and memory.
 
 - **Apply new label to local-cluster**
 
@@ -426,7 +422,7 @@ In order to see where the Applications have been placed, go to **Advanced Cluste
 - Application **rhte2023-application-03** > rhte2023-gitops-clusters-location
 - Application **rhte2023-application-04** > rhte2023-gitops-clusters-cpu
 
-Or going to **Advanced Cluster Management > Applications** and filter per Application name and click on the Topolgy where you can see the Application deployed and the information about the targeted clusters.
+Or going to **Advanced Cluster Management > Applications** and filter per Application name and click on the Topology where you can see the Application deployed and the information about the targeted clusters.
 
 Once you know where Applications are deployed, just check the Application pods status changing the context according to your environment:
 
@@ -475,11 +471,9 @@ image::application/application20.png[]
 image::application/application21.png[]
 
 [#applicationsync]
-== Application - Sync and Diff
+== Fix Application 03 - Sync and Diff
 
-This is the last exercice from this section, and let's see a common issue with Application deployments and autoscalers.
-
-The third Application is deployed with an **HPA - horizontal pod autoscaler** that let you specify the minimum and maximum number of pods you want to run. It means that this application will change the number of replicas and it will not match what is defined in Git repository, so the application will be **out of sync**. Let's see how can fix this kind of issues:
+Let's see a common issue with Application deployments and autoscalers and how to fix it. The third Application **rhte2023-application-03** is deployed with an **HPA - horizontal pod autoscaler** that let you specify the minimum and maximum number of pods you want to run. It means that this application will change the number of replicas and it will not match what is defined in Git repository, so the application will be **out of sync**. Let's see how can fix this kind of issues:
 
 
 - **Check and Sync the Application rhte2023-application-03-<cluster> from the ArgoCD UI**. The Application status will be flapping between synced and of of sync status.
@@ -497,11 +491,29 @@ git commit -m "removing the replicas definition"
 git push origin main
 ----
 
-Commit and push your changes. 
-
-- **Sync and Refresh the Application again**.
+Commit, push your changes, sync the Application again.
 
 NOTE: This issue could also be solved adding https://argo-cd.readthedocs.io/en/stable/user-guide/diffing/#application-level-configuration[ignoreDifferences] into the deployment definition.
+
+[#applicationcpu]
+== Fix Application 04 - allocatable CPU and Memory 
+
+This is the last exercice from this section. The fourth application **rhte2023-application-04** will be deployed on that cluster with the largest allocatable CPU and Memory. Verify that in your environment is deployed on `rhte2023-cluster01`, if not change the score weight as follows:
+
+* **Change the score weight**:
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+vi 04_deploy_applications/argocd/placement_cpu.yaml
+sed -i 's/weight: 10/weight: -9/g' placement_cpu.yaml
+git add 04_deploy_applications/argocd/placement_cpu.yaml
+git commit -m "changing score weight"
+git push origin main
+----
+
+Commit, push your changes, sync the Application again.
 
 
 Great! You've completed the 4 Applications deployment! Congratulations!
