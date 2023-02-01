@@ -978,7 +978,7 @@ vi 04_deploy_applications/argocd/rhte2023-application-04.yaml</code></pre>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd 04_deploy_applications/rhte2023-application-03/base
-sed -i 's/replicas:/d' 100-deployment.yaml
+sed -i '/replicas:/d' 100-deployment.yaml
 git add 100-deployment.yaml
 git commit -m "removing the replicas definition"
 git push origin main</code></pre>
