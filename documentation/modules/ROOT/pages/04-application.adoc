@@ -323,6 +323,7 @@ Change **repoURL** repository to your repository **https://github.com/<your_gith
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
+cd ../../..
 vi 04_deploy_applications/argocd/rhte2023-application-03.yaml
 vi 04_deploy_applications/argocd/rhte2023-application-04.yaml
 ----
@@ -334,6 +335,18 @@ vi 04_deploy_applications/argocd/rhte2023-application-04.yaml
 [source,bash, subs="+macros,+attributes"]
 ----
 vi 04_deploy_applications/argocd/placement_location.yaml
+----
+
+- **Commit and push changes:**
+
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+git status
+git add *
+git commit -m "changing repository"
+git push origin main
 ----
 
 - **Get ArgoCD password**
@@ -384,7 +397,7 @@ argocd app create rhte2023-application-gitops \
 --path rhte2023/04_deploy_applications/argocd \
 --sync-policy automated \
 --dest-namespace openshift-gitops \
---dest-server https://<acm_api>.<your_domain>:6443
+--dest-server https://api.<your_domain>:6443
 
 ----
 
