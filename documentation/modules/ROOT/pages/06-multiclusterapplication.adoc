@@ -50,5 +50,5 @@ To hibernate the cluster using the CLI, you need to patch the ClusterDeployment 
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc patch ClusterDeployment rhte2023-cluster01 -n rhte2023-cluster01 --type merge -p '{"spec":{"powerState":"Hibernating"}}'
+oc --context acm patch ClusterDeployment rhte2023-cluster01 -n rhte2023-cluster01 --type merge -p '{"spec":{"powerState":"Hibernating"}}'
 ----
