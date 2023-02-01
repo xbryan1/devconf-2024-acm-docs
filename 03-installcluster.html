@@ -678,9 +678,21 @@ Remember completing both sections below once the new Cluster <code>rhte2023-clus
 </li>
 </ul>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Once the cluster is deployed, go to cluster section on ACM, choose <code>rhte2023-cluster01</code> and you will see the kubeadmin password there.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc login -u kubeadmin -p &lt;password&gt; --insecure-skip-tls-verify <a href="https://&lt;your_cluster_API_address&gt;:6443" class="bare">https://&lt;your_cluster_API_address&gt;:6443</a></code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc login -u kubeadmin -p &lt;password&gt; --insecure-skip-tls-verify <a href="https://api.&lt;your_cluster&gt;:6443" class="bare">https://api.&lt;your_cluster&gt;:6443</a></code></pre>
 </div>
 </div>
 <div class="ulist">

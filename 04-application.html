@@ -394,7 +394,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>URL</strong>: <a href="https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain_cluster_acm&gt" class="bare">https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain_cluster_acm&gt</a>;</p>
+<p><strong>URL</strong>: <a href="https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain_cluster&gt" class="bare">https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain_cluster&gt</a>;</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -402,7 +402,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>URL</strong>: <a href="https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain_cluster01&gt" class="bare">https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain_cluster01&gt</a>;</p>
+<p><strong>URL</strong>: <a href="https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain_cluster&gt" class="bare">https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain_cluster&gt</a>;</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -482,23 +482,17 @@ See how configure a token GitHub <a href="https://docs.github.com/en/authenticat
 </table>
 </div>
 <div class="paragraph">
-<p>Once the change has been pushed, sync the application again.</p>
+<p>Once the change has been pushed, sync the application again from ArgoCD Console and checking the ACM Topology</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/application/application09d.png" alt="application09d">
 </div>
 </div>
-<div class="paragraph">
-<p>ArgoCD Console</p>
-</div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/application/application15.png" alt="application15">
 </div>
-</div>
-<div class="paragraph">
-<p>Great job man!!</p>
 </div>
 </div>
 </div>
@@ -609,7 +603,7 @@ See how configure a token GitHub <a href="https://docs.github.com/en/authenticat
 <div class="ulist">
 <ul>
 <li>
-<p>Placement: rhte2023-gitops-clusters-environment</p>
+<p><strong>Placement</strong>: rhte2023-gitops-clusters-environment</p>
 </li>
 </ul>
 </div>
@@ -734,7 +728,7 @@ git push origin main</code></pre>
 <h2 id="applicationacm03"><a class="anchor" href="#applicationacm03"></a>Application - Deploying multiple Applications</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The third and fourth Applications will be created from the ArgoCD command line from an ArgoCD Application grouping both Applications <strong>rhte2023-application-03</strong> (RedHat Offices Photos) and <strong>rhte2023-application-04</strong> (Tetris) and deploying boths at the same time:</p>
+<p>The third and fourth Applications will be created from the ArgoCD command line grouping both Applications <strong>rhte2023-application-03</strong> (RedHat Offices Photos) and <strong>rhte2023-application-04</strong> (Tetris) and deploying at the same time:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -742,7 +736,7 @@ git push origin main</code></pre>
 <p>Application <strong>rhte2023-application-03</strong> will match <strong>Location=eu-west-2</strong> and <strong>area=fringe</strong> labels</p>
 </li>
 <li>
-<p>Application <strong>rhte2023-application-04</strong> will match clusters with less allocatable CPU and memory.</p>
+<p>Application <strong>rhte2023-application-04</strong> will match clusters with the largest allocatable <strong>CPU and memory</strong> allocatable CPU and memory.</p>
 </li>
 <li>
 <p><strong>Apply new label to local-cluster</strong></p>
@@ -905,7 +899,7 @@ git push origin main</code></pre>
 </ul>
 </div>
 <div class="paragraph">
-<p>Or going to <strong>Advanced Cluster Management &gt; Applications</strong> and filter per Application name and click on the Topolgy where you can see the Application deployed and the information about the targeted clusters.</p>
+<p>Or going to <strong>Advanced Cluster Management &gt; Applications</strong> and filter per Application name and click on the Topology where you can see the Application deployed and the information about the targeted clusters.</p>
 </div>
 <div class="paragraph">
 <p>Once you know where Applications are deployed, just check the Application pods status changing the context according to your environment:</p>
@@ -973,13 +967,10 @@ git push origin main</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="applicationsync"><a class="anchor" href="#applicationsync"></a>Application - Sync and Diff</h2>
+<h2 id="applicationsync"><a class="anchor" href="#applicationsync"></a>Fix Application 03 - Sync and Diff</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This is the last exercice from this section, and let&#8217;s see a common issue with Application deployments and autoscalers.</p>
-</div>
-<div class="paragraph">
-<p>The third Application is deployed with an <strong>HPA - horizontal pod autoscaler</strong> that let you specify the minimum and maximum number of pods you want to run. It means that this application will change the number of replicas and it will not match what is defined in Git repository, so the application will be <strong>out of sync</strong>. Let&#8217;s see how can fix this kind of issues:</p>
+<p>Let&#8217;s see a common issue with Application deployments and autoscalers and how to fix it. The third Application <strong>rhte2023-application-03</strong> is deployed with an <strong>HPA - horizontal pod autoscaler</strong> that let you specify the minimum and maximum number of pods you want to run. It means that this application will change the number of replicas and it will not match what is defined in Git repository, so the application will be <strong>out of sync</strong>. Let&#8217;s see how can fix this kind of issues:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1001,14 +992,7 @@ git push origin main</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Commit and push your changes.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Sync and Refresh the Application again</strong>.</p>
-</li>
-</ul>
+<p>Commit, push your changes, sync the Application again.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1021,6 +1005,33 @@ This issue could also be solved adding <a href="https://argo-cd.readthedocs.io/e
 </td>
 </tr>
 </table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="applicationcpu"><a class="anchor" href="#applicationcpu"></a>Fix Application 04 - allocatable CPU and Memory</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is the last exercice from this section. The fourth application <strong>rhte2023-application-04</strong> will be deployed on that cluster with the largest allocatable CPU and Memory. Verify that in your environment is deployed on <code>rhte2023-cluster01</code>, if not change the score weight as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Change the score weight</strong>:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock lines_space console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi 04_deploy_applications/argocd/placement_cpu.yaml
+sed -i 's/weight: 10/weight: -9/g' placement_cpu.yaml
+git add 04_deploy_applications/argocd/placement_cpu.yaml
+git commit -m "changing score weight"
+git push origin main</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Commit, push your changes, sync the Application again.</p>
 </div>
 <div class="paragraph">
 <p>Great! You&#8217;ve completed the 4 Applications deployment! Congratulations!</p>

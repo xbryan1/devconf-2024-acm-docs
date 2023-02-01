@@ -202,7 +202,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This section will guide you through the ACM and GitOps CD Operators installation and the ACM/GitOps integration in order to deploy application both local and remote clusters.</p>
+<p>This section will guide you through the Advanced Custer Management and GitOps CD Operators installation and the ACM/GitOps integration in order to deploy applications multicluter.</p>
 </div>
 <div class="paragraph">
 <p>Here’s a list of required operators to install through the Operator Lifecycle Manager (OLM), which manages the installation, upgrade, and removal:</p>
@@ -268,7 +268,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s start getting our hands dirty. We are going to enable master nodes for scheduling workloads to take advantage of all limited resources that we have in this lab.</p>
+<p>We are going to enable master nodes for scheduling workloads.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -293,7 +293,7 @@
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-This configuration is not recommended for production.
+This configuration is not recommended for production ;-)
 </td>
 </tr>
 </table>
@@ -342,15 +342,12 @@ This configuration is not recommended for production.
 </ul>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s check the results as follows:</p>
+<p>Wait until all pods are in <code>Running</code> status and <code>Ready</code>. It can take a couple of minutes approx.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">watch oc --context acm get pod -n open-cluster-management</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>Wait until all pods are in <code>Running</code> status and <code>Ready</code>. It can take a couple of minutes approx.</p>
 </div>
 <div class="paragraph">
 <p>After installing the Advanced Cluster Management Operator, we also need to create the CRD object <code>MultiClusterHub</code>.</p>
@@ -368,7 +365,7 @@ This configuration is not recommended for production.
 </div>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s check the results as follows:</p>
+<p>Wait until the Advanced Cluster Management Operatator is <code>Runnig</code> status, in the meanwhile the status is <code>Installing</code>. It can take up to 10 minutes.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -376,19 +373,11 @@ This configuration is not recommended for production.
 </div>
 </div>
 <div class="paragraph">
-<p>Wait until the Advanced Cluster Management Operatator is <code>Runnig</code> status, in the meanwhile the status is <code>Installing</code>. It can take up to 10 minutes.</p>
+<p>Once the status change to <code>Running</code>, verify all pods are <code>Running</code> and <code>Ready</code>.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">watch oc --context acm get pod -n open-cluster-management</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If the multiclusterhub is not in <code>Running</code> status after a while, check the operator logs or pods status.</p>
-</div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm logs multiclusterhub-operator-xxx-xxx -n open-cluster-management</code></pre>
 </div>
 </div>
 </div>
@@ -397,7 +386,7 @@ This configuration is not recommended for production.
 <h2 id="console"><a class="anchor" href="#console"></a>Access to the Advanced Cluster Management Web Console</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Advanced Cluster Management Console is integrated with the Openshift Console, so once the ACM Operator is installed, the Openshift Console will show a new item "All Clusters" on the side navigation menu as below:</p>
+<p>Advanced Cluster Management Console is integrated with the Openshift Console, so once the Advanced Cluster Management Operator is installed, the Openshift Console will show a new item "All Clusters" on the side navigation menu as below:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -425,10 +414,10 @@ This configuration is not recommended for production.
 </div>
 </div>
 <div class="paragraph">
-<p><strong>All Cluster</strong> will provide access to the Advanced Cluster Management Console and "local-cluster" will provide access to the Openshift Cluster.</p>
+<p><strong>All Cluster</strong> will provide you access to the Advanced Cluster Management Console and <strong>local-cluster</strong> will provide you access to the Openshift Cluster.</p>
 </div>
 <div class="paragraph">
-<p>Also, the Advanced Cluster Management provides a dashboard UI. We can access it through a OpenShift <code>Route</code>. List routes in the <code>open-cluster-management</code> namespace and get the address of console <a href="https://multicloud-console.apps.&lt;your_domain&gt" class="bare">https://multicloud-console.apps.&lt;your_domain&gt</a>;.</p>
+<p>Also, the Advanced Cluster Management provides a dashboard UI. We can access it through a OpenShift <code>Route</code>. List routes in the <code>open-cluster-management</code> namespace and get the address of console <a href="https://multicloud-console.apps.&lt;your_domain&gt" class="bare">https://multicloud-console.apps.&lt;your_domain&gt</a>;</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -578,6 +567,9 @@ This configuration is not recommended for production.
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>As a Placement&#8217;s example:</p>
+</div>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">---
@@ -654,7 +646,7 @@ When you integrate ACM with the GitOps operator for every managed cluster that i
 </div>
 </div>
 <div class="paragraph">
-<p>and the <code>local-cluster</code> belongs to <code>ClusterSet rhte2023-gitops-clusters</code> through <code>Openshift Console &gt; Advanced Cluster Management &gt; Clusters &gt; Cluster sets</code></p>
+<p>and the <code>local-cluster</code> being part of the <code>ClusterSet rhte2023-gitops-clusters</code> Cluster Set through <code>Openshift Console &gt; Advanced Cluster Management &gt; Clusters &gt; Cluster sets</code></p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -667,10 +659,14 @@ When you integrate ACM with the GitOps operator for every managed cluster that i
 <h2 id="deployall"><a class="anchor" href="#deployall"></a>Argo CD — App Of Everything</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Weel done, keep pushing!</p>
+<p>This is the last step of this section where will automate with ArgoCD everything that we were doing so far. Let&#8217;s change the <code>ApplicationSet</code> YAML file according to your settings.</p>
 </div>
-<div class="paragraph">
-<p>This is the last step of this section where will automate with ArgoCD everything that we were doing so far. Let&#8217;s change the <code>ApplicationSet</code> YAML file according to your environment.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Edit the Application yaml file</strong></p>
+</li>
+</ul>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -678,7 +674,7 @@ When you integrate ACM with the GitOps operator for every managed cluster that i
 </div>
 </div>
 <div class="paragraph">
-<p>and change <code>server</code> to your cluster <code><a href="https://&lt;your_cluster&gt;:6443" class="bare">https://&lt;your_cluster&gt;:6443</a></code> and <code>repoURL</code> to your git repository <code><a href="https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git</a></code> forked:</p>
+<p>and change <code>server</code> to your cluster <code><a href="https://api.&lt;your_cluster&gt;:6443" class="bare">https://api.&lt;your_cluster&gt;:6443</a></code> and <code>repoURL</code> to your git repository <code><a href="https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git</a></code> forked previously:</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
@@ -690,7 +686,7 @@ metadata:
 spec:
   destination:
     namespace: openshift-gitops
-    server: <a href="https://&lt;your_cluster&gt;:6443" class="bare">https://&lt;your_cluster&gt;:6443</a>
+    server: <a href="https://api.&lt;your_cluster&gt;:6443" class="bare">https://api.&lt;your_cluster&gt;:6443</a>
   project: default
   source:
     path: rhte2023/02_bootstrap/base
@@ -698,7 +694,7 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>finally, let&#8217;s create the ApplicationSet:</p>
+<p>finally, let&#8217;s create the Application:</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
