@@ -461,7 +461,7 @@ image::application/application20.png[]
 
 image::application/application21.png[]
 
-[#applicationimages]
+[#applicationsync]
 == Application - Sync and Diff
 
 This is the last exercice from this section, and let's see a common issue with Application deployments and autoscalers.

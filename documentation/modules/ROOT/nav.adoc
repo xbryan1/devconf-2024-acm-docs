@@ -26,7 +26,9 @@
 ** xref:04-application.adoc#applicationacm02[Application 2 - Deploying a ChatDraw application]
 ** xref:04-application.adoc#applicationimages[Application 2 - Change container image]
 ** xref:04-application.adoc#applicationacm03[Application - Deploying multiple Applications]
-** xref:04-application.adoc#applicationimages[Application - Sync and Diff]
+** xref:04-application.adoc#applicationsync[Application - Sync and Diff]
+
+
 
 
 * xref:05-policies.adoc[5. Setup Advanced Cluster Management Policies]
