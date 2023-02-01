@@ -478,7 +478,7 @@ The third Application is deployed with an **HPA - horizontal pod autoscaler** th
 [source,bash, subs="+macros,+attributes"]
 ----
 cd 04_deploy_applications/rhte2023-application-03/base
-sed -i 's/replicas:/d' 100-deployment.yaml
+sed -i '/replicas:/d' 100-deployment.yaml
 git add 100-deployment.yaml
 git commit -m "removing the replicas definition"
 git push origin main
