@@ -114,7 +114,7 @@ Advanced Cluster Management Console is integrated with the Openshift Console, so
 
 * Console: https://console-openshift-console.apps.<your_domain>/
 * User: kubeadmin
-* Password: <your_passoword>
+* Password: <your_password>
 
 image::deploy/deploy00.png[]
 

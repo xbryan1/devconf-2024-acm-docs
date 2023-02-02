@@ -34,7 +34,7 @@ In order to easily switch between Openshift clusters in this lab, we will create
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc login -u kubeadmin -p <password> --insecure-skip-tls-verify https://api. <your_cluster>:6443
+oc login -u kubeadmin -p <password> --insecure-skip-tls-verify https://api.<your_cluster>:6443
 ----
 
 - Rename the current context to `acm`

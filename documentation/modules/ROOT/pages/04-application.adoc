@@ -51,7 +51,7 @@ image::application/application05.png[]
 
 **Advanced Cluster Management Console > Applications > Create Application > ApplicationSet > Placement**
 
-* Placement: rhte2023-gitops-clusters
+* **Placement**: rhte2023-gitops-clusters
 
 image::application/application06.png[]
 
@@ -146,7 +146,7 @@ image::application/application09c.png[]
 
 - **Make a change on the deployment yaml file**
 
-Now, let's make a persistent changes on the Git repository:
+Now, let's make a persistent change on the Git repository:
 
 [.lines_space]
 [.console-input]
@@ -313,7 +313,7 @@ oc --context acm label ManagedCluster local-cluster area=fringe --overwrite
 
 - **Change ApplicationSet according to your settings:**
 
-Change **repoURL** repository to your repository **https://github.com/<your_github_account>/rhte-2023-acm-apps.git**
+Change **repoURL** variable with your git repository **https://github.com/<your_github_account>/rhte-2023-acm-apps.git**
 
 [.lines_space]
 [.console-input]
