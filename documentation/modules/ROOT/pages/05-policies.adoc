@@ -28,7 +28,7 @@ The policy will be in "Inform" mode. You need to click into the "Add policy temp
 
 image::policies/policy03.png[]
 
-You need to choose the "policy-namespace" policy.
+You need to choose the "Namespace must exist" policy.
 
 image::policies/policy04.png[]
 
@@ -67,7 +67,7 @@ In this case, you are going to select "Enforce" as a remediation. As this policy
 
 image::policies/policy11.png[]
 
-You need to click into "Add policy template" and use "Compliance Operator is installed". You need to choose "None" as a Prune Object Behaviour in all Configuration Policy objects.
+You need to click into "Add policy template" and use "Install the Compliance Operator". You need to choose "None" as a Prune Object Behaviour in all Configuration Policy objects.
 
 image::policies/policy12.png[]
 
