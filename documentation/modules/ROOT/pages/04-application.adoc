@@ -254,14 +254,7 @@ Also, let's check from the ArgoCD Console what is the Application status and fro
 
 image::application/application17.png[]
 
-* **Application deployment pods on both clusters**
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-oc --context acm get pod -n rhte2023-application-02
-----
+* **Application deployment pods**
 
 [.lines_space]
 [.console-input]
