@@ -512,9 +512,9 @@ This is the last exercice from this section. The fourth application **rhte2023-a
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-vi 04_deploy_applications/argocd/placement_cpu.yaml
+cd ../../../04_deploy_applications/argocd/
 sed -i 's/weight: 10/weight: -9/g' placement_cpu.yaml
-git add 04_deploy_applications/argocd/placement_cpu.yaml
+git add *
 git commit -m "changing score weight"
 git push origin main
 ----
