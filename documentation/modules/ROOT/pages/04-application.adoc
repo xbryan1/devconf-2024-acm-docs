@@ -294,6 +294,19 @@ Once the change has been pushed, sync the application again and verify that the 
 
 image::application/application19.png[]
 
+[WARNING]
+====
+In case you've got this error https://access.redhat.com/solutions/6975821[Unable to deploy revision: permission denied: applications, sync], please fix as follows:
+[.lines_space]
+[.console-input]
+[source,bash, subs="+macros,+attributes"]
+----
+oc --context acm adm groups new cluster-admins
+oc --context acm adm groups add-users cluster-admins opentlc-mgr
+oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admins
+----
+====
+
 [#applicationacm03]
 == Application - Deploying multiple Applications
 
