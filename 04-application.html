@@ -723,7 +723,7 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd 04_deploy_applications/rhte2023-application-02/base
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ../../../04_deploy_applications/rhte2023-application-02/base
 sed -i 's/chatdraw:latest/chatdraw:rhte2023/g' 100-deployment.yaml
 git add 100-deployment.yaml
 git commit -m "changing the application image"
