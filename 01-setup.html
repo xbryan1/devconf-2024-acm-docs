@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Environment Setup :: Multicluster Application Deployment with Advanced Cluster Management and GitOps</title>
-    <link rel="canonical" href="https://xbryan1.github.io/rhte-2023-acm-docs/01-setup.html">
+    <link rel="canonical" href="https://xbryan1.github.io/devconf-2024-acm-docs/01-setup.html">
     <link rel="prev" href="index.html">
     <link rel="next" href="02-deploy.html">
     <meta name="generator" content="Antora 3.0.0">
@@ -15,7 +15,7 @@
   <nav class="navbar">
     <div class="navbar-brand">
       <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img src="./_/img/NewRHDFullLogo_4-color_white-wordmark.png" height="40px" alt="Red Hat Developer Program"></a>
-      <a class="navbar-item" style="font-size: 24px; color: white" href="https://xbryan1.github.io/rhte-2023-acm-docs">Multicluster Application Deployment with Advanced Cluster Management and GitOps</a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://xbryan1.github.io/devconf-2024-acm-docs">Multicluster Application Deployment with Advanced Cluster Management and GitOps</a>
       <button class="navbar-burger" data-target="topbar-nav">
         <span></span>
         <span></span>
@@ -194,7 +194,7 @@
     <li><a href="01-setup.html">1. Environment Setup</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/xbryan1/rhte-2023-acm-docs/edit/master/documentation/modules/ROOT/pages/01-setup.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/xbryan1/devconf-2024-acm-docs/edit/master/documentation/modules/ROOT/pages/01-setup.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
@@ -203,7 +203,7 @@
 <h2 id="architecture"><a class="anchor" href="#architecture"></a>Hands-on Lab Environment</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This hands-on lab will be based on two OpenShift clusters. The first one has been already installed with <code>OpenShift 4 Demo</code> provided by <code>RHPDS</code> (<a href="https://demo.redhat.com" class="bare">https://demo.redhat.com</a>), and the second one will be installed from ACM following the steps in this lab. Both Openshift clusters will run on Amazon Web Sservices public cloud:</p>
+<p>This hands-on lab will be based on two OpenShift clusters. The first one has been already installed, and the second one will be installed from ACM following the steps in this lab. Both Openshift clusters will run on Amazon Web Sservices public cloud:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -211,7 +211,7 @@
 <p>Cluster <code>local-cluster</code>: It has been already installed. In this cluster you will install ACM/GitOps Operators and deploy applications.</p>
 </li>
 <li>
-<p>Cluster <code>rhte2023-cluster01</code>: You will install the second Openshift cluster and deploy applications.</p>
+<p>Cluster <code>devconf2024-cluster01</code>: You will install the second Openshift cluster and deploy applications.</p>
 </li>
 </ul>
 </div>
@@ -233,13 +233,13 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Red Hat OpenShift 4.10</p>
+<p>Red Hat OpenShift 4.14</p>
 </li>
 <li>
-<p>Red Hat Advanced Cluster Management 2.6</p>
+<p>Red Hat Advanced Cluster Management 2.10</p>
 </li>
 <li>
-<p>Gitops Operator 1.7</p>
+<p>Gitops Operator 1.12</p>
 </li>
 </ul>
 </div>
@@ -373,7 +373,7 @@ Cluster admin user is <strong>opentlc-mgr</strong> instead of <strong>kubeadmin<
 <p>You might fork the hands-on lab <code>Git</code> repository into your <code>Github</code> account as follows:</p>
 </div>
 <div class="paragraph">
-<p>On GitHub.com, navigate to the <a href="https://github.com/xbryan1/rhte-2023-acm-apps" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps</a> repository.</p>
+<p>On GitHub.com, navigate to the <a href="https://github.com/xbryan1/devconf-2024-acm-apps" class="bare">https://github.com/xbryan1/devconf-2024-acm-apps</a> repository.</p>
 </div>
 <div class="paragraph">
 <p>In the top-right corner of the page, click Fork.</p>
@@ -384,12 +384,12 @@ Cluster admin user is <strong>opentlc-mgr</strong> instead of <strong>kubeadmin<
 </div>
 </div>
 <div class="paragraph">
-<p>After it has been forked, clone it and change directory to the <code>rhte-2023-acm-apps/rhte2023/</code> folder</p>
+<p>After it has been forked, clone it and change directory to the <code>devconf-2024-acm-apps/devconf2024/</code> folder</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone <a href="https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps" class="bare">https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps</a>
-cd rhte-2023-acm-apps/rhte2023/</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone <a href="https://github.com/&lt;your_github_account&gt;/devconf-2024-acm-apps" class="bare">https://github.com/&lt;your_github_account&gt;/devconf-2024-acm-apps</a>
+cd devconf-2024-acm-apps/devconf2024/</code></pre>
 </div>
 </div>
 </div>
