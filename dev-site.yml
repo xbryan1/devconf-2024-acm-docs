@@ -5,7 +5,7 @@ site:
   title: Multicluster Application Deployment with Advanced Cluster Management and GitOps
 (Dev Mode)
   url: http://localhost:3000/rhs-build-course/index.html
-  start_page: rhte2023::index.adoc
+  start_page: devconf2024::index.adoc
 
 content:
   sources:

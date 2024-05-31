@@ -5,7 +5,7 @@
 [.text-center.strong]
 == Introduction
 
-Welcome to this RHTE 2023 hands-on lab where you will learn how to deploy multicluster applications with Advanced Cluster Management and GitOps/Argo CD approach. 
+Welcome to this DevConf 2024 hands-on lab where you will learn how to deploy multicluster applications with Advanced Cluster Management and GitOps/Argo CD approach. 
 
 In this hands-on lab, we'll show you how to:
 

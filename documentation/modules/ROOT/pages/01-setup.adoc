@@ -4,11 +4,11 @@ include::_attributes.adoc[]
 [#architecture]
 == Hands-on Lab Environment
 
-This hands-on lab will be based on two OpenShift clusters. The first one has been already installed with `OpenShift 4 Demo` provided by `RHPDS` (https://demo.redhat.com), and the second one will be installed from ACM following the steps in this lab. Both Openshift clusters will run on Amazon Web Sservices public cloud:
+This hands-on lab will be based on two OpenShift clusters. The first one has been already installed, and the second one will be installed from ACM following the steps in this lab. Both Openshift clusters will run on Amazon Web Sservices public cloud:
 
 - Cluster `local-cluster`: It has been already installed. In this cluster you will install ACM/GitOps Operators and deploy applications.
 
-- Cluster `rhte2023-cluster01`: You will install the second Openshift cluster and deploy applications.
+- Cluster `devconf2024-cluster01`: You will install the second Openshift cluster and deploy applications.
 
 image::setup/setup01.png[]
 
@@ -16,9 +16,9 @@ image::setup/setup01.png[]
 ====
 Tested versions:
 
-- Red Hat OpenShift 4.10
-- Red Hat Advanced Cluster Management 2.6
-- Gitops Operator 1.7
+- Red Hat OpenShift 4.14
+- Red Hat Advanced Cluster Management 2.10
+- Gitops Operator 1.12
 ====
 
 include::../partials/tools.adoc[]
@@ -71,18 +71,18 @@ oc --context acm get nodes
 
 You might fork the hands-on lab `Git` repository into your `Github` account as follows:
 
-On GitHub.com, navigate to the https://github.com/xbryan1/rhte-2023-acm-apps repository.
+On GitHub.com, navigate to the https://github.com/xbryan1/devconf-2024-acm-apps repository.
 
 In the top-right corner of the page, click Fork.
 
 image::setup/setup02.png[]
 
-After it has been forked, clone it and change directory to the `rhte-2023-acm-apps/rhte2023/` folder 
+After it has been forked, clone it and change directory to the `devconf-2024-acm-apps/devconf2024/` folder 
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-git clone https://github.com/<your_github_account>/rhte-2023-acm-apps
-cd rhte-2023-acm-apps/rhte2023/
+git clone https://github.com/<your_github_account>/devconf-2024-acm-apps
+cd devconf-2024-acm-apps/devconf2024/
 ----
