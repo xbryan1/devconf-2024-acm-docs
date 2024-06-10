@@ -24,32 +24,6 @@ image::deploy/deploy02.png[]
 
 We will go through the Advanced Custer Management Operator installation following below steps:
 
-- **Enable master node scheduling**
-
-We are going to enable master nodes for scheduling workloads.
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-oc --context acm replace -k 02_bootstrap/base/openshift/base
-----
-
-Let's check the results as follows:
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-oc --context acm get scheduler cluster -o yaml -o=jsonpath='{.spec.mastersSchedulable}{"\n"}'
-----
-
-We are expecting **true** as a  result.
-
-WARNING: This configuration is not recommended for production ;-)
-
-TIP: https://access.redhat.com/articles/2988581[OpenShift Admins Guide to jsonpath]
-
 - **Install Advanced Custer Management Operator**:
 
 Let's install the Advanced Cluster Management Operator.
@@ -119,15 +93,6 @@ Advanced Cluster Management Console is integrated with the Openshift Console, so
 image::deploy/deploy00.png[]
 
 **All Cluster** will provide you access to the Advanced Cluster Management Console and **local-cluster** will provide you access to the Openshift Cluster.
-
-Also, the Advanced Cluster Management provides a dashboard UI. We can access it through a OpenShift `Route`. List routes in the `open-cluster-management` namespace and get the address of console https://multicloud-console.apps.<your_domain>
-
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-oc --context acm get route -n open-cluster-management
-----
 
 Let's switch to the Advanced Cluster Management Console and Login with Openshift to check that we can access properly.
 

@@ -123,11 +123,12 @@ As the cluster will be installed on Amazon Web Services, you will need to choose
 
 image::install/create02.png[]
 
+The cluster will be an Standalone cluster (not Hosted).
 In the Cluster details form, you will need to choose a Cluster name, a Cluster set and the Base DNS domain. 
-In the Cluster name, you can choose **rhte2023-cluster01** as the Cluster name.
-In the Cluster set, you can choose the **rhte2023-gitops-clusters** Cluster set.
+In the Cluster name, you can choose **devconf2024-cluster01** as the Cluster name.
+In the Cluster set, you can choose the **devconf2024-gitops-clusters** Cluster set.
 In the Base DNS domain, you need to use the Base DNS domain received by email.
-In the "Release image", select the 4.10.X release image.
+In the "Release image", select the 4.14.X release image.
 
 image::install/create03.png[]
 
@@ -143,7 +144,7 @@ The Proxy is not going to be used in this LAB, so you don't need to define the P
 
 image::install/create06.png[]
 
-The Automation is not going to be used in this LAB also, so you don't need to define any values.
+The AWS private configuration and Automation are not going to be used in this LAB also, so you don't need to define any values.
 
 image::install/create07.png[]
 
@@ -164,7 +165,7 @@ To deploy a new OpenShift cluster via CLI, you will need to create a install-con
 ----  
 apiVersion: v1
 metadata:
-  name: 'rhte2023-cluster01'
+  name: 'devconf2024-cluster01'
 baseDomain: <1 - Base DNS domain>
 controlPlane:
   architecture: amd64
@@ -215,7 +216,7 @@ cat install-config.yaml | base64
 
 Save the output, you will need it on the next step.
 
-Now, you can create the needed resources to create the second cluster. You will need to create a rhte2023-cluster01.yaml file. You can follow this example, and modify it with the variables of your environment:
+Now, you can create the needed resources to create the second cluster. You will need to create a devconf2024-cluster01.yaml file. You can follow this example, and modify it with the variables of your environment:
 [.lines_space] 
 [.console-input]
 [source,yaml, subs="+macros,+attributes"]
@@ -223,16 +224,16 @@ Now, you can create the needed resources to create the second cluster. You will 
 apiVersion: hive.openshift.io/v1
 kind: ClusterDeployment
 metadata:
-  name: 'rhte2023-cluster01'
-  namespace: 'rhte2023-cluster01'
+  name: 'devconf2024-cluster01'
+  namespace: 'devconf2024-cluster01'
   labels:
     cloud: 'AWS'
-    region: 'eu-west-1'
+    region: 'eu-west-2'
     vendor: OpenShift
     cluster.open-cluster-management.io/clusterset: 'default'
 spec:
   baseDomain: <1 - Base DNS Domain>
-  clusterName: 'rhte2023-cluster01'
+  clusterName: 'devconf2024-cluster01'
   controlPlaneConfig:
     servingCertificates: {}
   installAttemptsLimit: 1
@@ -240,40 +241,40 @@ spec:
   platform:
     aws:
       credentialsSecretRef:
-        name: rhte2023-cluster01-aws-creds
-      region: eu-west-1
+        name: devconf2024-cluster01-aws-creds
+      region: eu-west-2
   provisioning:
     installConfigSecretRef:
-      name: rhte2023-cluster01-install-config
+      name: devconf2024-cluster01-install-config
     sshPrivateKeySecretRef:
-      name: rhte2023-cluster01-ssh-private-key
+      name: devconf2024-cluster01-ssh-private-key
     imageSetRef:
        #quay.io/openshift-release-dev/ocp-release:4.10.47-x86_64
-      name: img4.10.47-x86-64-appsub
+      name: img4.14.27-x86-64-appsub
   pullSecretRef:
-    name: rhte2023-cluster01-pull-secret
+    name: devconf2024-cluster01-pull-secret
 ---
 apiVersion: cluster.open-cluster-management.io/v1
 kind: ManagedCluster
 metadata:
   labels:
     cloud: Amazon
-    region: eu-west-1
-    name: 'rhte2023-cluster01'
+    region: eu-west-2
+    name: 'devconf2024-cluster01'
     vendor: OpenShift
     cluster.open-cluster-management.io/clusterset: 'default'
-  name: 'rhte2023-cluster01'
+  name: 'devconf2024-cluster01'
 spec:
   hubAcceptsClient: true
 ---
 apiVersion: hive.openshift.io/v1
 kind: MachinePool
 metadata:
-  name: rhte2023-cluster01-worker
-  namespace: 'rhte2023-cluster01'
+  name: devconf2024-cluster01-worker
+  namespace: 'devconf2024-cluster01'
 spec:
   clusterDeploymentRef:
-    name: 'rhte2023-cluster01'
+    name: 'devconf2024-cluster01'
   name: worker
   platform:
     aws:
@@ -287,8 +288,8 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: rhte2023-cluster01-pull-secret
-  namespace: 'rhte2023-cluster01'
+  name: devconf2024-cluster01-pull-secret
+  namespace: 'devconf2024-cluster01'
 stringData:
   .dockerconfigjson: |-
     <2 - Global pull secret>
@@ -297,8 +298,8 @@ type: kubernetes.io/dockerconfigjson
 apiVersion: v1
 kind: Secret
 metadata:
-  name: rhte2023-cluster01-install-config
-  namespace: 'rhte2023-cluster01'
+  name: devconf2024-cluster01-install-config
+  namespace: 'devconf2024-cluster01'
 type: Opaque
 data:
   # Base64 encoding of install-config yaml
@@ -307,8 +308,8 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: rhte2023-cluster01-ssh-private-key
-  namespace: 'rhte2023-cluster01'
+  name: devconf2024-cluster01-ssh-private-key
+  namespace: 'devconf2024-cluster01'
 stringData:
   ssh-privatekey: |-
     <4 - SSH private key>
@@ -318,8 +319,8 @@ apiVersion: v1
 kind: Secret
 type: Opaque
 metadata:
-  name: rhte2023-cluster01-aws-creds
-  namespace: 'rhte2023-cluster01'
+  name: devconf2024-cluster01-aws-creds
+  namespace: 'devconf2024-cluster01'
 stringData:
   aws_access_key_id: <5 - AWS Access key ID>
   aws_secret_access_key: <6 - AWS Secret Key>
@@ -327,11 +328,11 @@ stringData:
 apiVersion: agent.open-cluster-management.io/v1
 kind: KlusterletAddonConfig
 metadata:
-  name: 'rhte2023-cluster01'
-  namespace: 'rhte2023-cluster01'
+  name: 'devconf2024-cluster01'
+  namespace: 'devconf2024-cluster01'
 spec:
-  clusterName: 'rhte2023-cluster01'
-  clusterNamespace: 'rhte2023-cluster01'
+  clusterName: 'devconf2024-cluster01'
+  clusterNamespace: 'devconf2024-cluster01'
   clusterLabels:
     cloud: Amazon
     vendor: OpenShift
@@ -350,21 +351,21 @@ spec:
 Now, apply the file:
 [source,bash, subs="+macros,+attributes"]
 ----
-oc create -f rhte2023-cluster01.yaml
+oc create -f devconf2024-cluster01.yaml
 ----
 
 The second cluster installation, will be launched. The cluster installation will take around 30 minutes. So, go the next section, you can do it while the cluster is being installed.
 
-NOTE: Remember completing both sections below once the new Cluster `rhte2023-cluster01` is deployed.
+NOTE: Remember completing both sections below once the new Cluster `devconf2024-cluster01` is deployed.
 
 [#occontextnew]
 == Switching context for the new cluster
 
-Once the clusters installation in completed and in order to easily switch between Openshift clusters in this lab, we will create a new context for the new rhte2023-cluster01. 
+Once the clusters installation in completed and in order to easily switch between Openshift clusters in this lab, we will create a new context for the new devconf2024-cluster01. 
 
-- Login into the `rhte2023-cluster01`
+- Login into the `devconf2024-cluster01`
 
-NOTE: Once the cluster is deployed, go to cluster section on ACM, choose `rhte2023-cluster01` and you will see the kubeadmin password there.
+NOTE: Once the cluster is deployed, go to cluster section on ACM, choose `devconf2024-cluster01` and you will see the kubeadmin password there.
 
 [.lines_space]
 [.console-input]
@@ -403,13 +404,13 @@ oc --context cluster01 get nodes
 [#registertnew]
 == Registering rhte2023-cluster01 to GitOps
 
-Let’s add the new cluster rhte2023-cluster01 to the existing ClusterSet rhte2023-gitops-clusters-vendor as follows:
+Let’s add the new cluster devconf2024-cluster01 to the existing ClusterSet rhte2023-gitops-clusters-vendor as follows:
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm label ManagedCluster rhte2023-cluster01 cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters --overwrite
+oc --context acm label ManagedCluster devconf2024-cluster01 cluster.open-cluster-management.io/clusterset=devconf2024-gitops-clusters --overwrite
 ----
 
 Well done!! ;-)
