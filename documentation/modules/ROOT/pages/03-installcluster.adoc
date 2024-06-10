@@ -132,7 +132,7 @@ In the "Release image", select the 4.14.X release image.
 
 image::install/create03.png[]
 
-The next step is to configure the Region, Architecture and node sizing. You can use eu-west-2 as the Region and amd64 as the Architecture. The node sizing can be modified, but it is not necessary in this LAB.
+The next step is to configure the Region, Architecture and node sizing. You can use eu-west-1 as the Region and amd64 as the Architecture. The node sizing can be modified, but it is not necessary in this LAB.
 
 image::install/create04.png[]
 
@@ -202,7 +202,7 @@ networking:
   - 172.30.0.0/16
 platform:
   aws:
-    region: eu-west-2
+    region: eu-west-1
 pullSecret: "" # skip, hive will inject based on it's secrets
 sshKey: |-
     <2 - Your SSH public key>
@@ -228,7 +228,7 @@ metadata:
   namespace: 'devconf2024-cluster01'
   labels:
     cloud: 'AWS'
-    region: 'eu-west-2'
+    region: 'eu-west-1'
     vendor: OpenShift
     cluster.open-cluster-management.io/clusterset: 'default'
 spec:
@@ -242,14 +242,14 @@ spec:
     aws:
       credentialsSecretRef:
         name: devconf2024-cluster01-aws-creds
-      region: eu-west-2
+      region: eu-west-1
   provisioning:
     installConfigSecretRef:
       name: devconf2024-cluster01-install-config
     sshPrivateKeySecretRef:
       name: devconf2024-cluster01-ssh-private-key
     imageSetRef:
-       #quay.io/openshift-release-dev/ocp-release:4.10.47-x86_64
+       #quay.io/openshift-release-dev/ocp-release:4.14.27-x86_64
       name: img4.14.27-x86-64-appsub
   pullSecretRef:
     name: devconf2024-cluster01-pull-secret
@@ -259,7 +259,7 @@ kind: ManagedCluster
 metadata:
   labels:
     cloud: Amazon
-    region: eu-west-2
+    region: eu-west-1
     name: 'devconf2024-cluster01'
     vendor: OpenShift
     cluster.open-cluster-management.io/clusterset: 'default'
