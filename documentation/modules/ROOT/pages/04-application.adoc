@@ -19,11 +19,11 @@ The first Application will be created from the Advanced Cluster Management conso
 
 Go throught the Advanced Cluster Management Console and login with Openshift user:
 
-**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Pull model**
+**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Push model**
 
 image::application/application02.png[]
 
-**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Pull model> General**
+**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Push model> General**
 
 * **ApplicationSet name**: devconf2024-application-01
 * **Argo server**: openshift-gitops
@@ -31,7 +31,7 @@ image::application/application02.png[]
 
 image::application/application03.png[]
 
-**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Pull model > Template**
+**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Push model > Template**
 
 * **URL**: https://github.com/<your_github_account>/devconf-2024-acm-apps.git
 * **Revision**: main
@@ -81,14 +81,14 @@ image::application/application09.png[]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm get pod -n rhte2023-application-01
+oc --context acm get pod -n devconf2024-application-01
 ----
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context cluster01 get pod -n rhte2023-application-01
+oc --context cluster01 get pod -n devconf2024-application-01
 ----
 
 Finally, let's see how the Applications looks like checking the `Route` and copying on your browser. 
@@ -97,19 +97,19 @@ Finally, let's see how the Applications looks like checking the `Route` and copy
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm get route -n rhte2023-application-01
+oc --context acm get route -n devconf2024-application-01
 ----
 
-**URL**: https://rhte2023-application-01-rhte2023-application-01.<your_domain_cluster>
+**URL**: https://devconf2024-application-01-devconf2024-application-01.<your_domain_cluster>
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context cluster01 get route -n rhte2023-application-01
+oc --context cluster01 get route -n devconf2024-application-01
 ----
 
-**URL**: https://rhte2023-application-01-rhte2023-application-01.<your_domain_cluster>
+**URL**: https://devconf2024-application-01-devconf2024-application-01.<your_domain_cluster>
 
 image::application/application09b.png[]
 
@@ -128,16 +128,16 @@ Let's change the number of replicas in both clusters and check how it is fixed a
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm scale deployment/rhte2023-application-01 -n rhte2023-application-01 --replicas=0
-oc --context cluster01 scale deployment/rhte2023-application-01 -n rhte2023-application-01 --replicas=0
+oc --context acm scale deployment/devconf2024-application-01 -n devconf2024-application-01 --replicas=0
+oc --context cluster01 scale deployment/devconf2024-application-01 -n devconf2024-application-01 --replicas=0
 ----
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm get pod -n rhte2023-application-01
-oc --context cluster01 get pod -n rhte2023-application-01
+oc --context acm get pod -n devconf2024-application-01
+oc --context cluster01 get pod -n devconf2024-application-01
 ----
 
 After a while, application will scale automatically to the initial number of replicas (5).
@@ -187,13 +187,13 @@ The second Application will be created from the Advanced Cluster Management cons
 
 * **environment=development**
 
-Before create the application, let's label the cluster `rhte2023-cluster01` with the label **environment=development**.
+Before create the application, let's label the cluster `devconf2024-cluster01` with the label **environment=development**.
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm label ManagedCluster rhte2023-cluster01 environment=development --overwrite
+oc --context acm label ManagedCluster devconf2024-cluster01 environment=development --overwrite
 ----
 
 Let's create the Application from Advanced Cluster Management:
@@ -204,7 +204,7 @@ image::application/application02.png[]
 
 **Advanced Cluster Management Console > Applications > Create Application > ApplicationSet > General**
 
-* **ApplicationSet name**: rhte2023-application-02
+* **ApplicationSet name**: devconf2024-application-02
 * **Argo server**: openshift-gitops
 * **Requeue time**: 180
 
@@ -212,10 +212,10 @@ image::application/application10.png[]
 
 **Advanced Cluster Management Console > Applications > Create Application > ApplicationSet > Template**
 
-* **URL**: https://github.com/<your_github_account>/rhte-2023-acm-apps.git
+* **URL**: https://github.com/<your_github_account>/devconf-2024-acm-apps.git
 * **Revision**: main
-* **Path**: rhte2023/04_deploy_applications/rhte2023-application-02
-* **Remote Namespace**: rhte2023-application-02
+* **Path**: devconf2024/04_deploy_applications/devconf024-application-02
+* **Remote Namespace**: devconf2024-application-02
 
 image::application/application11.png[]
 
@@ -230,7 +230,7 @@ image::application/application12.png[]
 
 **Advanced Cluster Management Console > Applications > Create Application > ApplicationSet > Placement**
 
-* **Placement**: rhte2023-gitops-clusters-environment
+* **Placement**: devconf2024-gitops-clusters-environment
 
 image::application/application13.png[]
 
@@ -238,7 +238,7 @@ image::application/application13.png[]
 
 image::application/application14.png[]
 
-**Advanced Cluster Management Console > Applications > rhte2023-application-02 (filter by ApplicationSet) > Topology**
+**Advanced Cluster Management Console > Applications > devconf2024-application-02 (filter by ApplicationSet) > Topology**
 
 image::application/application15.png[]
 
