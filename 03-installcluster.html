@@ -388,11 +388,12 @@ stringData:
 </div>
 </div>
 <div class="paragraph">
-<p>In the Cluster details form, you will need to choose a Cluster name, a Cluster set and the Base DNS domain.
-In the Cluster name, you can choose <strong>rhte2023-cluster01</strong> as the Cluster name.
-In the Cluster set, you can choose the <strong>rhte2023-gitops-clusters</strong> Cluster set.
+<p>The cluster will be an Standalone cluster (not Hosted).
+In the Cluster details form, you will need to choose a Cluster name, a Cluster set and the Base DNS domain.
+In the Cluster name, you can choose <strong>devconf2024-cluster01</strong> as the Cluster name.
+In the Cluster set, you can choose the <strong>devconf2024-gitops-clusters</strong> Cluster set.
 In the Base DNS domain, you need to use the Base DNS domain received by email.
-In the "Release image", select the 4.10.X release image.</p>
+In the "Release image", select the 4.14.X release image.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -424,7 +425,7 @@ In the "Release image", select the 4.10.X release image.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>The Automation is not going to be used in this LAB also, so you don&#8217;t need to define any values.</p>
+<p>The AWS private configuration and Automation are not going to be used in this LAB also, so you don&#8217;t need to define any values.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -454,7 +455,7 @@ In the "Release image", select the 4.10.X release image.</p>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
 metadata:
-  name: 'rhte2023-cluster01'
+  name: 'devconf2024-cluster01'
 baseDomain: &lt;1 - Base DNS domain&gt;
 controlPlane:
   architecture: amd64
@@ -509,23 +510,23 @@ sshKey: |-
 <p>Save the output, you will need it on the next step.</p>
 </div>
 <div class="paragraph">
-<p>Now, you can create the needed resources to create the second cluster. You will need to create a rhte2023-cluster01.yaml file. You can follow this example, and modify it with the variables of your environment:</p>
+<p>Now, you can create the needed resources to create the second cluster. You will need to create a devconf2024-cluster01.yaml file. You can follow this example, and modify it with the variables of your environment:</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: hive.openshift.io/v1
 kind: ClusterDeployment
 metadata:
-  name: 'rhte2023-cluster01'
-  namespace: 'rhte2023-cluster01'
+  name: 'devconf2024-cluster01'
+  namespace: 'devconf2024-cluster01'
   labels:
     cloud: 'AWS'
-    region: 'eu-west-1'
+    region: 'eu-west-2'
     vendor: OpenShift
     cluster.open-cluster-management.io/clusterset: 'default'
 spec:
   baseDomain: &lt;1 - Base DNS Domain&gt;
-  clusterName: 'rhte2023-cluster01'
+  clusterName: 'devconf2024-cluster01'
   controlPlaneConfig:
     servingCertificates: {}
   installAttemptsLimit: 1
@@ -533,40 +534,40 @@ spec:
   platform:
     aws:
       credentialsSecretRef:
-        name: rhte2023-cluster01-aws-creds
-      region: eu-west-1
+        name: devconf2024-cluster01-aws-creds
+      region: eu-west-2
   provisioning:
     installConfigSecretRef:
-      name: rhte2023-cluster01-install-config
+      name: devconf2024-cluster01-install-config
     sshPrivateKeySecretRef:
-      name: rhte2023-cluster01-ssh-private-key
+      name: devconf2024-cluster01-ssh-private-key
     imageSetRef:
        #quay.io/openshift-release-dev/ocp-release:4.10.47-x86_64
-      name: img4.10.47-x86-64-appsub
+      name: img4.14.27-x86-64-appsub
   pullSecretRef:
-    name: rhte2023-cluster01-pull-secret
+    name: devconf2024-cluster01-pull-secret
 ---
 apiVersion: cluster.open-cluster-management.io/v1
 kind: ManagedCluster
 metadata:
   labels:
     cloud: Amazon
-    region: eu-west-1
-    name: 'rhte2023-cluster01'
+    region: eu-west-2
+    name: 'devconf2024-cluster01'
     vendor: OpenShift
     cluster.open-cluster-management.io/clusterset: 'default'
-  name: 'rhte2023-cluster01'
+  name: 'devconf2024-cluster01'
 spec:
   hubAcceptsClient: true
 ---
 apiVersion: hive.openshift.io/v1
 kind: MachinePool
 metadata:
-  name: rhte2023-cluster01-worker
-  namespace: 'rhte2023-cluster01'
+  name: devconf2024-cluster01-worker
+  namespace: 'devconf2024-cluster01'
 spec:
   clusterDeploymentRef:
-    name: 'rhte2023-cluster01'
+    name: 'devconf2024-cluster01'
   name: worker
   platform:
     aws:
@@ -580,8 +581,8 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: rhte2023-cluster01-pull-secret
-  namespace: 'rhte2023-cluster01'
+  name: devconf2024-cluster01-pull-secret
+  namespace: 'devconf2024-cluster01'
 stringData:
   .dockerconfigjson: |-
     &lt;2 - Global pull secret&gt;
@@ -590,8 +591,8 @@ type: kubernetes.io/dockerconfigjson
 apiVersion: v1
 kind: Secret
 metadata:
-  name: rhte2023-cluster01-install-config
-  namespace: 'rhte2023-cluster01'
+  name: devconf2024-cluster01-install-config
+  namespace: 'devconf2024-cluster01'
 type: Opaque
 data:
   # Base64 encoding of install-config yaml
@@ -600,8 +601,8 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: rhte2023-cluster01-ssh-private-key
-  namespace: 'rhte2023-cluster01'
+  name: devconf2024-cluster01-ssh-private-key
+  namespace: 'devconf2024-cluster01'
 stringData:
   ssh-privatekey: |-
     &lt;4 - SSH private key&gt;
@@ -611,8 +612,8 @@ apiVersion: v1
 kind: Secret
 type: Opaque
 metadata:
-  name: rhte2023-cluster01-aws-creds
-  namespace: 'rhte2023-cluster01'
+  name: devconf2024-cluster01-aws-creds
+  namespace: 'devconf2024-cluster01'
 stringData:
   aws_access_key_id: &lt;5 - AWS Access key ID&gt;
   aws_secret_access_key: &lt;6 - AWS Secret Key&gt;
@@ -620,11 +621,11 @@ stringData:
 apiVersion: agent.open-cluster-management.io/v1
 kind: KlusterletAddonConfig
 metadata:
-  name: 'rhte2023-cluster01'
-  namespace: 'rhte2023-cluster01'
+  name: 'devconf2024-cluster01'
+  namespace: 'devconf2024-cluster01'
 spec:
-  clusterName: 'rhte2023-cluster01'
-  clusterNamespace: 'rhte2023-cluster01'
+  clusterName: 'devconf2024-cluster01'
+  clusterNamespace: 'devconf2024-cluster01'
   clusterLabels:
     cloud: Amazon
     vendor: OpenShift
@@ -645,7 +646,7 @@ spec:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc create -f rhte2023-cluster01.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc create -f devconf2024-cluster01.yaml</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -658,7 +659,7 @@ spec:
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Remember completing both sections below once the new Cluster <code>rhte2023-cluster01</code> is deployed.
+Remember completing both sections below once the new Cluster <code>devconf2024-cluster01</code> is deployed.
 </td>
 </tr>
 </table>
@@ -669,12 +670,12 @@ Remember completing both sections below once the new Cluster <code>rhte2023-clus
 <h2 id="occontextnew"><a class="anchor" href="#occontextnew"></a>Switching context for the new cluster</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Once the clusters installation in completed and in order to easily switch between Openshift clusters in this lab, we will create a new context for the new rhte2023-cluster01.</p>
+<p>Once the clusters installation in completed and in order to easily switch between Openshift clusters in this lab, we will create a new context for the new devconf2024-cluster01.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Login into the <code>rhte2023-cluster01</code></p>
+<p>Login into the <code>devconf2024-cluster01</code></p>
 </li>
 </ul>
 </div>
@@ -685,7 +686,7 @@ Remember completing both sections below once the new Cluster <code>rhte2023-clus
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Once the cluster is deployed, go to cluster section on ACM, choose <code>rhte2023-cluster01</code> and you will see the kubeadmin password there.
+Once the cluster is deployed, go to cluster section on ACM, choose <code>devconf2024-cluster01</code> and you will see the kubeadmin password there.
 </td>
 </tr>
 </table>
@@ -737,11 +738,11 @@ Once the cluster is deployed, go to cluster section on ACM, choose <code>rhte202
 <h2 id="registertnew"><a class="anchor" href="#registertnew"></a>Registering rhte2023-cluster01 to GitOps</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Let’s add the new cluster rhte2023-cluster01 to the existing ClusterSet rhte2023-gitops-clusters-vendor as follows:</p>
+<p>Let’s add the new cluster devconf2024-cluster01 to the existing ClusterSet rhte2023-gitops-clusters-vendor as follows:</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster rhte2023-cluster01 cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters --overwrite</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster devconf2024-cluster01 cluster.open-cluster-management.io/clusterset=devconf2024-gitops-clusters --overwrite</code></pre>
 </div>
 </div>
 <div class="paragraph">

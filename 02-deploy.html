@@ -263,56 +263,6 @@
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Enable master node scheduling</strong></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>We are going to enable master nodes for scheduling workloads.</p>
-</div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm replace -k 02_bootstrap/base/openshift/base</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Let&#8217;s check the results as follows:</p>
-</div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get scheduler cluster -o yaml -o=jsonpath='{.spec.mastersSchedulable}{"\n"}'</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>We are expecting <strong>true</strong> as a  result.</p>
-</div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-This configuration is not recommended for production ;-)
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-<a href="https://access.redhat.com/articles/2988581">OpenShift Admins Guide to jsonpath</a>
-</td>
-</tr>
-</table>
-</div>
-<div class="ulist">
-<ul>
-<li>
 <p><strong>Install Advanced Custer Management Operator</strong>:</p>
 </li>
 </ul>
@@ -415,14 +365,6 @@ This configuration is not recommended for production ;-)
 </div>
 <div class="paragraph">
 <p><strong>All Cluster</strong> will provide you access to the Advanced Cluster Management Console and <strong>local-cluster</strong> will provide you access to the Openshift Cluster.</p>
-</div>
-<div class="paragraph">
-<p>Also, the Advanced Cluster Management provides a dashboard UI. We can access it through a OpenShift <code>Route</code>. List routes in the <code>open-cluster-management</code> namespace and get the address of console <a href="https://multicloud-console.apps.&lt;your_domain&gt" class="bare">https://multicloud-console.apps.&lt;your_domain&gt</a>;</p>
-</div>
-<div class="listingblock lines_space console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get route -n open-cluster-management</code></pre>
-</div>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s switch to the Advanced Cluster Management Console and Login with Openshift to check that we can access properly.</p>
