@@ -182,7 +182,7 @@ It will create:
 
 * a `ManagedClusterSetBinding` - **devconf2024-gitops-clusters**. `ManagedClusterSetBinding` resource will bind a `ManagedClusterSet` **devconf2024-gitops-clusters** to a `namespace` **openshift-gitops**. It means that applications and policies that are created in the `openshift-gitops` namespace can only access managed clusters that are included in the bound managed cluster set resource.
 
-* a `Placement` - **rhte2023-gitops-clusters-placement** based on a ManagedCluster label **vendor=Openshift** and claim **platform=AWS**
+* a `Placement` - **devconf2024-gitops-clusters-placement** based on a ManagedCluster label **vendor=Openshift** and claim **platform=AWS**
 
 As a Placement's example:
 

@@ -402,9 +402,9 @@ oc --context cluster01 get nodes
 ----
 
 [#registertnew]
-== Registering rhte2023-cluster01 to GitOps
+== Registering devconf2024-cluster01 to GitOps
 
-Let’s add the new cluster devconf2024-cluster01 to the existing ClusterSet rhte2023-gitops-clusters-vendor as follows:
+Let’s add the new cluster devconf2024-cluster01 to the existing ClusterSet devconf2024-gitops-clusters-vendor as follows:
 
 [.lines_space]
 [.console-input]
