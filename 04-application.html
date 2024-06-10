@@ -653,7 +653,7 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 <p><strong>Advanced Cluster Management Console &gt; Applications &gt; Advanced Configuration &gt; Placements</strong></p>
 </div>
 <div class="paragraph">
-<p>Check the number of cluster matching with <strong>Placement &gt; rhte2023-gitops-clusters-environment</strong>, so we are expecting see the Application <strong>rhte2023-application-02</strong> deployed in <strong>rhte2023-cluster01</strong>.</p>
+<p>Check the number of cluster matching with <strong>Placement &gt; devconf2024-gitops-clusters-environment</strong>, so we are expecting see the Application <strong>devconf2024-application-02</strong> deployed in <strong>devcof2024-cluster01</strong>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -684,7 +684,7 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get pod -n rhte2023-application-02</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get pod -n devconf2024-application-02</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -692,11 +692,11 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get route -n rhte2023-application-02</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get route -n devconf2024-application-02</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>URL</strong>: <a href="https://rhte2023-application-02-rhte2023-application-02.&lt;your_domain&gt" class="bare">https://rhte2023-application-02-rhte2023-application-02.&lt;your_domain&gt</a>;</p>
+<p><strong>URL</strong>: <a href="https://devconf2024-application-02-devconf2024-application-02.&lt;your_domain&gt" class="bare">https://devconf2024-application-02-devconf2024-application-02.&lt;your_domain&gt</a>;</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -712,7 +712,7 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 <h2 id="applicationimages"><a class="anchor" href="#applicationimages"></a>Application 2 - Change container image</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Once the <strong>rhte2023-application-02</strong> is already deployed, let&#8217;s change the application image:</p>
+<p>Once the <strong>devconf2024-application-02</strong> is already deployed, let&#8217;s change the application image:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -723,7 +723,7 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ../../../04_deploy_applications/rhte2023-application-02/base
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ../../../04_deploy_applications/devconf2024-application-02/base
 sed -i 's/chatdraw:latest/chatdraw:rhte2023/g' 100-deployment.yaml
 git add 100-deployment.yaml
 git commit -m "changing the application image"
@@ -749,10 +749,10 @@ git push origin main</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Application <strong>rhte2023-application-03</strong> will match <strong>Location=eu-west-2</strong> and <strong>area=fringe</strong> labels</p>
+<p>Application <strong>devconf2024-application-03</strong> will match <strong>Location=eu-west-1</strong> and <strong>area=fringe</strong> labels</p>
 </li>
 <li>
-<p>Application <strong>rhte2023-application-04</strong> will match clusters with the largest allocatable <strong>CPU and memory</strong> allocatable CPU and memory.</p>
+<p>Application <strong>devconf2024-application-04</strong> will match clusters with the largest allocatable <strong>CPU and memory</strong> allocatable CPU and memory.</p>
 </li>
 <li>
 <p><strong>Apply new label to local-cluster</strong></p>
@@ -772,13 +772,13 @@ git push origin main</code></pre>
 </ul>
 </div>
 <div class="paragraph">
-<p>Change <strong>repoURL</strong> variable with your git repository <strong><a href="https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git</a></strong></p>
+<p>Change <strong>repoURL</strong> variable with your git repository <strong><a href="https://github.com/&lt;your_github_account&gt;/devconf-2024-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/devconf-2024-acm-apps.git</a></strong></p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ../../..
-vi 04_deploy_applications/argocd/rhte2023-application-03.yaml
-vi 04_deploy_applications/argocd/rhte2023-application-04.yaml</code></pre>
+vi 04_deploy_applications/argocd/devconf2024-application-03.yaml
+vi 04_deploy_applications/argocd/devconf2024-application-04.yaml</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -865,10 +865,10 @@ git push origin main</code></pre>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">argocd app create rhte2023-application-gitops \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">argocd app create devconf2024-application-gitops \
 --project default \
 --repo &lt;your_forked_repository&gt; \
---path rhte2023/04_deploy_applications/argocd \
+--path devconf2024/04_deploy_applications/argocd \
 --sync-policy automated \
 --dest-namespace openshift-gitops \
 --dest-server <a href="https://api.&lt;your_domain&gt;:6443" class="bare">https://api.&lt;your_domain&gt;:6443</a></code></pre>
@@ -907,10 +907,10 @@ git push origin main</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Application <strong>rhte2023-application-03</strong> &gt; rhte2023-gitops-clusters-location</p>
+<p>Application <strong>devconf2024-application-03</strong> &gt; devconf2024-gitops-clusters-location</p>
 </li>
 <li>
-<p>Application <strong>rhte2023-application-04</strong> &gt; rhte2023-gitops-clusters-cpu</p>
+<p>Application <strong>devconf2024-application-04</strong> &gt; devconf2024-gitops-clusters-cpu</p>
 </li>
 </ul>
 </div>
@@ -922,12 +922,12 @@ git push origin main</code></pre>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get pod -n rhte2023-application-03</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get pod -n devconf2024-application-03</code></pre>
 </div>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get pod -n rhte2023-application-04</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get pod -n devconf2024-application-04</code></pre>
 </div>
 </div>
 <div class="ulist">
@@ -938,27 +938,27 @@ git push origin main</code></pre>
 </ul>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s see how the Applications looks like checking the <code>Route</code> and copying on your browser. In this example, <strong>rhte2023-application-03</strong> is placed on <strong>local-cluster</strong> and <strong>rhte2023-application-04</strong> is placed in <code>rhte2023-cluster01</code>:</p>
+<p>Let&#8217;s see how the Applications looks like checking the <code>Route</code> and copying on your browser. In this example, <strong>devconf2024-application-03</strong> is placed on <strong>local-cluster</strong> and <strong>devconf2024-application-04</strong> is placed in <code>devconf2024-cluster01</code>:</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get route -n rhte2023-application-03</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get route -n devconf2024-application-03</code></pre>
 </div>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get route -n rhte2023-application-04</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get route -n devconf2024-application-04</code></pre>
 </div>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Application <strong>rhte2023-application-03</strong> &gt; Red Hat Offices</p>
+<p>Application <strong>devconf2024-application-03</strong> &gt; Red Hat Offices</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>URL</strong>: <a href="https://rhte2023-application-03-rhte2023-application-03.&lt;your_domain&gt" class="bare">https://rhte2023-application-03-rhte2023-application-03.&lt;your_domain&gt</a>;</p>
+<p><strong>URL</strong>: <a href="https://devconf2024-application-03-rhte2023-application-03.&lt;your_domain&gt" class="bare">https://devconf2024-application-03-rhte2023-application-03.&lt;your_domain&gt</a>;</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -966,12 +966,12 @@ git push origin main</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>URL</strong>: <a href="https://rhte2023-application-04-rhte2023-application-04.&lt;your_domain&gt" class="bare">https://rhte2023-application-04-rhte2023-application-04.&lt;your_domain&gt</a>;</p>
+<p><strong>URL</strong>: <a href="https://devconf2024-application-04-devconf2024-application-04.&lt;your_domain&gt" class="bare">https://devconf2024-application-04-devconf2024-application-04.&lt;your_domain&gt</a>;</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Application <strong>rhte2023-application-04</strong> &gt; Tetris Game</p>
+<p>Application <strong>devconf2024-application-04</strong> &gt; Tetris Game</p>
 </li>
 </ul>
 </div>
@@ -986,12 +986,12 @@ git push origin main</code></pre>
 <h2 id="applicationsync"><a class="anchor" href="#applicationsync"></a>Fix Application 03 - Sync and Diff</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Let&#8217;s see a common issue with Application deployments and autoscalers and how to fix it. The third Application <strong>rhte2023-application-03</strong> is deployed with an <strong>HPA - horizontal pod autoscaler</strong> that let you specify the minimum and maximum number of pods you want to run. It means that this application will change the number of replicas and it will not match what is defined in Git repository, so the application will be <strong>out of sync</strong>. Let&#8217;s see how can fix this kind of issues:</p>
+<p>Let&#8217;s see a common issue with Application deployments and autoscalers and how to fix it. The third Application <strong>devconf2024-application-03</strong> is deployed with an <strong>HPA - horizontal pod autoscaler</strong> that let you specify the minimum and maximum number of pods you want to run. It means that this application will change the number of replicas and it will not match what is defined in Git repository, so the application will be <strong>out of sync</strong>. Let&#8217;s see how can fix this kind of issues:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Check and Sync the Application rhte2023-application-03-&lt;cluster&gt; from the ArgoCD UI</strong>. The Application status will be flapping between synced and of of sync status.</p>
+<p><strong>Check and Sync the Application devconf2024-application-03-&lt;cluster&gt; from the ArgoCD UI</strong>. The Application status will be flapping between synced and of of sync status.</p>
 </li>
 <li>
 <p><strong>Make changes on replicas definition</strong>:</p>
@@ -1000,7 +1000,7 @@ git push origin main</code></pre>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd 04_deploy_applications/rhte2023-application-03/base
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd 04_deploy_applications/devconf2024-application-03/base
 sed -i '/replicas:/d' 100-deployment.yaml
 git add 100-deployment.yaml
 git commit -m "removing the replicas definition"
@@ -1028,7 +1028,7 @@ This issue could also be solved adding <a href="https://argo-cd.readthedocs.io/e
 <h2 id="applicationcpu"><a class="anchor" href="#applicationcpu"></a>Fix Application 04 - allocatable CPU and Memory</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This is the last exercice from this section. The fourth application <strong>rhte2023-application-04</strong> will be deployed on that cluster with the largest allocatable CPU and Memory. Verify that in your environment is deployed on <code>rhte2023-cluster01</code>, if not change the score weight as follows:</p>
+<p>This is the last exercice from this section. The fourth application <strong>devconf2024-application-04</strong> will be deployed on that cluster with the largest allocatable CPU and Memory. Verify that in your environment is deployed on <code>devconf2024-cluster01</code>, if not change the score weight as follows:</p>
 </div>
 <div class="ulist">
 <ul>
