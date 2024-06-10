@@ -235,7 +235,7 @@
 <p>Go throught the Advanced Cluster Management Console and login with Openshift user:</p>
 </div>
 <div class="paragraph">
-<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; Argo CD ApplicationSet - Pull model</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; Argo CD ApplicationSet - Push model</strong></p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -243,7 +243,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; Argo CD ApplicationSet - Pull model&gt; General</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; Argo CD ApplicationSet - Push model&gt; General</strong></p>
 </div>
 <div class="ulist">
 <ul>
@@ -264,7 +264,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; Argo CD ApplicationSet - Pull model &gt; Template</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; Argo CD ApplicationSet - Push model &gt; Template</strong></p>
 </div>
 <div class="ulist">
 <ul>
@@ -377,12 +377,12 @@
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get pod -n rhte2023-application-01</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get pod -n devconf2024-application-01</code></pre>
 </div>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get pod -n rhte2023-application-01</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get pod -n devconf2024-application-01</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -390,19 +390,19 @@
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get route -n rhte2023-application-01</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get route -n devconf2024-application-01</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>URL</strong>: <a href="https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain_cluster&gt" class="bare">https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain_cluster&gt</a>;</p>
+<p><strong>URL</strong>: <a href="https://devconf2024-application-01-devconf2024-application-01.&lt;your_domain_cluster&gt" class="bare">https://devconf2024-application-01-devconf2024-application-01.&lt;your_domain_cluster&gt</a>;</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get route -n rhte2023-application-01</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context cluster01 get route -n devconf2024-application-01</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><strong>URL</strong>: <a href="https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain_cluster&gt" class="bare">https://rhte2023-application-01-rhte2023-application-01.&lt;your_domain_cluster&gt</a>;</p>
+<p><strong>URL</strong>: <a href="https://devconf2024-application-01-devconf2024-application-01.&lt;your_domain_cluster&gt" class="bare">https://devconf2024-application-01-devconf2024-application-01.&lt;your_domain_cluster&gt</a>;</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -432,14 +432,14 @@
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm scale deployment/rhte2023-application-01 -n rhte2023-application-01 --replicas=0
-oc --context cluster01 scale deployment/rhte2023-application-01 -n rhte2023-application-01 --replicas=0</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm scale deployment/devconf2024-application-01 -n devconf2024-application-01 --replicas=0
+oc --context cluster01 scale deployment/devconf2024-application-01 -n devconf2024-application-01 --replicas=0</code></pre>
 </div>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get pod -n rhte2023-application-01
-oc --context cluster01 get pod -n rhte2023-application-01</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm get pod -n devconf2024-application-01
+oc --context cluster01 get pod -n devconf2024-application-01</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -531,11 +531,11 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 </ul>
 </div>
 <div class="paragraph">
-<p>Before create the application, let&#8217;s label the cluster <code>rhte2023-cluster01</code> with the label <strong>environment=development</strong>.</p>
+<p>Before create the application, let&#8217;s label the cluster <code>devconf2024-cluster01</code> with the label <strong>environment=development</strong>.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster rhte2023-cluster01 environment=development --overwrite</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster devconf2024-cluster01 environment=development --overwrite</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -555,7 +555,7 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 <div class="ulist">
 <ul>
 <li>
-<p><strong>ApplicationSet name</strong>: rhte2023-application-02</p>
+<p><strong>ApplicationSet name</strong>: devconf2024-application-02</p>
 </li>
 <li>
 <p><strong>Argo server</strong>: openshift-gitops</p>
@@ -576,16 +576,16 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 <div class="ulist">
 <ul>
 <li>
-<p><strong>URL</strong>: <a href="https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git</a></p>
+<p><strong>URL</strong>: <a href="https://github.com/&lt;your_github_account&gt;/devconf-2024-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/devconf-2024-acm-apps.git</a></p>
 </li>
 <li>
 <p><strong>Revision</strong>: main</p>
 </li>
 <li>
-<p><strong>Path</strong>: rhte2023/04_deploy_applications/rhte2023-application-02</p>
+<p><strong>Path</strong>: devconf2024/04_deploy_applications/devconf024-application-02</p>
 </li>
 <li>
-<p><strong>Remote Namespace</strong>: rhte2023-application-02</p>
+<p><strong>Remote Namespace</strong>: devconf2024-application-02</p>
 </li>
 </ul>
 </div>
@@ -624,7 +624,7 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Placement</strong>: rhte2023-gitops-clusters-environment</p>
+<p><strong>Placement</strong>: devconf2024-gitops-clusters-environment</p>
 </li>
 </ul>
 </div>
@@ -642,7 +642,7 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Advanced Cluster Management Console &gt; Applications &gt; rhte2023-application-02 (filter by ApplicationSet) &gt; Topology</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; devconf2024-application-02 (filter by ApplicationSet) &gt; Topology</strong></p>
 </div>
 <div class="imageblock">
 <div class="content">
