@@ -152,7 +152,7 @@ Now, let's make a persistent change on the Git repository:
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-cd 04_deploy_applications/rhte2023-application-01/base
+cd 04_deploy_applications/devconf2024-application-01/base
 sed -i 's/replicas: 5/replicas: 3/g' 100-deployment.yaml
 git add 100-deployment.yaml
 git commit -m "decreasing number of replicas"
@@ -303,7 +303,7 @@ image::application/application19.png[]
 [#applicationacm03]
 == Application - Deploying multiple Applications
 
-The third and fourth Applications will be created from the ArgoCD command line grouping both Applications **rhte2023-application-03** (RedHat Offices Photos) and **rhte2023-application-04** (Tetris) and deploying at the same time:
+The third and fourth Applications will be created from the ArgoCD command line grouping both Applications **devconf2024-application-03** (RedHat Offices Photos) and **devconf2024-application-04** (Tetris) and deploying at the same time:
 
 - Application **devconf2024-application-03** will match **Location=eu-west-1** and **area=fringe** labels
 - Application **devconf2024-application-04** will match clusters with the largest allocatable **CPU and memory** allocatable CPU and memory.
@@ -418,7 +418,7 @@ argocd app list
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-argocd app get rhte2023-application-gitops
+argocd app get devconf2024-application-gitops
 ----
 
 - **Check Application pods**
@@ -466,7 +466,7 @@ oc --context cluster01 get route -n devconf2024-application-04
 
 - Application **devconf2024-application-03** > Red Hat Offices
 
-**URL**: https://devconf2024-application-03-rhte2023-application-03.<your_domain>
+**URL**: https://devconf2024-application-03-devconf2024-application-03.<your_domain>
 
 image::application/application20.png[]
 
