@@ -64,7 +64,7 @@ oc --context acm apply -k 02_bootstrap/base/acm_operator/base
 It will create the following resouces:
 
 * `Namespace` - open-cluster-management
-* `OperatorGroup` - open-cluster-management-rhte2023
+* `OperatorGroup` - open-cluster-management-devconf2024
 * `Subscription` - Advanced Cluster Management Operator
 
 Wait until all pods are in `Running` status and `Ready`. It can take a couple of minutes approx.
@@ -136,7 +136,7 @@ image::deploy/deploy21.png[]
 [#gitops]
 == Install GitOps Operator
 
-The next step is the https://docs.openshift.com/container-platform/4.10/cicd/gitops/installing-openshift-gitops.html[OpenShift GitOps Operator] installation. OpenShift GitOps uses https://argo-cd.readthedocs.io/en/stable/[Argo CD] to manage specific cluster-scoped resources. Argo CD is a declarative, GitOps continuous delivery tool for Kubernetes.
+The next step is the https://docs.openshift.com/container-platform/4.14/cicd/gitops/installing-openshift-gitops.html[OpenShift GitOps Operator] installation. OpenShift GitOps uses https://argo-cd.readthedocs.io/en/stable/[Argo CD] to manage specific cluster-scoped resources. Argo CD is a declarative, GitOps continuous delivery tool for Kubernetes.
 
 Let's install it:
 
@@ -213,9 +213,9 @@ oc --context acm apply -k 02_bootstrap/base/gitops_acm/base/
 
 It will create:
 
-* a `ManagedClusterSet` - **rhte2023-gitops-clusters**. `ManagedClusterSet` resources allow the grouping of cluster resources. We will add both Openshift Cluster `local-cluster` and `rhte2023-cluster01` into this `ManagedClusterSet` which enables deployment across all of the Openshift Cluster.
+* a `ManagedClusterSet` - **devconf2024-gitops-clusters**. `ManagedClusterSet` resources allow the grouping of cluster resources. We will add both Openshift Cluster `local-cluster` and `devconf2024-cluster01` into this `ManagedClusterSet` which enables deployment across all of the Openshift Cluster.
 
-* a `ManagedClusterSetBinding` - **rhte2023-gitops-clusters**. `ManagedClusterSetBinding` resource will bind a `ManagedClusterSet` **rhte2023-gitops-clusters** to a `namespace` **openshift-gitops**. It means that applications and policies that are created in the `openshift-gitops` namespace can only access managed clusters that are included in the bound managed cluster set resource.
+* a `ManagedClusterSetBinding` - **devconf2024-gitops-clusters**. `ManagedClusterSetBinding` resource will bind a `ManagedClusterSet` **devconf2024-gitops-clusters** to a `namespace` **openshift-gitops**. It means that applications and policies that are created in the `openshift-gitops` namespace can only access managed clusters that are included in the bound managed cluster set resource.
 
 * a `Placement` - **rhte2023-gitops-clusters-placement** based on a ManagedCluster label **vendor=Openshift** and claim **platform=AWS**
 
@@ -229,7 +229,7 @@ As a Placement's example:
 apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: Placement
 metadata:
-  name: rhte2023-gitops-clusters-placement
+  name: devconf2024-gitops-clusters-placement
   namespace: openshift-gitops
 spec:
   predicates:
@@ -247,20 +247,20 @@ spec:
 
 We will see more `Placements` examples on the next sections.
 
-TIP: https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html-single/multicluster_engine/index#placement-binding[Placement Examples] to select a cluster wih the largest allocatable memory and/or CPU.
+TIP: https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.10/html-single/multicluster_engine/index#placement-binding[Placement Examples] to select a cluster wih the largest allocatable memory and/or CPU.
 
 NOTE: When you integrate ACM with the GitOps operator for every managed cluster that is bound to the GitOps namespace through the placement and ManagedClusterSetBinding custom resources, a secret with a token to access the ManagedCluster is created in the namespace. This is required for the GitOps controller to sync resources to the managed cluster. When a user is given administrator access to a GitOps namespace to perform application lifecycle operations, the user also gains access to this secret and admin level to the managed cluster
 
 [#managedcluster]
 == Registering local-cluster to GitOps
 
-After the ACM/GitOps integration is done, let's add `local-cluster` to `ClusterSet` **rhte2023-gitops-clusters**. 
+After the ACM/GitOps integration is done, let's add `local-cluster` to `ClusterSet` **devconf2024-gitops-clusters**. 
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm label ManagedCluster local-cluster cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters --overwrite
+oc --context acm label ManagedCluster local-cluster cluster.open-cluster-management.io/clusterset=devconf2024-gitops-clusters --overwrite
 ----
 
 and check that cluster `local-cluster` is added as an ArgoCD Cluster from the **ArgoCD Console > Settings > Clusters** where we expect to see `local-cluster` as one of the clusters
@@ -269,7 +269,7 @@ image::deploy/deploy16.png[]
 
 image::deploy/deploy17.png[]
 
-and the `local-cluster` being part of the `ClusterSet rhte2023-gitops-clusters` Cluster Set through `Openshift Console > Advanced Cluster Management > Clusters > Cluster sets`
+and the `local-cluster` being part of the `ClusterSet devconf2024-gitops-clusters` Cluster Set through `Openshift Console > Advanced Cluster Management > Clusters > Cluster sets`
 
 image::deploy/deploy20.png[]
 
@@ -284,10 +284,10 @@ This is the last step of this section where will automate with ArgoCD everything
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-vi 02_bootstrap/argocd/rhte2023-bootstrap-gitops.yaml
+vi 02_bootstrap/argocd/devconf2024-bootstrap-gitops.yaml
 ----
 
-and change `server` to your cluster `https://api.<your_cluster>:6443` and `repoURL` to your git repository `https://github.com/<your_github_account>/rhte-2023-acm-apps.git` forked previously:
+and change `server` to your cluster `https://api.<your_cluster>:6443` and `repoURL` to your git repository `https://github.com/<your_github_account>/devconf-2024-acm-apps.git` forked previously:
 
 [.lines_space]
 [.console-input]
@@ -296,7 +296,7 @@ and change `server` to your cluster `https://api.<your_cluster>:6443` and `repoU
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: rhte2023-bootstrap-gitops
+  name: devconf2024-bootstrap-gitops
   namespace: openshift-gitops
 spec:
   destination:
@@ -304,8 +304,8 @@ spec:
     server: https://api.<your_cluster>:6443
   project: default
   source:
-    path: rhte2023/02_bootstrap/base
-    repoURL: https://github.com/<your_github_account>/rhte-2023-acm-apps.git
+    path: devconf2024/02_bootstrap/base
+    repoURL: https://github.com/<your_github_account>/devconf-2024-acm-apps.git
 ----
 
 finally, let's create the Application:
@@ -314,7 +314,7 @@ finally, let's create the Application:
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm apply -f 02_bootstrap/argocd/rhte2023-bootstrap-gitops.yaml
+oc --context acm apply -f 02_bootstrap/argocd/devconf2024-bootstrap-gitops.yaml
 ----
 
 Let's check the results from the Advaced Cluster Management Console and ArgoCD Console:
