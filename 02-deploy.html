@@ -334,7 +334,7 @@ This configuration is not recommended for production ;-)
 <p><code>Namespace</code> - open-cluster-management</p>
 </li>
 <li>
-<p><code>OperatorGroup</code> - open-cluster-management-rhte2023</p>
+<p><code>OperatorGroup</code> - open-cluster-management-devconf2024</p>
 </li>
 <li>
 <p><code>Subscription</code> - Advanced Cluster Management Operator</p>
@@ -438,7 +438,7 @@ This configuration is not recommended for production ;-)
 <h2 id="gitops"><a class="anchor" href="#gitops"></a>Install GitOps Operator</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The next step is the <a href="https://docs.openshift.com/container-platform/4.10/cicd/gitops/installing-openshift-gitops.html">OpenShift GitOps Operator</a> installation. OpenShift GitOps uses <a href="https://argo-cd.readthedocs.io/en/stable/">Argo CD</a> to manage specific cluster-scoped resources. Argo CD is a declarative, GitOps continuous delivery tool for Kubernetes.</p>
+<p>The next step is the <a href="https://docs.openshift.com/container-platform/4.14/cicd/gitops/installing-openshift-gitops.html">OpenShift GitOps Operator</a> installation. OpenShift GitOps uses <a href="https://argo-cd.readthedocs.io/en/stable/">Argo CD</a> to manage specific cluster-scoped resources. Argo CD is a declarative, GitOps continuous delivery tool for Kubernetes.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s install it:</p>
@@ -557,10 +557,10 @@ This configuration is not recommended for production ;-)
 <div class="ulist">
 <ul>
 <li>
-<p>a <code>ManagedClusterSet</code> - <strong>rhte2023-gitops-clusters</strong>. <code>ManagedClusterSet</code> resources allow the grouping of cluster resources. We will add both Openshift Cluster <code>local-cluster</code> and <code>rhte2023-cluster01</code> into this <code>ManagedClusterSet</code> which enables deployment across all of the Openshift Cluster.</p>
+<p>a <code>ManagedClusterSet</code> - <strong>devconf2024-gitops-clusters</strong>. <code>ManagedClusterSet</code> resources allow the grouping of cluster resources. We will add both Openshift Cluster <code>local-cluster</code> and <code>devconf2024-cluster01</code> into this <code>ManagedClusterSet</code> which enables deployment across all of the Openshift Cluster.</p>
 </li>
 <li>
-<p>a <code>ManagedClusterSetBinding</code> - <strong>rhte2023-gitops-clusters</strong>. <code>ManagedClusterSetBinding</code> resource will bind a <code>ManagedClusterSet</code> <strong>rhte2023-gitops-clusters</strong> to a <code>namespace</code> <strong>openshift-gitops</strong>. It means that applications and policies that are created in the <code>openshift-gitops</code> namespace can only access managed clusters that are included in the bound managed cluster set resource.</p>
+<p>a <code>ManagedClusterSetBinding</code> - <strong>devconf2024-gitops-clusters</strong>. <code>ManagedClusterSetBinding</code> resource will bind a <code>ManagedClusterSet</code> <strong>devconf2024-gitops-clusters</strong> to a <code>namespace</code> <strong>openshift-gitops</strong>. It means that applications and policies that are created in the <code>openshift-gitops</code> namespace can only access managed clusters that are included in the bound managed cluster set resource.</p>
 </li>
 <li>
 <p>a <code>Placement</code> - <strong>rhte2023-gitops-clusters-placement</strong> based on a ManagedCluster label <strong>vendor=Openshift</strong> and claim <strong>platform=AWS</strong></p>
@@ -576,7 +576,7 @@ This configuration is not recommended for production ;-)
 apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: Placement
 metadata:
-  name: rhte2023-gitops-clusters-placement
+  name: devconf2024-gitops-clusters-placement
   namespace: openshift-gitops
 spec:
   predicates:
@@ -602,7 +602,7 @@ spec:
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-<a href="https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.6/html-single/multicluster_engine/index#placement-binding">Placement Examples</a> to select a cluster wih the largest allocatable memory and/or CPU.
+<a href="https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.10/html-single/multicluster_engine/index#placement-binding">Placement Examples</a> to select a cluster wih the largest allocatable memory and/or CPU.
 </td>
 </tr>
 </table>
@@ -625,11 +625,11 @@ When you integrate ACM with the GitOps operator for every managed cluster that i
 <h2 id="managedcluster"><a class="anchor" href="#managedcluster"></a>Registering local-cluster to GitOps</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>After the ACM/GitOps integration is done, let&#8217;s add <code>local-cluster</code> to <code>ClusterSet</code> <strong>rhte2023-gitops-clusters</strong>.</p>
+<p>After the ACM/GitOps integration is done, let&#8217;s add <code>local-cluster</code> to <code>ClusterSet</code> <strong>devconf2024-gitops-clusters</strong>.</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster local-cluster cluster.open-cluster-management.io/clusterset=rhte2023-gitops-clusters --overwrite</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm label ManagedCluster local-cluster cluster.open-cluster-management.io/clusterset=devconf2024-gitops-clusters --overwrite</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -646,7 +646,7 @@ When you integrate ACM with the GitOps operator for every managed cluster that i
 </div>
 </div>
 <div class="paragraph">
-<p>and the <code>local-cluster</code> being part of the <code>ClusterSet rhte2023-gitops-clusters</code> Cluster Set through <code>Openshift Console &gt; Advanced Cluster Management &gt; Clusters &gt; Cluster sets</code></p>
+<p>and the <code>local-cluster</code> being part of the <code>ClusterSet devconf2024-gitops-clusters</code> Cluster Set through <code>Openshift Console &gt; Advanced Cluster Management &gt; Clusters &gt; Cluster sets</code></p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -670,18 +670,18 @@ When you integrate ACM with the GitOps operator for every managed cluster that i
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi 02_bootstrap/argocd/rhte2023-bootstrap-gitops.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">vi 02_bootstrap/argocd/devconf2024-bootstrap-gitops.yaml</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>and change <code>server</code> to your cluster <code><a href="https://api.&lt;your_cluster&gt;:6443" class="bare">https://api.&lt;your_cluster&gt;:6443</a></code> and <code>repoURL</code> to your git repository <code><a href="https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git</a></code> forked previously:</p>
+<p>and change <code>server</code> to your cluster <code><a href="https://api.&lt;your_cluster&gt;:6443" class="bare">https://api.&lt;your_cluster&gt;:6443</a></code> and <code>repoURL</code> to your git repository <code><a href="https://github.com/&lt;your_github_account&gt;/devconf-2024-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/devconf-2024-acm-apps.git</a></code> forked previously:</p>
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: rhte2023-bootstrap-gitops
+  name: devconf2024-bootstrap-gitops
   namespace: openshift-gitops
 spec:
   destination:
@@ -689,8 +689,8 @@ spec:
     server: <a href="https://api.&lt;your_cluster&gt;:6443" class="bare">https://api.&lt;your_cluster&gt;:6443</a>
   project: default
   source:
-    path: rhte2023/02_bootstrap/base
-    repoURL: <a href="https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/rhte-2023-acm-apps.git</a></code></pre>
+    path: devconf2024/02_bootstrap/base
+    repoURL: <a href="https://github.com/&lt;your_github_account&gt;/devconf-2024-acm-apps.git" class="bare">https://github.com/&lt;your_github_account&gt;/devconf-2024-acm-apps.git</a></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -698,7 +698,7 @@ spec:
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm apply -f 02_bootstrap/argocd/rhte2023-bootstrap-gitops.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm apply -f 02_bootstrap/argocd/devconf2024-bootstrap-gitops.yaml</code></pre>
 </div>
 </div>
 <div class="paragraph">
