@@ -290,7 +290,7 @@ Once the **devconf2024-application-02** is already deployed, let's change the ap
 [source,bash, subs="+macros,+attributes"]
 ----
 cd ../../../04_deploy_applications/devconf2024-application-02/base
-sed -i 's/chatdraw:latest/chatdraw:rhte2023/g' 100-deployment.yaml
+sed -i 's/chatdraw:latest/chatdraw:devconf2024/g' 100-deployment.yaml
 git add 100-deployment.yaml
 git commit -m "changing the application image"
 git push origin main
