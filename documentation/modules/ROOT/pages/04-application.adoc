@@ -19,24 +19,24 @@ The first Application will be created from the Advanced Cluster Management conso
 
 Go throught the Advanced Cluster Management Console and login with Openshift user:
 
-**Advanced Cluster Management Console > Applications > Create Application > ApplicationSet**
+**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Pull model**
 
 image::application/application02.png[]
 
-**Advanced Cluster Management Console > Applications > Create Application > ApplicationSet > General**
+**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Pull model> General**
 
-* **ApplicationSet name**: rhte2023-application-01
+* **ApplicationSet name**: devconf2024-application-01
 * **Argo server**: openshift-gitops
 * **Requeue time**: 180
 
 image::application/application03.png[]
 
-**Advanced Cluster Management Console > Applications > Create Application > ApplicationSet > Template**
+**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Pull model > Template**
 
-* **URL**: https://github.com/<your_github_account>/rhte-2023-acm-apps.git
+* **URL**: https://github.com/<your_github_account>/devconf-2024-acm-apps.git
 * **Revision**: main
-* **Path**: rhte2023/04_deploy_applications/rhte2023-application-01
-* **Remote Namespace**: rhte2023-application-01
+* **Path**: devconf2024/04_deploy_applications/devconf2024-application-01
+* **Remote Namespace**: devconf2024-application-01
 
 image::application/application04.png[]
 
@@ -51,7 +51,7 @@ image::application/application05.png[]
 
 **Advanced Cluster Management Console > Applications > Create Application > ApplicationSet > Placement**
 
-* **Placement**: rhte2023-gitops-clusters
+* **Placement**: devconf2024-gitops-clusters
 
 image::application/application06.png[]
 
@@ -59,13 +59,13 @@ image::application/application06.png[]
 
 image::application/application07.png[]
 
-**Advanced Cluster Management Console > Applications > rhte2023-application-01 (filter by ApplicationSet) > Topology**
+**Advanced Cluster Management Console > Applications > devconf2024-application-01 (filter by ApplicationSet) > Topology**
 
 image::application/application08.png[]
 
 **Advanced Cluster Management Console > Applications > Advanced Configuration > Placements**
 
-Check the number of cluster matching with **Placement > rhte2023-gitops-clusters**, so we are expecting see the Application **rhte2023-application-01** deployed in all of them.
+Check the number of cluster matching with **Placement > devconf2024-gitops-clusters**, so we are expecting see the Application **devconf2024-application-01** deployed in all of them.
 
 image::application/application08b.png[]
 
