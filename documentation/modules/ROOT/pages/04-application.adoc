@@ -244,7 +244,7 @@ image::application/application15.png[]
 
 **Advanced Cluster Management Console > Applications > Advanced Configuration > Placements**
 
-Check the number of cluster matching with **Placement > rhte2023-gitops-clusters-environment**, so we are expecting see the Application **rhte2023-application-02** deployed in **rhte2023-cluster01**.
+Check the number of cluster matching with **Placement > devconf2024-gitops-clusters-environment**, so we are expecting see the Application **devconf2024-application-02** deployed in **devcof2024-cluster01**.
 
 image::application/application16.png[]
 
@@ -260,7 +260,7 @@ image::application/application17.png[]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context cluster01 get pod -n rhte2023-application-02
+oc --context cluster01 get pod -n devconf2024-application-02
 ----
 
 Finally, let's see how the Applications looks like checking the `Route` and copying on your browser. 
@@ -269,10 +269,10 @@ Finally, let's see how the Applications looks like checking the `Route` and copy
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context cluster01 get route -n rhte2023-application-02
+oc --context cluster01 get route -n devconf2024-application-02
 ----
 
-**URL**: https://rhte2023-application-02-rhte2023-application-02.<your_domain>
+**URL**: https://devconf2024-application-02-devconf2024-application-02.<your_domain>
 
 image::application/application18.png[]
 
@@ -281,7 +281,7 @@ This is a GPT3 Chatdraw, so just give a description about what you want to see.
 [#applicationimages]
 == Application 2 - Change container image
 
-Once the **rhte2023-application-02** is already deployed, let's change the application image:
+Once the **devconf2024-application-02** is already deployed, let's change the application image:
 
 - **Change application image commit and push your changes**
 
@@ -289,7 +289,7 @@ Once the **rhte2023-application-02** is already deployed, let's change the appli
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-cd ../../../04_deploy_applications/rhte2023-application-02/base
+cd ../../../04_deploy_applications/devconf2024-application-02/base
 sed -i 's/chatdraw:latest/chatdraw:rhte2023/g' 100-deployment.yaml
 git add 100-deployment.yaml
 git commit -m "changing the application image"
@@ -305,8 +305,8 @@ image::application/application19.png[]
 
 The third and fourth Applications will be created from the ArgoCD command line grouping both Applications **rhte2023-application-03** (RedHat Offices Photos) and **rhte2023-application-04** (Tetris) and deploying at the same time:
 
-- Application **rhte2023-application-03** will match **Location=eu-west-2** and **area=fringe** labels
-- Application **rhte2023-application-04** will match clusters with the largest allocatable **CPU and memory** allocatable CPU and memory.
+- Application **devconf2024-application-03** will match **Location=eu-west-1** and **area=fringe** labels
+- Application **devconf2024-application-04** will match clusters with the largest allocatable **CPU and memory** allocatable CPU and memory.
 
 - **Apply new label to local-cluster**
 
@@ -319,15 +319,15 @@ oc --context acm label ManagedCluster local-cluster area=fringe --overwrite
 
 - **Change ApplicationSet according to your settings:**
 
-Change **repoURL** variable with your git repository **https://github.com/<your_github_account>/rhte-2023-acm-apps.git**
+Change **repoURL** variable with your git repository **https://github.com/<your_github_account>/devconf-2024-acm-apps.git**
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
 cd ../../..
-vi 04_deploy_applications/argocd/rhte2023-application-03.yaml
-vi 04_deploy_applications/argocd/rhte2023-application-04.yaml
+vi 04_deploy_applications/argocd/devconf2024-application-03.yaml
+vi 04_deploy_applications/argocd/devconf2024-application-04.yaml
 ----
 
 - **Change Location according to your settings:**
@@ -393,10 +393,10 @@ argocd cluster list
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-argocd app create rhte2023-application-gitops \
+argocd app create devconf2024-application-gitops \
 --project default \
 --repo <your_forked_repository> \
---path rhte2023/04_deploy_applications/argocd \
+--path devconf2024/04_deploy_applications/argocd \
 --sync-policy automated \
 --dest-namespace openshift-gitops \
 --dest-server https://api.<your_domain>:6443
@@ -425,8 +425,8 @@ argocd app get rhte2023-application-gitops
 
 In order to see where the Applications have been placed, go to **Advanced Cluster Management > Applications > Advanced Configuration > Placements**, and check the number of the clusters matching **Placements**
 
-- Application **rhte2023-application-03** > rhte2023-gitops-clusters-location
-- Application **rhte2023-application-04** > rhte2023-gitops-clusters-cpu
+- Application **devconf2024-application-03** > devconf2024-gitops-clusters-location
+- Application **devconf2024-application-04** > devconf2024-gitops-clusters-cpu
 
 Or going to **Advanced Cluster Management > Applications** and filter per Application name and click on the Topology where you can see the Application deployed and the information about the targeted clusters.
 
@@ -436,53 +436,53 @@ Once you know where Applications are deployed, just check the Application pods s
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm get pod -n rhte2023-application-03
+oc --context acm get pod -n devconf2024-application-03
 ----
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context cluster01 get pod -n rhte2023-application-04
+oc --context cluster01 get pod -n devconf2024-application-04
 ----
 
 - **Applications routes**
 
-Let's see how the Applications looks like checking the `Route` and copying on your browser. In this example, **rhte2023-application-03** is placed on **local-cluster** and **rhte2023-application-04** is placed in `rhte2023-cluster01`:
+Let's see how the Applications looks like checking the `Route` and copying on your browser. In this example, **devconf2024-application-03** is placed on **local-cluster** and **devconf2024-application-04** is placed in `devconf2024-cluster01`:
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm get route -n rhte2023-application-03
+oc --context acm get route -n devconf2024-application-03
 ----
 
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context cluster01 get route -n rhte2023-application-04
+oc --context cluster01 get route -n devconf2024-application-04
 ----
 
-- Application **rhte2023-application-03** > Red Hat Offices
+- Application **devconf2024-application-03** > Red Hat Offices
 
-**URL**: https://rhte2023-application-03-rhte2023-application-03.<your_domain>
+**URL**: https://devconf2024-application-03-rhte2023-application-03.<your_domain>
 
 image::application/application20.png[]
 
-**URL**: https://rhte2023-application-04-rhte2023-application-04.<your_domain>
+**URL**: https://devconf2024-application-04-devconf2024-application-04.<your_domain>
 
-- Application **rhte2023-application-04** > Tetris Game
+- Application **devconf2024-application-04** > Tetris Game
 
 image::application/application21.png[]
 
 [#applicationsync]
 == Fix Application 03 - Sync and Diff
 
-Let's see a common issue with Application deployments and autoscalers and how to fix it. The third Application **rhte2023-application-03** is deployed with an **HPA - horizontal pod autoscaler** that let you specify the minimum and maximum number of pods you want to run. It means that this application will change the number of replicas and it will not match what is defined in Git repository, so the application will be **out of sync**. Let's see how can fix this kind of issues:
+Let's see a common issue with Application deployments and autoscalers and how to fix it. The third Application **devconf2024-application-03** is deployed with an **HPA - horizontal pod autoscaler** that let you specify the minimum and maximum number of pods you want to run. It means that this application will change the number of replicas and it will not match what is defined in Git repository, so the application will be **out of sync**. Let's see how can fix this kind of issues:
 
 
-- **Check and Sync the Application rhte2023-application-03-<cluster> from the ArgoCD UI**. The Application status will be flapping between synced and of of sync status.
+- **Check and Sync the Application devconf2024-application-03-<cluster> from the ArgoCD UI**. The Application status will be flapping between synced and of of sync status.
 
 - **Make changes on replicas definition**:
 
@@ -490,7 +490,7 @@ Let's see a common issue with Application deployments and autoscalers and how to
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-cd 04_deploy_applications/rhte2023-application-03/base
+cd 04_deploy_applications/devconf2024-application-03/base
 sed -i '/replicas:/d' 100-deployment.yaml
 git add 100-deployment.yaml
 git commit -m "removing the replicas definition"
@@ -504,7 +504,7 @@ NOTE: This issue could also be solved adding https://argo-cd.readthedocs.io/en/s
 [#applicationcpu]
 == Fix Application 04 - allocatable CPU and Memory 
 
-This is the last exercice from this section. The fourth application **rhte2023-application-04** will be deployed on that cluster with the largest allocatable CPU and Memory. Verify that in your environment is deployed on `rhte2023-cluster01`, if not change the score weight as follows:
+This is the last exercice from this section. The fourth application **devconf2024-application-04** will be deployed on that cluster with the largest allocatable CPU and Memory. Verify that in your environment is deployed on `devconf2024-cluster01`, if not change the score weight as follows:
 
 * **Change the score weight**:
 
