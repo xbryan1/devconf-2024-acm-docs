@@ -286,7 +286,7 @@ Let's check the results from the Advaced Cluster Management Console and ArgoCD C
 
 **ACM > Applications > Search > bootstrap**
 
-image::deploy/deploy20.png[]
+image::deploy/deploy24.png[]
 
 **ArgoCD Console > Applications**
 
