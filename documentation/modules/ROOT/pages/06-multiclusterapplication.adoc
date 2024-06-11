@@ -3,18 +3,18 @@
 
 Finally, you are going to check if your applications are fault tolerant. In this LAB, you have deployed four applications:
 
-. rhte2023-application-01: Deployed on both clusters.
-. rhte2023-application-02: Deployed on the remote cluster. 
-. rhte2023-application-03: Deployed on the remote cluster.
-. rhte2023-application-04: Deployed on the cluster with less resources available.
+. devconf2024-application-01: Deployed on both clusters.
+. devconf2024-application-02: Deployed on the remote cluster. 
+. devconf2024-application-03: Deployed on the remote cluster.
+. devconf2024-application-04: Deployed on the cluster with less resources available.
 
-Now, we are going to hibernate the rhte2023-cluster01 cluster to check if the applications are fault tolerant.
+Now, we are going to hibernate the devconf2024-cluster01 cluster to check if the applications are fault tolerant.
 
-As the rhte2023-application-01 application is on both clusters, this application is going to lose one of the replicas.
-The rhte2023-application02 and rhte2023-application03 applications are running in the rhe2023-cluster01 cluster, but the applications can not run on any OpenShift clusters. So, both applications are not going to be available after hibernating the cluster.
-Finally, the rhte2023-application-04 is running on the rhte2023-cluster01 but can run on any cluster. So, this applications will be moved after hibernating the rhte2023-cluster01 cluster.
+As the devconf2024-application-01 application is on both clusters, this application is going to lose one of the replicas.
+The devconf2024-application02 and devconf2024-application03 applications are running in the devconf2024-cluster01 cluster, but the applications can not run on any OpenShift clusters. So, both applications are not going to be available after hibernating the cluster.
+Finally, the devconf2024-application-04 is running on the devconf2024-cluster01 but can run on any cluster. So, this applications will be moved after hibernating the devconf2024-cluster01 cluster.
 
-You can check the rhte2023-application-04 application status in Red Hat Advanced Cluster Management web interface. You can go into "Applications" section and search for "rhte2023-application-04". You will see that the application is running on 1 Remote cluster.
+You can check the devconf2024-application-04 application status in Red Hat Advanced Cluster Management web interface. You can go into "Applications" section and search for "devconf2024-application-04". You will see that the application is running on 1 Remote cluster.
 
 image::hibernate/hibernate01.png[]
 
@@ -50,5 +50,5 @@ To hibernate the cluster using the CLI, you need to patch the ClusterDeployment 
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
 ----
-oc --context acm patch ClusterDeployment rhte2023-cluster01 -n rhte2023-cluster01 --type merge -p '{"spec":{"powerState":"Hibernating"}}'
+oc --context acm patch ClusterDeployment devconf2024-cluster01 -n devconf2024-cluster01 --type merge -p '{"spec":{"powerState":"Hibernating"}}'
 ----
