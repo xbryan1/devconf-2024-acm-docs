@@ -257,7 +257,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>Then, you need to describe the policy. So, we are going to check that the namespace named "devconf" should exist. So, write "devconf" into the name form in "Must have namespace" section. You can use "default" in "Include namespaces".</p>
+<p>Then, you need to describe the policy. So, we are going to check that the namespace named "devconf" should exist. So, write "devconf" into the name form in "Must have namespace" section.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -273,7 +273,39 @@
 </div>
 </div>
 <div class="paragraph">
-<p>To create the new placement, you need to choose the labels.</p>
+<p>The warning "ClusterSets failed to load. Verify that there is at leas one ClusterSet bound to your selected namespace." will appear. Click into the "Add cluster set" link. A new tab will be opened into the "Cluster sets" section.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy17.png" alt="policy17">
+</div>
+</div>
+<div class="paragraph">
+<p>Select the "devconf2024-gitops-clusters" ClusterSet and click into the three dots button on the right side. Click into "Edit namespace bindings".</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy18.png" alt="policy18">
+</div>
+</div>
+<div class="paragraph">
+<p>Add the "default" namespace into the Namespaces list. Click into the "Save" button. Now, you can close the tab and go the previous one. The warning will dissapear.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy19.png" alt="policy19">
+</div>
+</div>
+<div class="paragraph">
+<p>Now, add the "devconf2024-gitops-clusters" ClusterSet into the Cluster sets section.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policies/policy20.png" alt="policy20">
+</div>
+</div>
+<div class="paragraph">
+<p>Click into the "Add label expression" link. To create the new placement, you need to choose the labels.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -340,7 +372,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>As a placement, you are going to use the same placement as the previous rule: Choose vendor: OpenShift.</p>
+<p>As a placement, you are going to use the same placement as the previous rule. You can use the existing placement or create a new one with vendor: OpenShift.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -626,7 +658,7 @@ subjects:
 </div>
 </div>
 <div class="paragraph">
-<p>You should select "ApplicationSet".</p>
+<p>You should select "ApplicationSet - Push model".</p>
 </div>
 <div class="paragraph">
 <p>On the next page, you can use "gitops-namespace-policy" as the name and "openshift-gitops" as the Argo server".</p>
@@ -747,7 +779,7 @@ subjects:
 </div>
 </div>
 <div class="paragraph">
-<p>You should select "ApplicationSet".</p>
+<p>You should select "ApplicationSet - Push model".</p>
 </div>
 <div class="paragraph">
 <p>On the next page, you can use "gitops-compliance-policy" as the name and "openshift-gitops" as the Argo server".</p>
