@@ -178,8 +178,6 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 
 image::application/application09d.png[]
 
-image::application/application15.png[]
-
 [#applicationacm02]
 == Application 2 - Deploying a ChatDraw application
 
