@@ -207,29 +207,29 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>rhte2023-application-01: Deployed on both clusters.</p>
+<p>devconf2024-application-01: Deployed on both clusters.</p>
 </li>
 <li>
-<p>rhte2023-application-02: Deployed on the remote cluster.</p>
+<p>devconf2024-application-02: Deployed on the remote cluster.</p>
 </li>
 <li>
-<p>rhte2023-application-03: Deployed on the remote cluster.</p>
+<p>devconf2024-application-03: Deployed on the remote cluster.</p>
 </li>
 <li>
-<p>rhte2023-application-04: Deployed on the cluster with less resources available.</p>
+<p>devconf2024-application-04: Deployed on the cluster with less resources available.</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>Now, we are going to hibernate the rhte2023-cluster01 cluster to check if the applications are fault tolerant.</p>
+<p>Now, we are going to hibernate the devconf2024-cluster01 cluster to check if the applications are fault tolerant.</p>
 </div>
 <div class="paragraph">
-<p>As the rhte2023-application-01 application is on both clusters, this application is going to lose one of the replicas.
-The rhte2023-application02 and rhte2023-application03 applications are running in the rhe2023-cluster01 cluster, but the applications can not run on any OpenShift clusters. So, both applications are not going to be available after hibernating the cluster.
-Finally, the rhte2023-application-04 is running on the rhte2023-cluster01 but can run on any cluster. So, this applications will be moved after hibernating the rhte2023-cluster01 cluster.</p>
+<p>As the devconf2024-application-01 application is on both clusters, this application is going to lose one of the replicas.
+The devconf2024-application02 and devconf2024-application03 applications are running in the devconf2024-cluster01 cluster, but the applications can not run on any OpenShift clusters. So, both applications are not going to be available after hibernating the cluster.
+Finally, the devconf2024-application-04 is running on the devconf2024-cluster01 but can run on any cluster. So, this applications will be moved after hibernating the devconf2024-cluster01 cluster.</p>
 </div>
 <div class="paragraph">
-<p>You can check the rhte2023-application-04 application status in Red Hat Advanced Cluster Management web interface. You can go into "Applications" section and search for "rhte2023-application-04". You will see that the application is running on 1 Remote cluster.</p>
+<p>You can check the devconf2024-application-04 application status in Red Hat Advanced Cluster Management web interface. You can go into "Applications" section and search for "devconf2024-application-04". You will see that the application is running on 1 Remote cluster.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -289,7 +289,7 @@ Finally, the rhte2023-application-04 is running on the rhte2023-cluster01 but ca
 </div>
 <div class="listingblock lines_space console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm patch ClusterDeployment rhte2023-cluster01 -n rhte2023-cluster01 --type merge -p '{"spec":{"powerState":"Hibernating"}}'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm patch ClusterDeployment devconf2024-cluster01 -n devconf2024-cluster01 --type merge -p '{"spec":{"powerState":"Hibernating"}}'</code></pre>
 </div>
 </div>
 </div>
