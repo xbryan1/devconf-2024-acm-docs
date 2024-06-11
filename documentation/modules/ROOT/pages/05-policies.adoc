@@ -32,7 +32,7 @@ You need to choose the "Namespace must exist" policy.
 
 image::policies/policy04.png[]
 
-Then, you need to describe the policy. So, we are going to check that the namespace named "rhte" should exist. So, write "rhte" into the name form in "Must have namespace" section. You can use "default" in "Include namespaces".
+Then, you need to describe the policy. So, we are going to check that the namespace named "devconf" should exist. So, write "devconf" into the name form in "Must have namespace" section. You can use "default" in "Include namespaces".
 
 image::policies/policy05.png[]
 
@@ -54,7 +54,7 @@ image::policies/policy09.png[]
 
 Finally, you can review your policy and create it.
 
-After the policy is created, you can check if the policy is compliant or not. As the namespace does not exist, the policy should not be compliant. You can create the "rhte" project on one or two OpenShift clusters and check if the policy is now compliant.
+After the policy is created, you can check if the policy is compliant or not. As the namespace does not exist, the policy should not be compliant. You can create the "devconf" project on one or two OpenShift clusters and check if the policy is now compliant.
 
 [#secondpolicygui]
 == Setup the second policy via web interface
@@ -127,7 +127,7 @@ spec:
                 apiVersion: v1
                 kind: Namespace
                 metadata:
-                  name: rhte
+                  name: devconf
           pruneObjectBehavior: None
           remediationAction: inform
           severity: low
@@ -162,7 +162,7 @@ subjects:
     kind: Policy
 ----
 
-This example, will create the Policy to check if the "rhte" namespace exists. Also, this example is going to create a PlacementRule to apply the policie on all clusters with "vendor: OpenShift" label. Finally, this example will create a binding between the policy and the PlacementRule.
+This example, will create the Policy to check if the "devconf" namespace exists. Also, this example is going to create a PlacementRule to apply the policie on all clusters with "vendor: OpenShift" label. Finally, this example will create a binding between the policy and the PlacementRule.
 
 Finally, you can create the policy with the following command:
 
@@ -173,7 +173,7 @@ Finally, you can create the policy with the following command:
 oc create -f namespace-policy.yaml
 ----
 
-After the policy is created, you can check if the policy is compliant or not. As the namespace does not exist, the policy should not be compliant. You can create the "rhte" project on one or two OpenShift clusters and check if the policy is now compliant.
+After the policy is created, you can check if the policy is compliant or not. As the namespace does not exist, the policy should not be compliant. You can create the "devconf" project on one or two OpenShift clusters and check if the policy is now compliant.
 
 [#secondpolicycli]
 == Setup the second policy via CLI
@@ -342,9 +342,9 @@ image::policies/gitops03.png[]
 On the "Template" page, you should use the following information:
 
 - Repository type: Git
-- URL: https://github.com/xbryan1/rhte-2023-acm-apps
+- URL: https://github.com/xbryan1/devconf-2024-acm-apps
 - Revision: main
-- Path: rhte2023/05_policies/gitops_policy_namespace
+- Path: devconf2024/05_policies/gitops_policy_namespace
 - Remote namespace: gitops-policies
 
 image::policies/gitops04.png[]
@@ -353,7 +353,7 @@ You can use the default values on the "Sync policy" page.
 
 image::policies/gitops05.png[]
 
-You should use "rhte2023-gitops-clusters as the "Existing placement" policy.
+You should use "devconf2024-gitops-clusters as the "Existing placement" policy.
 
 image::policies/gitops06.png[]
 
@@ -402,9 +402,9 @@ image::policies/gitops08.png[]
 On the "Template" page, you should use the following information:
 
 - Repository type: Git
-- URL: https://github.com/xbryan1/rhte-2023-acm-apps
+- URL: https://github.com/xbryan1/devconf-2024-acm-apps
 - Revision: main
-- Path: rhte2023/05_policies/gitops_policy_compliance
+- Path: devconf2024/05_policies/gitops_policy_compliance
 - Remote namespace: gitops-policies
 
 image::policies/gitops09.png[]
@@ -413,7 +413,7 @@ You can use the default values on the "Sync policy" page.
 
 image::policies/gitops05.png[]
 
-You should use "rhte2023-gitops-clusters" as the "Existing placement" policy.
+You should use "devconf2024-gitops-clusters" as the "Existing placement" policy.
 
 image::policies/gitops06.png[]
 
