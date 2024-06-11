@@ -257,7 +257,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>Then, you need to describe the policy. So, we are going to check that the namespace named "rhte" should exist. So, write "rhte" into the name form in "Must have namespace" section. You can use "default" in "Include namespaces".</p>
+<p>Then, you need to describe the policy. So, we are going to check that the namespace named "devconf" should exist. So, write "devconf" into the name form in "Must have namespace" section. You can use "default" in "Include namespaces".</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -300,7 +300,7 @@
 <p>Finally, you can review your policy and create it.</p>
 </div>
 <div class="paragraph">
-<p>After the policy is created, you can check if the policy is compliant or not. As the namespace does not exist, the policy should not be compliant. You can create the "rhte" project on one or two OpenShift clusters and check if the policy is now compliant.</p>
+<p>After the policy is created, you can check if the policy is compliant or not. As the namespace does not exist, the policy should not be compliant. You can create the "devconf" project on one or two OpenShift clusters and check if the policy is now compliant.</p>
 </div>
 </div>
 </div>
@@ -405,7 +405,7 @@ spec:
                 apiVersion: v1
                 kind: Namespace
                 metadata:
-                  name: rhte
+                  name: devconf
           pruneObjectBehavior: None
           remediationAction: inform
           severity: low
@@ -441,7 +441,7 @@ subjects:
 </div>
 </div>
 <div class="paragraph">
-<p>This example, will create the Policy to check if the "rhte" namespace exists. Also, this example is going to create a PlacementRule to apply the policie on all clusters with "vendor: OpenShift" label. Finally, this example will create a binding between the policy and the PlacementRule.</p>
+<p>This example, will create the Policy to check if the "devconf" namespace exists. Also, this example is going to create a PlacementRule to apply the policie on all clusters with "vendor: OpenShift" label. Finally, this example will create a binding between the policy and the PlacementRule.</p>
 </div>
 <div class="paragraph">
 <p>Finally, you can create the policy with the following command:</p>
@@ -452,7 +452,7 @@ subjects:
 </div>
 </div>
 <div class="paragraph">
-<p>After the policy is created, you can check if the policy is compliant or not. As the namespace does not exist, the policy should not be compliant. You can create the "rhte" project on one or two OpenShift clusters and check if the policy is now compliant.</p>
+<p>After the policy is created, you can check if the policy is compliant or not. As the namespace does not exist, the policy should not be compliant. You can create the "devconf" project on one or two OpenShift clusters and check if the policy is now compliant.</p>
 </div>
 </div>
 </div>
@@ -645,13 +645,13 @@ subjects:
 <p>Repository type: Git</p>
 </li>
 <li>
-<p>URL: <a href="https://github.com/xbryan1/rhte-2023-acm-apps" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps</a></p>
+<p>URL: <a href="https://github.com/xbryan1/devconf-2024-acm-apps" class="bare">https://github.com/xbryan1/devconf-2024-acm-apps</a></p>
 </li>
 <li>
 <p>Revision: main</p>
 </li>
 <li>
-<p>Path: rhte2023/05_policies/gitops_policy_namespace</p>
+<p>Path: devconf2024/05_policies/gitops_policy_namespace</p>
 </li>
 <li>
 <p>Remote namespace: gitops-policies</p>
@@ -672,7 +672,7 @@ subjects:
 </div>
 </div>
 <div class="paragraph">
-<p>You should use "rhte2023-gitops-clusters as the "Existing placement" policy.</p>
+<p>You should use "devconf2024-gitops-clusters as the "Existing placement" policy.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -766,13 +766,13 @@ subjects:
 <p>Repository type: Git</p>
 </li>
 <li>
-<p>URL: <a href="https://github.com/xbryan1/rhte-2023-acm-apps" class="bare">https://github.com/xbryan1/rhte-2023-acm-apps</a></p>
+<p>URL: <a href="https://github.com/xbryan1/devconf-2024-acm-apps" class="bare">https://github.com/xbryan1/devconf-2024-acm-apps</a></p>
 </li>
 <li>
 <p>Revision: main</p>
 </li>
 <li>
-<p>Path: rhte2023/05_policies/gitops_policy_compliance</p>
+<p>Path: devconf2024/05_policies/gitops_policy_compliance</p>
 </li>
 <li>
 <p>Remote namespace: gitops-policies</p>
@@ -793,7 +793,7 @@ subjects:
 </div>
 </div>
 <div class="paragraph">
-<p>You should use "rhte2023-gitops-clusters" as the "Existing placement" policy.</p>
+<p>You should use "devconf2024-gitops-clusters" as the "Existing placement" policy.</p>
 </div>
 <div class="imageblock">
 <div class="content">
