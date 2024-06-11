@@ -32,7 +32,7 @@ You need to choose the "Namespace must exist" policy.
 
 image::policies/policy04.png[]
 
-Then, you need to describe the policy. So, we are going to check that the namespace named "devconf" should exist. So, write "devconf" into the name form in "Must have namespace" section. You can use "default" in "Include namespaces".
+Then, you need to describe the policy. So, we are going to check that the namespace named "devconf" should exist. So, write "devconf" into the name form in "Must have namespace" section.
 
 image::policies/policy05.png[]
 
@@ -40,7 +40,23 @@ After that, you can go to the next step, which is to create a New placement for 
 
 image::policies/policy06.png[]
 
-To create the new placement, you need to choose the labels.
+The warning "ClusterSets failed to load. Verify that there is at leas one ClusterSet bound to your selected namespace." will appear. Click into the "Add cluster set" link. A new tab will be opened into the "Cluster sets" section.
+
+image::policies/policy17.png[]
+
+Select the "devconf2024-gitops-clusters" ClusterSet and click into the three dots button on the right side. Click into "Edit namespace bindings".
+
+image::policies/policy18.png[]
+
+Add the "default" namespace into the Namespaces list. Click into the "Save" button. Now, you can close the tab and go the previous one. The warning will dissapear.
+
+image::policies/policy19.png[]
+
+Now, add the "devconf2024-gitops-clusters" ClusterSet into the Cluster sets section.
+
+image::policies/policy20.png[]
+
+Click into the "Add label expression" link. To create the new placement, you need to choose the labels.
 
 image::policies/policy07.png[]
 
@@ -75,7 +91,7 @@ You need to chose "Enforce" as a Remediation also.
 
 image::policies/policy13.png[]
 
-As a placement, you are going to use the same placement as the previous rule: Choose vendor: OpenShift.
+As a placement, you are going to use the same placement as the previous rule. You can use the existing placement or create a new one with vendor: OpenShift.
 
 image::policies/policy14.png[]
 
@@ -333,7 +349,7 @@ You should go to "Create application".
 
 image::policies/gitops02.png[]
 
-You should select "ApplicationSet".
+You should select "ApplicationSet - Push model".
 
 On the next page, you can use "gitops-namespace-policy" as the name and "openshift-gitops" as the Argo server".
 
@@ -393,7 +409,7 @@ You should go to "Create application".
 
 image::policies/gitops02.png[]
 
-You should select "ApplicationSet".
+You should select "ApplicationSet - Push model".
 
 On the next page, you can use "gitops-compliance-policy" as the name and "openshift-gitops" as the Argo server".
 
