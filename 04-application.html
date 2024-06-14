@@ -216,7 +216,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="applicationacm01"><a class="anchor" href="#applicationacm01"></a>Application 1 - Deploying a ChatBot application</h2>
+<h2 id="applicationacm01"><a class="anchor" href="#applicationacm01"></a>Application 1 - Deploying the first application</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The first Application will be created from the Advanced Cluster Management console and it will be placed on those Clusters matching labels:</p>
@@ -288,7 +288,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; Sync policy</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; Argo CD ApplicationSet - Push model &gt; Sync policy</strong></p>
 </div>
 <div class="ulist">
 <ul>
@@ -312,7 +312,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; Placement</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; Argo CD ApplicationSet - Push model &gt; Placement</strong></p>
 </div>
 <div class="ulist">
 <ul>
@@ -327,7 +327,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; Review and Submit</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; Argo CD ApplicationSet - Push model &gt; Review and Submit</strong></p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -410,7 +410,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>This is a GPT3 Chatbot, so just make questions on the chat to get bot&#8217;s answers.</p>
+<p>This is a basic web server application.</p>
 </div>
 </div>
 </div>
@@ -484,37 +484,16 @@ See how configure a token GitHub <a href="https://docs.github.com/en/authenticat
 <div class="paragraph">
 <p>Once the change has been pushed, sync the application again from ArgoCD Console and checking the ACM Topology</p>
 </div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>In case you&#8217;ve got this error <a href="https://access.redhat.com/solutions/6975821">Unable to deploy revision: permission denied: applications, sync</a>, please fix as follows:</p>
-</div>
-<div class="listingblock lines_space console-input">
+<div class="exampleblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --context acm adm groups new cluster-admins
-oc --context acm adm groups add-users cluster-admins opentlc-mgr
-oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admins</code></pre>
-</div>
-</div>
-</td>
-</tr>
-</table>
-</div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/application/application09d.png" alt="application09d">
 </div>
 </div>
+<div id="applicationacm02" class="paragraph">
+<p>== Application 2 - Deploying the second application</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="applicationacm02"><a class="anchor" href="#applicationacm02"></a>Application 2 - Deploying a ChatDraw application</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>The second Application will be created from the Advanced Cluster Management console and it will be deployed on those Clusters matching label:</p>
 </div>
@@ -537,7 +516,7 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 <p>Let&#8217;s create the Application from Advanced Cluster Management:</p>
 </div>
 <div class="paragraph">
-<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; Argo CD ApplicationSet - Push model</strong></p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -545,7 +524,7 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; General</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; Argo CD ApplicationSet - Push model &gt; General</strong></p>
 </div>
 <div class="ulist">
 <ul>
@@ -566,7 +545,7 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; Template</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; Argo CD ApplicationSet - Push model &gt; Template</strong></p>
 </div>
 <div class="ulist">
 <ul>
@@ -590,7 +569,7 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; Sync policy</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; Argo CD ApplicationSet - Push model &gt; Sync policy</strong></p>
 </div>
 <div class="ulist">
 <ul>
@@ -614,7 +593,7 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; Placement</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; Argo CD ApplicationSet - Push model &gt; Placement</strong></p>
 </div>
 <div class="ulist">
 <ul>
@@ -629,7 +608,7 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 </div>
 </div>
 <div class="paragraph">
-<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; ApplicationSet &gt; Review and Submit</strong></p>
+<p><strong>Advanced Cluster Management Console &gt; Applications &gt; Create Application &gt; Argo CD ApplicationSet - Push model &gt; Review and Submit</strong></p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -699,13 +678,11 @@ oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admi
 </div>
 </div>
 <div class="paragraph">
-<p>This is a GPT3 Chatdraw, so just give a description about what you want to see.</p>
+<p>This is another standard web application.</p>
 </div>
+<div id="applicationimages" class="paragraph">
+<p>== Application 2 - Change container image</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="applicationimages"><a class="anchor" href="#applicationimages"></a>Application 2 - Change container image</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>Once the <strong>devconf2024-application-02</strong> is already deployed, let&#8217;s change the application image:</p>
 </div>
@@ -726,18 +703,16 @@ git push origin main</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Once the change has been pushed, sync the application again and verify that the application has been changed (background red color)</p>
+<p>Once the change has been pushed, sync the application again and verify that the application has been changed (the message deployed should be different)</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/application/application19.png" alt="application19">
 </div>
 </div>
+<div id="applicationacm03" class="paragraph">
+<p>== Application - Deploying multiple Applications</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="applicationacm03"><a class="anchor" href="#applicationacm03"></a>Application - Deploying multiple Applications</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>The third and fourth Applications will be created from the ArgoCD command line grouping both Applications <strong>devconf2024-application-03</strong> (RedHat Offices Photos) and <strong>devconf2024-application-04</strong> (Tetris) and deploying at the same time:</p>
 </div>
@@ -948,7 +923,7 @@ git push origin main</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Application <strong>devconf2024-application-03</strong> &gt; Red Hat Offices</p>
+<p>Application <strong>devconf2024-application-03</strong></p>
 </li>
 </ul>
 </div>
@@ -966,7 +941,7 @@ git push origin main</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p>Application <strong>devconf2024-application-04</strong> &gt; Tetris Game</p>
+<p>Application <strong>devconf2024-application-04</strong></p>
 </li>
 </ul>
 </div>
@@ -975,11 +950,9 @@ git push origin main</code></pre>
 <img src="_images/application/application21.png" alt="application21">
 </div>
 </div>
+<div id="applicationsync" class="paragraph">
+<p>== Fix Application 03 - Sync and Diff</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="applicationsync"><a class="anchor" href="#applicationsync"></a>Fix Application 03 - Sync and Diff</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>Let&#8217;s see a common issue with Application deployments and autoscalers and how to fix it. The third Application <strong>devconf2024-application-03</strong> is deployed with an <strong>HPA - horizontal pod autoscaler</strong> that let you specify the minimum and maximum number of pods you want to run. It means that this application will change the number of replicas and it will not match what is defined in Git repository, so the application will be <strong>out of sync</strong>. Let&#8217;s see how can fix this kind of issues:</p>
 </div>
@@ -1017,11 +990,9 @@ This issue could also be solved adding <a href="https://argo-cd.readthedocs.io/e
 </tr>
 </table>
 </div>
+<div id="applicationcpu" class="paragraph">
+<p>== Fix Application 04 - allocatable CPU and Memory</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="applicationcpu"><a class="anchor" href="#applicationcpu"></a>Fix Application 04 - allocatable CPU and Memory</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>This is the last exercice from this section. The fourth application <strong>devconf2024-application-04</strong> will be deployed on that cluster with the largest allocatable CPU and Memory. Verify that in your environment is deployed on <code>devconf2024-cluster01</code>, if not change the score weight as follows:</p>
 </div>
@@ -1046,6 +1017,8 @@ git push origin main</code></pre>
 </div>
 <div class="paragraph">
 <p>Great! You&#8217;ve completed the 4 Applications deployment! Congratulations!</p>
+</div>
+</div>
 </div>
 </div>
 </div>
