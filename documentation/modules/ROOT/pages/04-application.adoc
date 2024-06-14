@@ -10,7 +10,7 @@ The `ApplicationSet` leverages the cluster decision generator to interface Kuber
 We are gonna deploy 4 applications to understand the how it works.
 
 [#applicationacm01]
-== Application 1 - Deploying a ChatBot application
+== Application 1 - Deploying the first application
 
 The first Application will be created from the Advanced Cluster Management console and it will be placed on those Clusters matching labels:
 
@@ -40,7 +40,7 @@ image::application/application03.png[]
 
 image::application/application04.png[]
 
-**Advanced Cluster Management Console > Applications > Create Application > ApplicationSet > Sync policy**
+**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Push model > Sync policy**
 
 * **Automatically sync when cluster state changes** (syncPolicy/automated/selfHeal=true)
 * **Delete resources that are no longer defined in the source repository** (syncPolicy/automated/prune=true)
@@ -49,13 +49,13 @@ image::application/application04.png[]
 
 image::application/application05.png[]
 
-**Advanced Cluster Management Console > Applications > Create Application > ApplicationSet > Placement**
+**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Push model > Placement**
 
 * **Placement**: devconf2024-gitops-clusters
 
 image::application/application06.png[]
 
-**Advanced Cluster Management Console > Applications > Create Application > ApplicationSet > Review and Submit**
+**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Push model > Review and Submit**
 
 image::application/application07.png[]
 
@@ -113,7 +113,7 @@ oc --context cluster01 get route -n devconf2024-application-01
 
 image::application/application09b.png[]
 
-This is a GPT3 Chatbot, so just make questions on the chat to get bot's answers.
+This is a basic web server application.
 
 [#applicationreplicas]
 == Application 1 - Change number of replicas
@@ -163,23 +163,12 @@ TIP: See how configure a token GitHub https://docs.github.com/en/authentication/
 
 Once the change has been pushed, sync the application again from ArgoCD Console and checking the ACM Topology
 
-[WARNING]
-====
-In case you've got this error https://access.redhat.com/solutions/6975821[Unable to deploy revision: permission denied: applications, sync], please fix as follows:
-[.lines_space]
-[.console-input]
-[source,bash, subs="+macros,+attributes"]
-----
-oc --context acm adm groups new cluster-admins
-oc --context acm adm groups add-users cluster-admins opentlc-mgr
-oc --context acm adm policy add-cluster-role-to-group cluster-admin cluster-admins
-----
 ====
 
 image::application/application09d.png[]
 
 [#applicationacm02]
-== Application 2 - Deploying a ChatDraw application
+== Application 2 - Deploying the second application
 
 The second Application will be created from the Advanced Cluster Management console and it will be deployed on those Clusters matching label:
 
@@ -196,11 +185,11 @@ oc --context acm label ManagedCluster devconf2024-cluster01 environment=developm
 
 Let's create the Application from Advanced Cluster Management:
 
-**Advanced Cluster Management Console > Applications > Create Application > ApplicationSet**
+**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Push model**
 
 image::application/application02.png[]
 
-**Advanced Cluster Management Console > Applications > Create Application > ApplicationSet > General**
+**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Push model > General**
 
 * **ApplicationSet name**: devconf2024-application-02
 * **Argo server**: openshift-gitops
@@ -208,7 +197,7 @@ image::application/application02.png[]
 
 image::application/application10.png[]
 
-**Advanced Cluster Management Console > Applications > Create Application > ApplicationSet > Template**
+**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Push model > Template**
 
 * **URL**: https://github.com/<your_github_account>/devconf-2024-acm-apps.git
 * **Revision**: main
@@ -217,7 +206,7 @@ image::application/application10.png[]
 
 image::application/application11.png[]
 
-**Advanced Cluster Management Console > Applications > Create Application > ApplicationSet > Sync policy**
+**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Push model > Sync policy**
 
 * **Automatically sync when cluster state changes** (syncPolicy/automated/selfHeal=true)
 * **Delete resources that are no longer defined in the source repository** (syncPolicy/automated/prune=true)
@@ -226,13 +215,13 @@ image::application/application11.png[]
 
 image::application/application12.png[]
 
-**Advanced Cluster Management Console > Applications > Create Application > ApplicationSet > Placement**
+**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Push model > Placement**
 
 * **Placement**: devconf2024-gitops-clusters-environment
 
 image::application/application13.png[]
 
-**Advanced Cluster Management Console > Applications > Create Application > ApplicationSet > Review and Submit**
+**Advanced Cluster Management Console > Applications > Create Application > Argo CD ApplicationSet - Push model > Review and Submit**
 
 image::application/application14.png[]
 
@@ -274,7 +263,7 @@ oc --context cluster01 get route -n devconf2024-application-02
 
 image::application/application18.png[]
 
-This is a GPT3 Chatdraw, so just give a description about what you want to see.
+This is another standard web application.
 
 [#applicationimages]
 == Application 2 - Change container image
@@ -294,7 +283,7 @@ git commit -m "changing the application image"
 git push origin main
 ----
 
-Once the change has been pushed, sync the application again and verify that the application has been changed (background red color)
+Once the change has been pushed, sync the application again and verify that the application has been changed (the message deployed should be different)
 
 image::application/application19.png[]
 
@@ -462,7 +451,7 @@ oc --context acm get route -n devconf2024-application-03
 oc --context cluster01 get route -n devconf2024-application-04
 ----
 
-- Application **devconf2024-application-03** > Red Hat Offices
+- Application **devconf2024-application-03**
 
 **URL**: https://devconf2024-application-03-devconf2024-application-03.<your_domain>
 
@@ -470,7 +459,7 @@ image::application/application20.png[]
 
 **URL**: https://devconf2024-application-04-devconf2024-application-04.<your_domain>
 
-- Application **devconf2024-application-04** > Tetris Game
+- Application **devconf2024-application-04**
 
 image::application/application21.png[]
 
