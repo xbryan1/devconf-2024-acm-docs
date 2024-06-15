@@ -281,7 +281,7 @@ git commit -m "changing the application image"
 git push origin main
 ----
 
-Once the change has been pushed, sync the application again and verify that the application has been changed (the message deployed should be different)
+Once the change has been pushed, sync the application again and verify that the application has been changed (the webpage should show something like Tag: devconf2024)
 
 image::application/application19.png[]
 
