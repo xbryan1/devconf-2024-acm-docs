@@ -484,16 +484,16 @@ See how configure a token GitHub <a href="https://docs.github.com/en/authenticat
 <div class="paragraph">
 <p>Once the change has been pushed, sync the application again from ArgoCD Console and checking the ACM Topology</p>
 </div>
-<div class="exampleblock">
-<div class="content">
 <div class="imageblock">
 <div class="content">
 <img src="_images/application/application09d.png" alt="application09d">
 </div>
 </div>
-<div id="applicationacm02" class="paragraph">
-<p>== Application 2 - Deploying the second application</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="applicationacm02"><a class="anchor" href="#applicationacm02"></a>Application 2 - Deploying the second application</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The second Application will be created from the Advanced Cluster Management console and it will be deployed on those Clusters matching label:</p>
 </div>
@@ -680,9 +680,11 @@ See how configure a token GitHub <a href="https://docs.github.com/en/authenticat
 <div class="paragraph">
 <p>This is another standard web application.</p>
 </div>
-<div id="applicationimages" class="paragraph">
-<p>== Application 2 - Change container image</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="applicationimages"><a class="anchor" href="#applicationimages"></a>Application 2 - Change container image</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Once the <strong>devconf2024-application-02</strong> is already deployed, let&#8217;s change the application image:</p>
 </div>
@@ -710,9 +712,11 @@ git push origin main</code></pre>
 <img src="_images/application/application19.png" alt="application19">
 </div>
 </div>
-<div id="applicationacm03" class="paragraph">
-<p>== Application - Deploying multiple Applications</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="applicationacm03"><a class="anchor" href="#applicationacm03"></a>Application - Deploying multiple Applications</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The third and fourth Applications will be created from the ArgoCD command line grouping both Applications <strong>devconf2024-application-03</strong> (RedHat Offices Photos) and <strong>devconf2024-application-04</strong> (Tetris) and deploying at the same time:</p>
 </div>
@@ -950,9 +954,11 @@ git push origin main</code></pre>
 <img src="_images/application/application21.png" alt="application21">
 </div>
 </div>
-<div id="applicationsync" class="paragraph">
-<p>== Fix Application 03 - Sync and Diff</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="applicationsync"><a class="anchor" href="#applicationsync"></a>Fix Application 03 - Sync and Diff</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Let&#8217;s see a common issue with Application deployments and autoscalers and how to fix it. The third Application <strong>devconf2024-application-03</strong> is deployed with an <strong>HPA - horizontal pod autoscaler</strong> that let you specify the minimum and maximum number of pods you want to run. It means that this application will change the number of replicas and it will not match what is defined in Git repository, so the application will be <strong>out of sync</strong>. Let&#8217;s see how can fix this kind of issues:</p>
 </div>
@@ -990,9 +996,11 @@ This issue could also be solved adding <a href="https://argo-cd.readthedocs.io/e
 </tr>
 </table>
 </div>
-<div id="applicationcpu" class="paragraph">
-<p>== Fix Application 04 - allocatable CPU and Memory</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="applicationcpu"><a class="anchor" href="#applicationcpu"></a>Fix Application 04 - allocatable CPU and Memory</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>This is the last exercice from this section. The fourth application <strong>devconf2024-application-04</strong> will be deployed on that cluster with the largest allocatable CPU and Memory. Verify that in your environment is deployed on <code>devconf2024-cluster01</code>, if not change the score weight as follows:</p>
 </div>
@@ -1017,8 +1025,6 @@ git push origin main</code></pre>
 </div>
 <div class="paragraph">
 <p>Great! You&#8217;ve completed the 4 Applications deployment! Congratulations!</p>
-</div>
-</div>
 </div>
 </div>
 </div>
