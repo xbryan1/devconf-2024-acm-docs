@@ -30,8 +30,6 @@ In order to easily switch between Openshift clusters in this lab, we will create
 
 - Login into the local-cluster
 
-NOTE: Cluster admin user is **opentlc-mgr** instead of **kubeadmin**.
-
 [.lines_space]
 [.console-input]
 [source,bash, subs="+macros,+attributes"]
