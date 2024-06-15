@@ -163,8 +163,6 @@ TIP: See how configure a token GitHub https://docs.github.com/en/authentication/
 
 Once the change has been pushed, sync the application again from ArgoCD Console and checking the ACM Topology
 
-====
-
 image::application/application09d.png[]
 
 [#applicationacm02]

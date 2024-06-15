@@ -212,7 +212,7 @@ spec:
 
 We will see more `Placements` examples on the next sections.
 
-TIP: https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.10/html-single/multicluster_engine/index#placement-binding[Placement Examples] to select a cluster wih the largest allocatable memory and/or CPU.
+TIP: https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.10/html/clusters/cluster_mce_overview#placement-intro[Placement Documentation] to select a cluster wih the largest allocatable memory and/or CPU.
 
 NOTE: When you integrate ACM with the GitOps operator for every managed cluster that is bound to the GitOps namespace through the placement and ManagedClusterSetBinding custom resources, a secret with a token to access the ManagedCluster is created in the namespace. This is required for the GitOps controller to sync resources to the managed cluster. When a user is given administrator access to a GitOps namespace to perform application lifecycle operations, the user also gains access to this secret and admin level to the managed cluster
 
